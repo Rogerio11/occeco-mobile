@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Button, TextInput } from 'react-native';
+import { View, Button } from 'react-native';
 import {useDispatch} from "react-redux";
 import {login} from "../../actions/UserActions";
+import { Card, Input } from 'react-native-elements'
 
 function LoginScreen({ navigation }) {
     const initialUser = {
@@ -15,31 +16,32 @@ function LoginScreen({ navigation }) {
         setUser({...user, [name] : value})
     }
     const tryLogin = () => {
-      console.log("trylogin=", user)
       dispatch(login(user));
       setUser(initialUser);
       navigation.navigate('Homepage');
   };
     
     return (
-      <View>
-        <TextInput
-          placeholder="Mail"
-          value={user.userName}
-          name="userMail"
-          onChangeText={(evt) => handleChange({name: "userMail", value: evt})}
-        />
-        <TextInput
-          placeholder="Password"
-          value={user.userPassword}
-          name="userPassword"
-          onChangeText={(evt) => handleChange({name: "userPassword", value: evt})}
-          secureTextEntry
-        />
-        <Button title="Connexion" onPress={tryLogin} />
-        <Button title="Go to Home" onPress={() => navigation.navigate('Homepage')} />
-        <Button title="Go back" onPress={() => navigation.goBack()} />
-      </View>
+      <Card>
+        <View>
+          <Input
+            placeholder="Mail"
+            value={user.userName}
+            name="userMail"
+            onChangeText={(evt) => handleChange({name: "userMail", value: evt})}
+          />
+          <Input
+            placeholder="Password"
+            value={user.userPassword}
+            name="userPassword"
+            onChangeText={(evt) => handleChange({name: "userPassword", value: evt})}
+            secureTextEntry={true}
+          />
+          <Button title="Connexion" onPress={tryLogin} />
+          <Button title="Go to Home" onPress={() => navigation.navigate('Homepage')} />
+          <Button title="Go back" onPress={() => navigation.goBack()} />
+        </View>
+      </Card>
     );
   }
 
