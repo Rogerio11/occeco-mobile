@@ -5,7 +5,6 @@ import {authHeader} from "../utils";
 export const login = (user) => async dispatch => {
     console.log("loginactions = ",user);
     try {
-
         const res = await axios.post(`${servURL}/login`, user, {headers: authHeader()});
         console.log(res.data)
         if(res.data.authToken) {

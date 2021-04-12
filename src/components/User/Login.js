@@ -5,19 +5,19 @@ import {login} from "../../actions/UserActions";
 import { Card, Input } from 'react-native-elements'
 
 function LoginScreen({ navigation }) {
-    const initialUser = {
-        userMail : "",
-        userPassword: ""
+    const initialAccount = {
+        accountMail : "",
+        accountPassword: ""
     }
     const dispatch = useDispatch();
-    const [user, setUser] = React.useState(initialUser);
+    const [account, setAccount] = React.useState(initialAccount);
     const handleChange = (evt) => {
         const { name, value } = evt;
-        setUser({...user, [name] : value})
+        setAccount({...account, [name] : value})
     }
     const tryLogin = () => {
-      dispatch(login(user));
-      setUser(initialUser);
+      dispatch(login(account));
+      setAccount(initialAccount);
       navigation.navigate('Homepage');
   };
     
@@ -26,15 +26,15 @@ function LoginScreen({ navigation }) {
         <View>
           <Input
             placeholder="Mail"
-            value={user.userName}
-            name="userMail"
-            onChangeText={(evt) => handleChange({name: "userMail", value: evt})}
+            value={account.accountName}
+            name="accountMail"
+            onChangeText={(evt) => handleChange({name: "accountMail", value: evt})}
           />
           <Input
             placeholder="Password"
-            value={user.userPassword}
-            name="userPassword"
-            onChangeText={(evt) => handleChange({name: "userPassword", value: evt})}
+            value={account.accountPassword}
+            name="accountPassword"
+            onChangeText={(evt) => handleChange({name: "accountPassword", value: evt})}
             secureTextEntry={true}
           />
           <Button title="Connexion" onPress={tryLogin} />
