@@ -39,8 +39,7 @@ function SignUpScreen({ navigation }) {
             secureTextEntry
           />
           <Button title="Inscription" onPress={trySignup} />
-          <Button title="Go to Home" onPress={() => navigation.navigate('Homepage')} />
-          <Button title="Go back" onPress={() => navigation.goBack()} />
+          
         </View>
       </Card>
     );

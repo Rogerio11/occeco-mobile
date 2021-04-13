@@ -1,8 +1,14 @@
-const user = JSON.parse(localStorage.getItem("user"));
-
+//const user = JSON.parse(localStorage.getItem("user"));
+/*
 const DefaultState = user
     ? {isLoggedIn: true, user}
     : {isLoggedIn: false, user: null}
+*/
+
+const DefaultState = {
+    isLoggedIn : false,
+    user: null
+}
 
 const UserReducer = (state = DefaultState, action) => {
     switch (action.type) {
