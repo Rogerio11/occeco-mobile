@@ -5,20 +5,20 @@ import {signup} from "../../actions/UserActions";
 import { Card, Input } from 'react-native-elements'
 
 function SignUpScreen({ navigation }) {
-    const initialUser = {
-        userMail : "",
-        userPassword: ""
+    const initialAccount = {
+        accountMail : "",
+        accountPassword: ""
     }
     const dispatch = useDispatch();
-    const [user, setUser] = React.useState(initialUser);
+    const [account, setAccount] = React.useState(initialAccount);
     const handleChange = (evt) => {
         const { name, value } = evt;
-        setUser({...user, [name] : value})
+        setAccount({...account, [name] : value})
     }
     const trySignup = () => {
-      console.log("trySignin=", user)
-      dispatch(signup(user));
-      setUser(initialUser);
+      console.log("trySignin=", account)
+      dispatch(signup(account));
+      setAccount(initialAccount);
       navigation.navigate('Homepage')
   };
     
@@ -27,15 +27,15 @@ function SignUpScreen({ navigation }) {
         <View>
           <Input
             placeholder="Mail"
-            value={user.userName}
-            name="userMail"
-            onChangeText={(evt) => handleChange({name: "userMail", value: evt})}
+            value={account.accountName}
+            name="accountMail"
+            onChangeText={(evt) => handleChange({name: "accountMail", value: evt})}
           />
           <Input
             placeholder="Password"
-            value={user.userPassword}
-            name="userPassword"
-            onChangeText={(evt) => handleChange({name: "userPassword", value: evt})}
+            value={account.accountPassword}
+            name="accountPassword"
+            onChangeText={(evt) => handleChange({name: "accountPassword", value: evt})}
             secureTextEntry
           />
           <Button title="Inscription" onPress={trySignup} />
