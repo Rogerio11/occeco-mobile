@@ -114,3 +114,6 @@ package-lock.json
 
 # Android memory profiler files
 *.hprof
+
+#Server url
+servUrl.js

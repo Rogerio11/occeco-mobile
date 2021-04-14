@@ -16,9 +16,10 @@ function LoginScreen({ navigation }) {
         setAccount({...account, [name] : value})
     }
     const tryLogin = () => {
+      console.log("trylogin", account)
       dispatch(login(account));
       setAccount(initialAccount);
-      navigation.navigate('Homepage');
+      navigation.navigate('Accueil');
   };
     
     return (

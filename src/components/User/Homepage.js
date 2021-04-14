@@ -24,7 +24,7 @@ function HomepageScreen({ navigation }) {
                         <Card.Divider/>
                         <Button
                             title="Connexion"
-                            onPress={() => navigation.navigate('Connexion')}
+                            onPress={() => navigation.push('Connexion')}
                         />
                     </Card>
                     <Card containerStyle={{width: '80%'}}>
@@ -32,7 +32,7 @@ function HomepageScreen({ navigation }) {
                         <Card.Divider/>
                         <Button
                             title="Inscription"
-                            onPress={() => navigation.navigate('Inscription')}
+                            onPress={() => navigation.push('Inscription')}
                         />
                     </Card>
                     

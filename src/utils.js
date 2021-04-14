@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const generatePassword = (length) => {
     let result           = '';
     const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -8,12 +10,19 @@ export const generatePassword = (length) => {
     return result;
 };
 
-export const authHeader = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+export const authHeader = async () => {
+    try {
+        const tryGetuser = await AsyncStorage.getItem('user');
+        const user = JSON.parse(tryGetuser);
 
-    if (user && user.authToken) {
-        return { 'auth-token': user.authToken };
-    } else {
-        return {};
+        if (user && user.authToken) {
+            return { 'auth-token': user.authToken };
+        } else {
+            return {};
+    }
+    
+    }
+    catch(e){
+        return {}
     }
 };

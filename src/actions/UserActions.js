@@ -1,17 +1,18 @@
 import axios from "axios";
-import servURL from "../servUrl";
+import servURL from "../../servUrl";
 import {authHeader} from "../utils";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const login = (user) => async dispatch => {
-    console.log("loginactions = ",user);
+export const login = (account) => async dispatch => {
+    console.log("loginactions = ",account);
     try {
-        const res = await axios.post(`${servURL}/login`, user, {headers: authHeader()});
+        const res = await axios.post(`${servURL}/login`, account, {headers: authHeader()});
         console.log(res.data)
-        /*
+        
         if(res.data.authToken) {
-            localStorage.setItem("user", JSON.stringify(res.data));
+            await AsyncStorage.setItem("user", JSON.stringify(res.data));
         }
-        */
+        
         dispatch({
             type: "LOGIN_SUCCESS",
             payload: res.data
@@ -24,7 +25,7 @@ export const login = (user) => async dispatch => {
 
 export const logout = () => async dispatch => {
     try{
-        //localStorage.removeItem("user");
+        await AsyncStorage.removeItem("user");
 
         dispatch({
             type: "LOGOUT_SUCCESS",
@@ -40,11 +41,11 @@ export const signup = (user) => async dispatch => {
 
         const res = await axios.post(`${servURL}/signupPublic`, user, {headers: authHeader()});
         console.log(res.data)
-        /*
+        
         if(res.data.authToken) {
-            localStorage.setItem("user", JSON.stringify(res.data));
+            await AsyncStorage.setItem("user", JSON.stringify(res.data));
         }
-        */
+        
 
         dispatch({
             type: "SIGNUP_SUCCESS",
