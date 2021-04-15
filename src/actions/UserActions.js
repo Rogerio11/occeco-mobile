@@ -40,10 +40,9 @@ export const signup = (user) => async dispatch => {
     try {
 
         const res = await axios.post(`${servURL}/signupPublic`, user, {headers: authHeader()});
-        console.log(res.data)
         
         if(res.data.authToken) {
-            await AsyncStorage.setItem("user", JSON.stringify(res.data.account));
+            await AsyncStorage.setItem("user", JSON.stringify(res.data));
         }
         
 
