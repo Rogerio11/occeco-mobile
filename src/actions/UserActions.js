@@ -43,7 +43,7 @@ export const signup = (user) => async dispatch => {
         console.log(res.data)
         
         if(res.data.authToken) {
-            await AsyncStorage.setItem("user", JSON.stringify(res.data));
+            await AsyncStorage.setItem("user", JSON.stringify(res.data.account));
         }
         
 
