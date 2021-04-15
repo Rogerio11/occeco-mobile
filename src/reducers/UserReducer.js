@@ -24,6 +24,7 @@ const UserReducer = (state = DefaultState, action) => {
                 ...state,
                 isLoggedIn: false,
                 userToken: null,
+                user: null
             };
         case "SIGNUP_SUCCESS":
             return {
