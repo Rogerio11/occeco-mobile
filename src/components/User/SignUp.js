@@ -19,7 +19,7 @@ function SignUpScreen({ navigation }) {
       console.log("trySignin=", account)
       dispatch(signup(account));
       setAccount(initialAccount);
-      navigation.navigate('Homepage')
+      navigation.navigate('Accueil')
   };
     
     return (

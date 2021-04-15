@@ -7,9 +7,10 @@ function ArticleScreen({ navigation }) {
     
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>
-        Vue Articles
-        TODO : Affichage liste articles
+        Bienvenue sur l'appli OCCECO
       </Text>
+
+      <Text>TODO : Affichage liste articles</Text>
       
       
     </View>
