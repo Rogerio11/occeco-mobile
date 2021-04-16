@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomepageScreen from './User/Homepage';
 import LoginScreen from './User/Login';
 import SignUpScreen from './User/SignUp';
+import UpdateUserScreen from './User/updateUser'
 import ProfileScreen from './User/Profile';
 import ArticleScreen from './Article/Article';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -17,6 +18,7 @@ const ProfileStackNavigator = () => {
             <Stack.Screen name="Accueil" component={HomepageScreen} />
             <Stack.Screen name="Connexion" component={LoginScreen} />
             <Stack.Screen name="Inscription" component={SignUpScreen} />
+            <Stack.Screen name="Update" component={UpdateUserScreen} />
             <Stack.Screen name="Profil" component={ProfileScreen} />
         </Stack.Navigator>
     );
