@@ -26,6 +26,13 @@ const UserReducer = (state = DefaultState, action) => {
                 userToken: action.payload.token,
                 user: action.payload.account
             };
+        case "UPDATED_SUCCESS":
+            return {
+                ...state,
+                isLoggedIn: true,
+                userToken: action.payload.token,
+                user: action.payload.account
+            };
         default:
             return state;
     }

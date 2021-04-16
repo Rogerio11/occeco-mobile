@@ -25,7 +25,7 @@ function ProfileScreen({ navigation }) {
               */
             }
           <Text>Vue Profil</Text>
-          <Button title="Modifier" buttonStyle={{color:'green'}}/>
+          <Button title="Modifier" onPress={() => navigation.push('UpdateUser')}/>
           <Button title="Deconnexion" onPress={trylogout}/>
           
         </View>

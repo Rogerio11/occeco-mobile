@@ -10,13 +10,17 @@ export const generatePassword = (length) => {
     return result;
 };
 
-export const authHeader = async () => {
+export const authHeader = async ()  => {
     try {
-        const tryGetuser = await AsyncStorage.getItem('user');
-        const user = JSON.parse(tryGetuser);
+        console.log("ok")
+        
+        const user = await getToken()
+        //const user = localStorage.getItem('user');
+        //const user = JSON.parse(tryGetuser);
 
-        if (user && user.authToken) {
-            return { 'auth-token': user.authToken };
+        console.log(user)
+        if (user && user.userToken) {
+            return { 'authorization': `Bearer ${user.userToken }`};
         } else {
             return {};
     }
@@ -26,3 +30,14 @@ export const authHeader = async () => {
         return {}
     }
 };
+
+const getToken = async () => {
+    try {
+      let userData = await AsyncStorage.getItem("user");
+      let data = JSON.parse(userData);
+      console.log(data, userData);
+      return data
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
