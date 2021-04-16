@@ -23,6 +23,26 @@ export const login = (account) => async dispatch => {
     }
 };
 
+export const updateUser = (user) => async dispatch => {
+    console.log("Upadateactions = ",user);
+    try {
+        const res = await axios.put(`${servURL}/updateUser`, user, {headers: authHeader()});
+        console.log(res.data)
+        
+        if(res.data.authToken) {
+            await AsyncStorage.setItem("user", JSON.stringify(res.data));
+        }
+        
+        dispatch({
+            type: "UPDATE_SUCCESS",
+            payload: res.data
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const logout = () => async dispatch => {
     try{
         await AsyncStorage.removeItem("user");

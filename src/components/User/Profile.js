@@ -24,6 +24,8 @@ function ProfileScreen({ navigation }) {
               <Text>Type user : {user.user.account.accountType}</Text>
               */
             }
+            <Text>Mail : {user.user.user.userDistance}</Text>
+              
           <Text>Vue Profil</Text>
           <Button title="Modifier" buttonStyle={{color:'green'}} onPress={() => navigation.push('Update')}/>
           <Button title="Deconnexion" onPress={trylogout}/>

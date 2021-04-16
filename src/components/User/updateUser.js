@@ -1,39 +1,38 @@
-import React from 'react';
-import { View, Button } from 'react-native';
-import {useDispatch} from "react-redux";
-import {login} from "../../actions/UserActions";
+import React, {useState} from 'react';
+import { View, Button} from 'react-native';
+import {useDispatch, useSelector} from "react-redux";
+import {updateUser} from "../../actions/UserActions";
 import { Card, Input } from 'react-native-elements'
 
-
 function UpdateUserScreen({ navigation }) {
-    const user = {
-        accountMail : "",
-        accountPassword: ""
-    }
-   /* const dispatch = useDispatch();
-    const [account, setAccount] = React.useState(initialAccount);
-    const handleChange = (evt) => {
-        const { name, value } = evt;
-        setAccount({...account, [name] : value})
-    }*/
-    const tryLogin = () => {
-      console.log("trylogin", account)
-      dispatch(login(account));
-      setAccount(initialAccount);
-      navigation.navigate('Accueil');
+  const user = useSelector(state => state.User);
+  console.log(user)
+  const dispatch = useDispatch();
+
+  const [userUpdated, setUserUpdated] = useState(user.user.user)
+  const tryUpdate = () => {
+
+      console.log("tryUpadate", userUpdated)
+      dispatch(updateUser(userUpdated));
+      navigation.goBack();
   };
+
+  const handleChange = (evt) => {
+    const { name, value } = evt;
+    setUserUpdated({...userUpdated, [name] : value})
+}
     
     return (
       <Card>
         <View>
           
           <Input
-            placeholder="userDistance"
-            value="10"
+            placeholder="Distance"
+            value={userUpdated.userDistance}
             name="userDistance"
-            onChangeText={(evt) => handleChange({name: "accountPassword", value: evt})}
+            onChangeText={(evt) => handleChange({name: "userDistance", value: evt})}
           />
-          <Button title="Modifier" />
+          <Button title="Modifier" onPress={tryUpdate}/>
         </View>
       </Card>
     );
