@@ -75,24 +75,3 @@ export const signup = (user) => async dispatch => {
         console.log(err);
     }
 };
-
-export const updateUser = (user) => async dispatch => {
-    try {
-        
-        const res = await axios.put(`${servURL}/updateUser`, user, {headers: authHeader()});
-        
-        if(res.data.authToken) {
-            await AsyncStorage.setItem("user", JSON.stringify(res.data));
-        }
-        
-
-        dispatch({
-            type: "UPDATED_SUCCESS",
-            payload: res.data
-        });
-
-    } catch (err) {
-        console.log(err);
-    }
-};
-

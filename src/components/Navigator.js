@@ -5,7 +5,6 @@ import LoginScreen from './User/Login';
 import SignUpScreen from './User/SignUp';
 import UpdateUserScreen from './User/updateUser'
 import ProfileScreen from './User/Profile';
-import UpadteUserScreen from './User/UpdateUser';
 import ArticleScreen from './Article/Article';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,7 +20,7 @@ const ProfileStackNavigator = () => {
             <Stack.Screen name="Inscription" component={SignUpScreen} />
             <Stack.Screen name="Update" component={UpdateUserScreen} />
             <Stack.Screen name="Profil" component={ProfileScreen} />
-            <Stack.Screen name="UpdateUser" component={UpadteUserScreen} />
+            <Stack.Screen name="UpdateUser" component={UpdateUserScreen} />
         </Stack.Navigator>
     );
 }
