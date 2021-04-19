@@ -6,7 +6,7 @@ import {logout} from '../../actions/UserActions';
 
 function ProfileScreen({ navigation }) {
     const user = useSelector(state => state.User);
-    console.log(user)
+    console.log("Profile - user : ",user)
     const dispatch = useDispatch();
     const trylogout = () => {
       dispatch(logout())

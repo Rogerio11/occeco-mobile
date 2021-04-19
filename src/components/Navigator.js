@@ -3,9 +3,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomepageScreen from './User/Homepage';
 import LoginScreen from './User/Login';
 import SignUpScreen from './User/SignUp';
-import UpdateUserScreen from './User/updateUser'
+import UpdateUserScreen from './User/UpdateUser'
 import ProfileScreen from './User/Profile';
 import ArticleScreen from './Article/Article';
+import AllAccountsScreen from './User/AllAccounts';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector} from "react-redux";
@@ -75,7 +76,7 @@ const Navigator = () => {
     >
       <Tab.Screen name="Mon Compte" component={ProfileStackNavigator} />
       { user && user.user && user.user.accountType == "admin" 
-      ? <Tab.Screen name="Partenaires" component={PartnerStackNavigator} />
+      ? <Tab.Screen name="Partenaires" component={AllAccountsScreen} />
       : <></>
       }
       

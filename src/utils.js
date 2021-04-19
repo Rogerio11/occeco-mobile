@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector} from "react-redux";
 
 export const generatePassword = (length) => {
     let result           = '';
@@ -12,13 +13,13 @@ export const generatePassword = (length) => {
 
 export const authHeader = async ()  => {
     try {
-        console.log("ok")
+        console.log("utils - authHeader")
         
-        const user = await getToken()
+        const user = await getToken();
         //const user = localStorage.getItem('user');
         //const user = JSON.parse(tryGetuser);
 
-        console.log(user)
+        console.log("user : ", user)
         if (user && user.userToken) {
             return { 'authorization': `Bearer ${user.userToken }`};
         } else {
@@ -35,7 +36,7 @@ const getToken = async () => {
     try {
       let userData = await AsyncStorage.getItem("user");
       let data = JSON.parse(userData);
-      console.log(data, userData);
+      console.log("data and userData : ",data, userData);
       return data
     } catch (error) {
       console.log("Something went wrong", error);
