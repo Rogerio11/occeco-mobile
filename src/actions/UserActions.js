@@ -6,11 +6,11 @@ import { storeData, deleteData } from '../useStorage'
 export const login = (account) => async dispatch => {
     console.log("UserActions - login = ", account);
     try {
-        const res = await axios.post(`${servURL}/login`, account, { headers: authHeader() });
+        const res = await axios.post(`${servURL}/login`, account, { headers: await authHeader() });
         console.log(res.data)
         
-        if(res.data.authToken) {
-            await storeData("user", JSON.stringify(res.data));
+        if(res.data.token) {
+            await storeData("user", JSON.stringify({token : res.data.token, ...res.data.account}));
         }
 
         dispatch({
@@ -26,12 +26,8 @@ export const login = (account) => async dispatch => {
 export const updateUser = (user) => async dispatch => {
     console.log("UserActions - updateUser = ", user);
     try {
-        const res = await axios.put(`${servURL}/updateUser`, user, { headers: authHeader() });
+        const res = await axios.patch(`${servURL}/updateUser`, user, { headers: await authHeader() });
         console.log(res.data)
-
-        if (res.data.authToken) {
-            await storeData("user", JSON.stringify(res.data));
-        }
 
         dispatch({
             type: "UPDATE_SUCCESS",
@@ -58,10 +54,10 @@ export const logout = () => async dispatch => {
 
 export const signup = (user) => async dispatch => {
     try {
-        const res = await axios.post(`${servURL}/signupPublic`, user, {headers: authHeader()});
+        const res = await axios.post(`${servURL}/signupPublic`, user, {headers: await authHeader()});
         
-        if(res.data.authToken) {
-            await storeData("user", JSON.stringify(res.data));
+        if(res.data) {
+            await storeData("user", JSON.stringify({token : res.data.token, ...res.data.account}));
 
         }
 
@@ -82,7 +78,7 @@ export const signup = (user) => async dispatch => {
  */
 export const searchAccountByMail = (accountMail) => async dispatch => {
     try {
-        const res = await axios.post(`${servURL}/account/getByMail`, { accountMail }, { headers: authHeader() });
+        const res = await axios.post(`${servURL}/account/getByMail`, { accountMail }, { headers: await authHeader() });
 
         if (res.data) {
             console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
@@ -113,7 +109,7 @@ export const modifyAccountType = (_id, accountType) => async dispatch => {
         if (accountType != "client" && accountType != "partner") {
             return("error : not valid type")    
         }
-        const res = await axios.patch(`${servURL}/account/updateType`, { "accountId": _id, accountType }, { headers: authHeader() });
+        const res = await axios.patch(`${servURL}/account/updateType`, { "accountId": _id, accountType }, { headers: await authHeader() });
         if (res.data) {
             console.log("UserActions - modifyAccountType - res : ", res.data, "\n\n")
             dispatch({

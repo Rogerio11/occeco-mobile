@@ -6,7 +6,7 @@ import {logout} from '../../actions/UserActions';
 
 function ProfileScreen({ navigation }) {
     const user = useSelector(state => state.User);
-    console.log("Profile - user : ",user)
+    
     const dispatch = useDispatch();
     const trylogout = () => {
       dispatch(logout())
@@ -15,16 +15,15 @@ function ProfileScreen({ navigation }) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           
-            {
-              /*
-              <Text>Mail : {user.user.account.accountMail}</Text>
+            
+              
+              <Text>Mail : {user.user.accountMail}</Text>
               
               <Text>Catégories choisies : TODO !</Text>
-              <Text>Distance : {user.user.userDistance}</Text>
-              <Text>Type user : {user.user.account.accountType}</Text>
-              */
-            }
-            <Text>Mail : {user.user.user.userDistance}</Text>
+              <Text>Distance : {user.user.user.userDistance} km</Text>
+              <Text>Type user : {user.user.accountType}</Text>
+              
+            
               
           <Text>Vue Profil</Text>
           <Button title="Modifier" buttonStyle={{color:'green'}} onPress={() => navigation.push('Update')}/>
