@@ -41,7 +41,7 @@ function ModifyAccountType({ navigation }) {
         <View>
             <Card>
                 <Icon
-                    name='user-edit'
+                    name='user-cog'
                     type='font-awesome-5'
                     color='purple'
                 />
@@ -58,7 +58,7 @@ function ModifyAccountType({ navigation }) {
             {/* S'affiche uniquement si accountSearched est non nul et correspond au compte recherché*/}
             <Card>
                 {accountSearched && emailToFind == accountSearched.accountMail && <View>
-                    {accountSearched.accountType == 'partner'
+                    {(accountSearched.accountType == 'partner' || accountSearched.accountType == 'admin')
                         ? <Text style={styles.highlightedText}> {accountSearched.accountMail}<br />est un compte partenaire !</Text>
                         : <Text style={styles.highlightedText}> {accountSearched.accountMail}<br />n'est pas un compte partenaire !</Text>
                     }
