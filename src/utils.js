@@ -1,5 +1,6 @@
 import { getData } from './useStorage'
 
+
 export const generatePassword = (length) => {
     let result           = '';
     const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -12,10 +13,11 @@ export const generatePassword = (length) => {
 
 export const authHeader = async ()  => {
     try {
+
         const tryGetuser = await getData('user');
         const user = JSON.parse(tryGetuser);
 
-        console.log(user)
+        console.log("user : ", user)
         if (user && user.userToken) {
             return { 'authorization': `Bearer ${user.userToken }`};
         } else {
