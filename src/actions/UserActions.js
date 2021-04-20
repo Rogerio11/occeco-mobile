@@ -6,7 +6,7 @@ import { storeData, deleteData } from '../useStorage'
 export const login = (account) => async dispatch => {
     console.log("UserActions - login = ", account);
     try {
-        const res = await axios.post(`${servURL}/login`, account, { headers: await authHeader() });
+        const res = await axios.post(`${servURL}/login`, account);
         console.log(res.data)
         
         if(res.data.token) {
@@ -54,6 +54,7 @@ export const logout = () => async dispatch => {
 
 export const signup = (user) => async dispatch => {
     try {
+        console.log();
         const res = await axios.post(`${servURL}/signupPublic`, user, {headers: await authHeader()});
         
         if(res.data) {

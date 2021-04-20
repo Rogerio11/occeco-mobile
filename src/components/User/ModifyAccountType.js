@@ -1,16 +1,16 @@
 import React from 'react';
-import { Button, Text, View, TextInput } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { modifyAccountType, searchAccountByMail } from "../../actions/UserActions";
-import { Card, CheckBox } from 'react-native-elements';
-import { acc } from 'react-native-reanimated';
+import { Card, CheckBox, Button, Text, Input, Icon } from 'react-native-elements';
 
 function ModifyAccountType({ navigation }) {
+    const user = useSelector(state => state.User); // Auth
     const dispatch = useDispatch();
     const [emailToFind, setEmailToFind] = React.useState("");
     const [partnerAccount, setPartnerAccount] = React.useState(false);
     const accountSearched = useSelector(state => state.ModifyType.accountSearched);
-    
+
     React.useLayoutEffect(() => {
         if (accountSearched) {
             setPartnerAccount(accountSearched.accountType === "partner");
@@ -19,7 +19,7 @@ function ModifyAccountType({ navigation }) {
 
     const changeAccountType = async () => {
         var aType = "client"
-        if (!partnerAccount){
+        if (!partnerAccount) {
             aType = "partner"
         }
         dispatch(modifyAccountType(accountSearched._id, aType));
@@ -29,20 +29,39 @@ function ModifyAccountType({ navigation }) {
         dispatch(searchAccountByMail(emailToFind));
     };
 
+    const styles = StyleSheet.create({
+        highlightedText: {
+            fontWeight: 'bold',
+            fontSize: 20,
+            textAlign: "center"
+        },
+    });
+
     return (
         <View>
             <Card>
-                <h2> Formulaire de modification d'un compte</h2>
-                <TextInput
+                <Icon
+                    name='user-edit'
+                    type='font-awesome-5'
+                    color='purple'
+                />
+                <Text h2> Gérer les partenaires</Text>
+                <Input
                     placeholder="put a mail here"
+                    leftIcon={{ type: 'feather', name: 'mail' }}
                     value={emailToFind}
                     onChangeText={setEmailToFind}
                 />
-                <Button title="Rechercher" onPress={searchAccount} />
+                <Button title="Rechercher" type="outline" onPress={searchAccount} />
+            </Card>
 
-                {/* S'affiche uniquement si accountSearched est non nul et correspond au compte recherché*/}
+            {/* S'affiche uniquement si accountSearched est non nul et correspond au compte recherché*/}
+            <Card>
                 {accountSearched && emailToFind == accountSearched.accountMail && <View>
-                    <h4> {accountSearched.accountMail} est un compte {accountSearched.accountType} </h4>
+                    {accountSearched.accountType == 'partner'
+                        ? <Text style={styles.highlightedText}> {accountSearched.accountMail}<br />est un compte partenaire !</Text>
+                        : <Text style={styles.highlightedText}> {accountSearched.accountMail}<br />n'est pas un compte partenaire !</Text>
+                    }
                     {
                         (accountSearched.accountType === "admin")
                             ? (<Card>
@@ -52,9 +71,9 @@ function ModifyAccountType({ navigation }) {
                             : (<Card>
                                 <Text>Modifier le type de compte ?</Text>
                                 <CheckBox
-                                title='Compte partenaire'
-                                checked={partnerAccount}
-                                onPress={() => changeAccountType()}
+                                    title='Compte partenaire'
+                                    checked={partnerAccount}
+                                    onPress={() => changeAccountType()}
                                 />
                             </Card>
                             )
