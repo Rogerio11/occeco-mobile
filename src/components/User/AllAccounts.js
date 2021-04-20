@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Button, Text, View, TextInput } from 'react-native';
+import { Button, Text, View, TextInput } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { modifyAccountType, searchAccountByMail, getAllAccounts } from "../../actions/UserActions";
 import { Card } from 'react-native-elements'
@@ -7,12 +7,16 @@ import { Card } from 'react-native-elements'
 function AllAccountsScreen({ navigation }) {
     const dispatch = useDispatch();
     const [emailToFind, setEmailToFind] = React.useState("");
-    const [accountSearched, setAccountSearched] = React.useState();
     const [typeChoosen, setTypeChoosen] = React.useState();
+    const accountSearched = useSelector(state => state.ModifyType.accountSearched);
 
     const changeAccountType = () => {
         console.log("changeAccountType - ", accountSearched._id, typeChoosen);
-        dispatch(modifyAccountType(accountSearched._id, typeChoosen));
+        if (typeChoosen != "admin") {
+            dispatch(modifyAccountType(accountSearched._id, typeChoosen));
+        } else {
+            console.log("error : cant create admin")
+        }
     };
 
     const searchAccount = () => {
@@ -20,9 +24,10 @@ function AllAccountsScreen({ navigation }) {
         dispatch(searchAccountByMail(emailToFind));
     };
 
+    /*
     React.useEffect(() => {
-        dispatch(getAllAccounts());
     }, []);
+    */
 
     return (
         <View>
@@ -58,32 +63,8 @@ function AllAccountsScreen({ navigation }) {
                 </View>
                 }
             </Card>
-
-
-            <h1> state accountSearched userType : {accountSearched ? accountSearched.accountType : null} </h1>
-
-            {/* <Card>
-                <h2> Voici la liste des comptes</h2>
-                <FlatList
-                    data={accountsSimulatedArray}
-                    renderItem={renderItem}
-                    keyExtractor={item => item._id}
-                // extraData={selectedId} // Add a state selected to update whitout recharging the page
-                />
-            </Card> */}
         </View>
     );
-
-      /**
-     * View of a list element
-     */
-    // const renderItem = ({ item }) => (
-    //     <View style={{ flexDirection: 'row' }}>
-    //         <Text> {item.accountMail} </Text>
-    //         <Text> {item.accountType} </Text>
-    //         <Button title="Rendre partenaire" onPress={() => changeAccountType(item._id, "partner")} />
-    //     </View>
-    // );
 }
 
 export default AllAccountsScreen;

@@ -91,12 +91,19 @@ export const getAllAccounts = () => async dispatch => {
 export const searchAccountByMail = (accountMail) => async dispatch => {
     try {
         const res = await axios.post(`${servURL}/account/getByMail`, { accountMail }, { headers: authHeader() });
-        console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
 
-        dispatch({
-            type: "GETBYMAIL_SUCCESS",
-            payload: res.data
-        });
+        if (res.data) {
+            console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
+            dispatch({
+                type: "GETBYMAIL_SUCCESS",
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: "GETBYMAIL_ERROR",
+                payload: res.data
+            });
+        }
 
     } catch (err) {
         console.log(err);
@@ -105,10 +112,9 @@ export const searchAccountByMail = (accountMail) => async dispatch => {
 
 export const modifyAccountType = (_id, accountType) => async dispatch => {
     try {
-        console.log("UserActions - updateType : ", _id, accountType)
         const res = await axios.patch(`${servURL}/account/updateType`, { "accountId": _id, accountType }, { headers: authHeader() });
         if (res.data) {
-            console.log("UserActions - updateType - res : ", res.data, "\n\n")
+            console.log("UserActions - modifyAccountType - res : ", res.data, "\n\n")
             dispatch({
                 type: "CHANGETYPE_SUCCESS",
                 payload: res.data
