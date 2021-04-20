@@ -16,9 +16,7 @@ export const authHeader = async ()  => {
         const tryGetuser = await getData('user');
         const user = JSON.parse(tryGetuser);
 
-        console.log("user : ", user)
         if (user && user.token) {
-            console.log(user, user.token)
             return { 'authorization': `Bearer ${user.token }`};
         } else {
             return {};

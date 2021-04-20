@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { modifyAccountType, searchAccountByMail } from "../../actions/UserActions";
-import { Card, CheckBox } from 'react-native-elements';
+import { Card, CheckBox, Button } from 'react-native-elements';
 import { acc } from 'react-native-reanimated';
 
 function ModifyAccountType({ navigation }) {
@@ -38,7 +38,7 @@ function ModifyAccountType({ navigation }) {
                     value={emailToFind}
                     onChangeText={setEmailToFind}
                 />
-                <Button title="Rechercher" onPress={searchAccount} />
+                <Button title="Rechercher" onPress={searchAccount} buttonStyle={{backgroundColor:'green'}}/>
 
                 {/* S'affiche uniquement si accountSearched est non nul et correspond au compte recherché*/}
                 {accountSearched && emailToFind == accountSearched.accountMail && <View>

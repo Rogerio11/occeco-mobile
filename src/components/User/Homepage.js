@@ -14,29 +14,25 @@ function HomepageScreen({ navigation }) {
 
             {
                 user.isLoggedIn 
-                ? (
-                    <Card containerStyle={{width: '95%'}}>
-                        <ProfileScreen navigation={navigation}/>
-                        { /* <Button title="Profil" onPress={() => navigation.navigate('Profil')} /> */}
-                    </Card>
-                    
-                )
+                ? (<ProfileScreen navigation={navigation}/>)
                 : (
                     <>
-                    <Card containerStyle={{width: '95%'}}>
+                    <Card containerStyle={{width: '95%', backgroundColor:'#DAF7A6'}}>
                         <Card.Title>Vous avez déjà un compte ?</Card.Title>
                         <Card.Divider/>
                         <Button
                             title="Connexion"
                             onPress={() => navigation.push('Connexion')}
+                            buttonStyle={{backgroundColor:'green'}}
                         />
                     </Card>
-                    <Card containerStyle={{width: '95%'}}>
+                    <Card containerStyle={{width: '95%', backgroundColor:'#DAF7A6'}}>
                         <Card.Title>Vous êtes nouveau ?</Card.Title>
                         <Card.Divider/>
                         <Button
                             title="Inscription"
                             onPress={() => navigation.push('Inscription')}
+                            buttonStyle={{backgroundColor:'green'}}
                         />
                     </Card>
                     

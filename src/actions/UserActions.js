@@ -4,7 +4,7 @@ import {authHeader} from "../utils";
 import { storeData, deleteData } from '../useStorage'
 
 export const login = (account) => async dispatch => {
-    console.log("UserActions - login = ", account);
+    //console.log("UserActions - login = ", account);
     try {
         const res = await axios.post(`${servURL}/login`, account, { headers: await authHeader() });
         console.log(res.data)
@@ -24,7 +24,7 @@ export const login = (account) => async dispatch => {
 };
 
 export const updateUser = (user) => async dispatch => {
-    console.log("UserActions - updateUser = ", user);
+    //console.log("UserActions - updateUser = ", user);
     try {
         const res = await axios.patch(`${servURL}/updateUser`, user, { headers: await authHeader() });
         console.log(res.data)
