@@ -1,6 +1,5 @@
 import { getData } from './useStorage'
 
-
 export const generatePassword = (length) => {
     let result           = '';
     const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

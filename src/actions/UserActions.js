@@ -3,13 +3,11 @@ import servURL from "../../servUrl";
 import {authHeader} from "../utils";
 import { storeData, deleteData } from '../useStorage'
 
-
 export const login = (account) => async dispatch => {
     console.log("UserActions - login = ", account);
     try {
         const res = await axios.post(`${servURL}/login`, account, { headers: authHeader() });
         console.log(res.data)
-
         
         if(res.data.authToken) {
             await storeData("user", JSON.stringify(res.data));
@@ -32,7 +30,7 @@ export const updateUser = (user) => async dispatch => {
         console.log(res.data)
 
         if (res.data.authToken) {
-            await AsyncStorage.setItem("user", JSON.stringify(res.data));
+            await storeData("user", JSON.stringify(res.data));
         }
 
         dispatch({
@@ -60,12 +58,11 @@ export const logout = () => async dispatch => {
 
 export const signup = (user) => async dispatch => {
     try {
-
-
         const res = await axios.post(`${servURL}/signupPublic`, user, {headers: authHeader()});
         
         if(res.data.authToken) {
             await storeData("user", JSON.stringify(res.data));
+
         }
 
         dispatch({
@@ -85,7 +82,6 @@ export const signup = (user) => async dispatch => {
  */
 export const searchAccountByMail = (accountMail) => async dispatch => {
     try {
-
         const res = await axios.post(`${servURL}/account/getByMail`, { accountMail }, { headers: authHeader() });
 
         if (res.data) {
@@ -135,6 +131,7 @@ export const modifyAccountType = (_id, accountType) => async dispatch => {
         console.log(err);
     }
 };
+
 
 /*
 export const getAllAccounts = () => async dispatch => {
