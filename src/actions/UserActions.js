@@ -73,21 +73,11 @@ export const signup = (user) => async dispatch => {
     }
 };
 
-export const getAllAccounts = () => async dispatch => {
-    try {
-        const res = await axios.get(`${servURL}/account/getAll`, { headers: authHeader() });
-        console.log("UserActions - getAllAcounts - res : ", res.data, "\n\n")
-
-        dispatch({
-            type: "GETALL_SUCCESS",
-            payload: res.data
-        });
-
-    } catch (err) {
-        console.log(err);
-    }
-};
-
+/**
+ * 
+ * @param {String} accountMail 
+ * @returns The account if it exists
+ */
 export const searchAccountByMail = (accountMail) => async dispatch => {
     try {
         const res = await axios.post(`${servURL}/account/getByMail`, { accountMail }, { headers: authHeader() });
@@ -110,8 +100,17 @@ export const searchAccountByMail = (accountMail) => async dispatch => {
     }
 };
 
+/**
+ * 
+ * @param {mongoose.ObjectId} _id 
+ * @param {String} accountType client or partner
+ * @returns Modified account
+ */
 export const modifyAccountType = (_id, accountType) => async dispatch => {
     try {
+        if (accountType != "client" && accountType != "partner") {
+            return("error : not valid type")    
+        }
         const res = await axios.patch(`${servURL}/account/updateType`, { "accountId": _id, accountType }, { headers: authHeader() });
         if (res.data) {
             console.log("UserActions - modifyAccountType - res : ", res.data, "\n\n")
@@ -130,3 +129,20 @@ export const modifyAccountType = (_id, accountType) => async dispatch => {
         console.log(err);
     }
 };
+
+/*
+export const getAllAccounts = () => async dispatch => {
+    try {
+        const res = await axios.get(`${servURL}/account/getAll`, { headers: authHeader() });
+        console.log("UserActions - getAllAcounts - res : ", res.data, "\n\n")
+
+        dispatch({
+            type: "TODO",
+            payload: res.data
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+*/

@@ -6,32 +6,32 @@ import SignUpScreen from './User/SignUp';
 import UpdateUserScreen from './User/UpdateUser'
 import ProfileScreen from './User/Profile';
 import ArticleScreen from './Article/Article';
-import AllAccountsScreen from './User/AllAccounts';
+import ModifyAccountTypeScreen from './User/ModifyAccountType';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 const Stack = createStackNavigator();
 
 const ProfileStackNavigator = () => {
-    return (
-        <Stack.Navigator >
-            <Stack.Screen name="Accueil" component={HomepageScreen} />
-            <Stack.Screen name="Connexion" component={LoginScreen} />
-            <Stack.Screen name="Inscription" component={SignUpScreen} />
-            <Stack.Screen name="Update" component={UpdateUserScreen} />
-            <Stack.Screen name="Profil" component={ProfileScreen} />
-            <Stack.Screen name="UpdateUser" component={UpdateUserScreen} />
-        </Stack.Navigator>
-    );
+  return (
+    <Stack.Navigator >
+      <Stack.Screen name="Accueil" component={HomepageScreen} />
+      <Stack.Screen name="Connexion" component={LoginScreen} />
+      <Stack.Screen name="Inscription" component={SignUpScreen} />
+      <Stack.Screen name="Update" component={UpdateUserScreen} />
+      <Stack.Screen name="Profil" component={ProfileScreen} />
+      <Stack.Screen name="UpdateUser" component={UpdateUserScreen} />
+    </Stack.Navigator>
+  );
 }
 
 const ArticleStackNavigator = () => {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="Article" component={ArticleScreen} />
-      </Stack.Navigator>
-    );
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Article" component={ArticleScreen} />
+    </Stack.Navigator>
+  );
 }
 
 const PartnerStackNavigator = () => {
@@ -47,7 +47,7 @@ const Tab = createBottomTabNavigator();
 const Navigator = () => {
 
   const user = useSelector(state => state.User);
-  
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -59,7 +59,7 @@ const Navigator = () => {
           } else if (route.name === 'Articles') {
             iconName = 'ios-list';
           }
-          else if (route.name === 'Partenaires'){
+          else if (route.name === 'Partenaires') {
             iconName = 'ios-people';
           }
 
@@ -75,11 +75,11 @@ const Navigator = () => {
       }}
     >
       <Tab.Screen name="Mon Compte" component={ProfileStackNavigator} />
-      { user && user.user && user.user.accountType == "admin" 
-      ? <Tab.Screen name="Partenaires" component={AllAccountsScreen} />
-      : <></>
+      { user && user.user && user.user.accountType == "admin"
+        ? <Tab.Screen name="Partenaires" component={ModifyAccountTypeScreen} />
+        : <></>
       }
-      
+
       <Tab.Screen name="Articles" component={ArticleStackNavigator} />
     </Tab.Navigator>
   );

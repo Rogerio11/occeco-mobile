@@ -1,33 +1,33 @@
 import React from 'react';
 import { Button, Text, View, TextInput } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
-import { modifyAccountType, searchAccountByMail, getAllAccounts } from "../../actions/UserActions";
-import { Card } from 'react-native-elements'
+import { modifyAccountType, searchAccountByMail } from "../../actions/UserActions";
+import { Card, CheckBox } from 'react-native-elements';
+import { acc } from 'react-native-reanimated';
 
-function AllAccountsScreen({ navigation }) {
+function ModifyAccountType({ navigation }) {
     const dispatch = useDispatch();
     const [emailToFind, setEmailToFind] = React.useState("");
-    const [typeChoosen, setTypeChoosen] = React.useState();
+    const [partnerAccount, setPartnerAccount] = React.useState(false);
     const accountSearched = useSelector(state => state.ModifyType.accountSearched);
-
-    const changeAccountType = () => {
-        console.log("changeAccountType - ", accountSearched._id, typeChoosen);
-        if (typeChoosen != "admin") {
-            dispatch(modifyAccountType(accountSearched._id, typeChoosen));
-        } else {
-            console.log("error : cant create admin")
+    
+    React.useLayoutEffect(() => {
+        if (accountSearched) {
+            setPartnerAccount(accountSearched.accountType === "partner");
         }
+    });
+
+    const changeAccountType = async () => {
+        var aType = "client"
+        if (!partnerAccount){
+            aType = "partner"
+        }
+        dispatch(modifyAccountType(accountSearched._id, aType));
     };
 
     const searchAccount = () => {
-        console.log("AllAccounts - searchAccount : ", emailToFind)
         dispatch(searchAccountByMail(emailToFind));
     };
-
-    /*
-    React.useEffect(() => {
-    }, []);
-    */
 
     return (
         <View>
@@ -40,23 +40,22 @@ function AllAccountsScreen({ navigation }) {
                 />
                 <Button title="Rechercher" onPress={searchAccount} />
 
-                {/* S'affiche uniquement si accountSearched est non nul */}
-                {accountSearched && <View>
+                {/* S'affiche uniquement si accountSearched est non nul et correspond au compte recherché*/}
+                {accountSearched && emailToFind == accountSearched.accountMail && <View>
                     <h4> {accountSearched.accountMail} est un compte {accountSearched.accountType} </h4>
                     {
-                        (accountSearched.accountType == "admin")
+                        (accountSearched.accountType === "admin")
                             ? (<Card>
                                 <Text>Ce compte est administrateur, vous ne pouvez pas le modifier</Text>
                             </Card>
                             )
                             : (<Card>
                                 <Text>Modifier le type de compte ?</Text>
-                                <TextInput
-                                    placeholder="partner or client"
-                                    value={typeChoosen}
-                                    onChangeText={setTypeChoosen}
+                                <CheckBox
+                                title='Compte partenaire'
+                                checked={partnerAccount}
+                                onPress={() => changeAccountType()}
                                 />
-                                <Button title="Valider" onPress={changeAccountType} />
                             </Card>
                             )
                     }
@@ -67,4 +66,4 @@ function AllAccountsScreen({ navigation }) {
     );
 }
 
-export default AllAccountsScreen;
+export default ModifyAccountType;
