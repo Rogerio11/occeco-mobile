@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getData } from './useStorage'
 
 export const generatePassword = (length) => {
     let result           = '';
@@ -12,11 +12,8 @@ export const generatePassword = (length) => {
 
 export const authHeader = async ()  => {
     try {
-        console.log("ok")
-        
-        const user = await getToken()
-        //const user = localStorage.getItem('user');
-        //const user = JSON.parse(tryGetuser);
+        const tryGetuser = await getData('user');
+        const user = JSON.parse(tryGetuser);
 
         console.log(user)
         if (user && user.userToken) {
@@ -30,14 +27,3 @@ export const authHeader = async ()  => {
         return {}
     }
 };
-
-const getToken = async () => {
-    try {
-      let userData = await AsyncStorage.getItem("user");
-      let data = JSON.parse(userData);
-      console.log(data, userData);
-      return data
-    } catch (error) {
-      console.log("Something went wrong", error);
-    }
-  }

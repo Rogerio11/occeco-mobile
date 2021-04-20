@@ -1,7 +1,7 @@
 import axios from "axios";
 import servURL from "../../servUrl";
 import {authHeader} from "../utils";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storeData, deleteData } from '../useStorage'
 
 export const login = (account) => async dispatch => {
     console.log("loginactions = ",account);
@@ -10,7 +10,7 @@ export const login = (account) => async dispatch => {
         console.log(res.data)
         
         if(res.data.authToken) {
-            await AsyncStorage.setItem("user", JSON.stringify(res.data));
+            await storeData("user", JSON.stringify(res.data));
         }
         
         dispatch({
@@ -25,7 +25,7 @@ export const login = (account) => async dispatch => {
 
 export const logout = () => async dispatch => {
     try{
-        await AsyncStorage.removeItem("user");
+        await deleteData("user");
 
         dispatch({
             type: "LOGOUT_SUCCESS",
@@ -42,7 +42,7 @@ export const signup = (user) => async dispatch => {
         const res = await axios.post(`${servURL}/signupPublic`, user, {headers: authHeader()});
         
         if(res.data.authToken) {
-            await AsyncStorage.setItem("user", JSON.stringify(res.data));
+            await storeData("user", JSON.stringify(res.data));
         }
         
 
@@ -59,12 +59,12 @@ export const signup = (user) => async dispatch => {
 export const updateUser = (user) => async dispatch => {
     try {
         
-        const res = await axios.put(`${servURL}/updateUser`, user, {headers: authHeader()});
+        const res = await axios.patch(`${servURL}/updateUser`, user, {headers: authHeader()});
         
         if(res.data.authToken) {
-            await AsyncStorage.setItem("user", JSON.stringify(res.data));
+            await storeData("user", JSON.stringify(res.data));
         }
-        
+        console.log(res.data)
 
         dispatch({
             type: "UPDATED_SUCCESS",

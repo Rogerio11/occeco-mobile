@@ -1,9 +1,20 @@
-const DefaultState = {
-    isLoggedIn : false,
-    user: null
-}
+import { getData } from '../useStorage'
+const user = getData('user');
+
+const DefaultState = 
+    user ?
+    {
+        isLoggedIn : false,
+        user: null
+    }
+    :
+    {
+        isLoggedIn: true,
+        user
+    }
 
 const UserReducer = (state = DefaultState, action) => {
+    console.log(state)
     switch (action.type) {
         case "LOGIN_SUCCESS":
             return {
@@ -30,8 +41,7 @@ const UserReducer = (state = DefaultState, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
-                userToken: action.payload.token,
-                user: action.payload.account
+                user: {...action.payload}
             };
         default:
             return state;
