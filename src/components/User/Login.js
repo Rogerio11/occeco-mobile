@@ -38,7 +38,7 @@ function LoginScreen({ navigation }) {
             onChangeText={(evt) => handleChange({name: "accountPassword", value: evt})}
             secureTextEntry={true}
           />
-          <Button title="Connexion" onPress={tryLogin} />
+          <Button title="Connexion" onPress={tryLogin} buttonStyle={{backgroundColor:'green'}}/>
         </View>
       </Card>
     );

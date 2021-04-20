@@ -38,7 +38,7 @@ function SignUpScreen({ navigation }) {
             onChangeText={(evt) => handleChange({name: "accountPassword", value: evt})}
             secureTextEntry
           />
-          <Button title="Inscription" onPress={trySignup} />
+          <Button title="Inscription" onPress={trySignup} buttonStyle={{backgroundColor:'green'}} />
           
         </View>
       </Card>

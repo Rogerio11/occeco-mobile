@@ -16,26 +16,19 @@ function ProfileScreen({ navigation }) {
     navigation.navigate('Accueil')
   }
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1,  justifyContent: 'center' }}>
       <Text h3> Mon Compte</Text>
       <br />
-      <Icon
-        name='mail'
-        type='feather'
-      />
-      <Text> <b />Mail : {user.user.accountMail}</Text>
+      
+      <Text> <Ionicons name="mail" size="large"/> {user.user.accountMail}</Text>
       <br />
-      <Icon
-        name='shopping-cart'
-        type='entypo'
-      />
+      
       <Text>Catégories choisies : TODO !</Text>
       <br />
-      <Icon
-        name='globe'
-        type='entypo'
-      />
-      <Text><Ionicons name="locate" size="large"/>Distance : {user.user.user.userDistance} km</Text>
+      <Text><Ionicons name="locate" size="large"/> {user.user.user.userDistance} km</Text>
+      <br />
+      <Text><Ionicons name="map" size="large"/>  {user.user && user.user.user && user.user.user.userLocalisation && 
+          `${user.user.user.userLocalisation.localisationNumber} ${user.user.user.userLocalisation.localisationStreet} ${user.user.user.userLocalisation.localisationPostalCode} ${user.user.user.userLocalisation.localisationCity}`} </Text>
       <br />
       {user.user.accountType === "partner" &&
         <Text> Vous êtes <b>Partenaire</b></Text>}
