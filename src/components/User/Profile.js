@@ -4,7 +4,7 @@ import Address from './Address';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../../actions/UserActions';
-import { Card, CheckBox, Button, Text, Input, Icon } from 'react-native-elements';
+import { Button, Text} from 'react-native-elements';
 
 
 function ProfileScreen({ navigation }) {
@@ -25,7 +25,7 @@ function ProfileScreen({ navigation }) {
       
       <Text>Catégories choisies : TODO !</Text>
       <br />
-      <Text><Ionicons name="locate" size="large"/> {user.user.user.userDistance} km</Text>
+      <Text><Ionicons name="locate" size="large"/> {user.user.user && user.user.user.userDistance} km</Text>
       <br />
       <Text><Ionicons name="map" size="large"/>  {user.user && user.user.user && user.user.user.userLocalisation && 
           `${user.user.user.userLocalisation.localisationNumber} ${user.user.user.userLocalisation.localisationStreet} ${user.user.user.userLocalisation.localisationPostalCode} ${user.user.user.userLocalisation.localisationCity}`} </Text>

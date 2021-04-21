@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import { View } from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {updateUser} from "../../actions/UserActions";
-import { Card, Input, Button, Slider, Text } from 'react-native-elements'
-import { Animated } from 'react-native';
+import { Card, Input, Button, Slider, Text, useTheme } from 'react-native-elements'
 
 function UpdateUserScreen({ navigation }) {
   const user = useSelector(state => state.User);
   const dispatch = useDispatch();
   const [userUpdated, setUserUpdated] = useState(user.user.user);
+  const { theme } = useTheme();
 
   const tryUpdate = () => {
       console.log("tryUpadate", userUpdated)
@@ -40,7 +40,7 @@ function UpdateUserScreen({ navigation }) {
           minimumValue={0}
           step={1}
           onValueChange={(evt) => handleChange({name: "userDistance", value: evt})}
-          thumbStyle={{ height: 20, width: 20, backgroundColor: 'green' }}
+          thumbStyle={{ height: 20, width: 20, backgroundColor: theme.colors.primary }}
         />
         
         <Text>Adresse : </Text>
@@ -65,7 +65,7 @@ function UpdateUserScreen({ navigation }) {
             value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationCity}
             onChangeText={(evt) => handleChange({name: "userLocalisation.localisationCity", value: evt})}
           />
-          <Button title="Modifier" onPress={tryUpdate} buttonStyle={{backgroundColor:'green'}}/>
+          <Button title="Modifier" onPress={tryUpdate}/>
         </View>
       </Card>
     );

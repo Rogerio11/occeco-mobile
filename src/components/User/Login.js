@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Button } from 'react-native';
 import {useDispatch} from "react-redux";
 import {login} from "../../actions/UserActions";
-import { Card, Input } from 'react-native-elements'
+import { Card, Input } from 'react-native-elements';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 function LoginScreen({ navigation }) {
     const initialAccount = {
@@ -11,6 +12,7 @@ function LoginScreen({ navigation }) {
     }
     const dispatch = useDispatch();
     const [account, setAccount] = React.useState(initialAccount);
+    const [showPassWord, setShowPassword] = React.useState(false);
     const handleChange = (evt) => {
         const { name, value } = evt;
         setAccount({...account, [name] : value})
@@ -30,15 +32,37 @@ function LoginScreen({ navigation }) {
             value={account.accountName}
             name="accountMail"
             onChangeText={(evt) => handleChange({name: "accountMail", value: evt})}
+            leftIcon={
+              <Ionicons
+                name='mail'
+                size={24}
+                color='gray'
+              />
+            }
           />
           <Input
             placeholder="Password"
             value={account.accountPassword}
             name="accountPassword"
             onChangeText={(evt) => handleChange({name: "accountPassword", value: evt})}
-            secureTextEntry={true}
+            secureTextEntry={!showPassWord}
+            rightIcon={
+              <Ionicons
+                name={showPassWord ? 'eye-off' : 'eye'}
+                size={24}
+                color='gray'
+                onPress={() => setShowPassword(!showPassWord)}
+              />
+            }
+            leftIcon={
+              <Ionicons
+                name='key'
+                size={24}
+                color='gray'
+              />
+            }
           />
-          <Button title="Connexion" onPress={tryLogin} buttonStyle={{backgroundColor:'green'}}/>
+          <Button title="Connexion" onPress={tryLogin} />
         </View>
       </Card>
     );
