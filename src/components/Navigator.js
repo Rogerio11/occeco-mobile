@@ -7,6 +7,7 @@ import UpdateUserScreen from './User/UpdateUser'
 import ProfileScreen from './User/Profile';
 import ArticleScreen from './Article/Article';
 import ModifyAccountTypeScreen from './User/ModifyAccountType';
+import TypeArticleList from './TypeArticle/TypeArticleList';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from "react-redux";
@@ -30,6 +31,8 @@ const ArticleStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Article" component={ArticleScreen} />
+      <Stack.Screen name="Catégories" component={TypeArticleList} />
+      
     </Stack.Navigator>
   );
 }

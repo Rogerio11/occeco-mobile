@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
+import { useSelector } from 'react-redux';
 
 function ArticleScreen({ navigation }) {
-
+  const user = useSelector(state => state.User)
   return (
     
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -11,6 +12,13 @@ function ArticleScreen({ navigation }) {
       </Text>
 
       <Text>TODO : Affichage liste articles</Text>
+      {
+        user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
+        <Button
+          title="Voir Catégories"
+          onPress={() => navigation.push('Catégories')}
+        />
+      }
       
       
     </View>
