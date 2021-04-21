@@ -4,6 +4,7 @@ import HomepageScreen from './User/Homepage';
 import LoginScreen from './User/Login';
 import SignUpScreen from './User/SignUp';
 import UpdateUserScreen from './User/UpdateUser'
+import UpdateAccountScreen from './User/UpdateAccount'
 import ProfileScreen from './User/Profile';
 import ArticleScreen from './Article/Article';
 import ModifyAccountTypeScreen from './User/ModifyAccountType';
@@ -20,9 +21,10 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="Accueil" component={HomepageScreen} />
       <Stack.Screen name="Connexion" component={LoginScreen} />
       <Stack.Screen name="Inscription" component={SignUpScreen} />
-      <Stack.Screen name="Update" component={UpdateUserScreen} />
       <Stack.Screen name="Profil" component={ProfileScreen} />
       <Stack.Screen name="UpdateUser" component={UpdateUserScreen} />
+      <Stack.Screen name="UpdateAccount" component={UpdateAccountScreen} />
+
     </Stack.Navigator>
   );
 }
@@ -61,6 +63,8 @@ const Navigator = () => {
             iconName = 'ios-person';
           } else if (route.name === 'Articles') {
             iconName = 'ios-list';
+          } else if (route.name === 'Préférences') {
+            iconName = 'ios-settings';
           }
           else if (route.name === 'Partenaires') {
             iconName = 'ios-people';
@@ -77,7 +81,12 @@ const Navigator = () => {
         activeBackgroundColor: "green",
       }}
     >
+
       <Tab.Screen name="Mon Compte" component={ProfileStackNavigator} />
+      { user && user.user
+        ? <Tab.Screen name="Préférences" component={UpdateUserScreen} />
+        : <></>
+      }
       { user && user.user && user.user.accountType == "admin"
         ? <Tab.Screen name="Partenaires" component={ModifyAccountTypeScreen} />
         : <></>

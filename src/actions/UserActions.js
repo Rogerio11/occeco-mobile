@@ -42,11 +42,11 @@ export const updateUser = (user) => async dispatch => {
 export const logout = () => async dispatch => {
     try{
         await deleteData("user");
-
+        
         dispatch({
             type: "LOGOUT_SUCCESS",
         });
-
+        
     } catch (e) {
         console.log(e);
     }
@@ -59,9 +59,9 @@ export const signup = (user) => async dispatch => {
         
         if(res.data) {
             await storeData("user", JSON.stringify({token : res.data.token, ...res.data.account}));
-
+            
         }
-
+        
         dispatch({
             type: "SIGNUP_SUCCESS",
             payload: res.data
@@ -80,7 +80,7 @@ export const signup = (user) => async dispatch => {
 export const searchAccountByMail = (accountMail) => async dispatch => {
     try {
         const res = await axios.post(`${servURL}/account/getByMail`, { accountMail }, { headers: await authHeader() });
-
+        
         if (res.data) {
             console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
             dispatch({
@@ -93,7 +93,7 @@ export const searchAccountByMail = (accountMail) => async dispatch => {
                 payload: res.data
             });
         }
-
+        
     } catch (err) {
         console.log(err);
     }
@@ -123,6 +123,38 @@ export const modifyAccountType = (_id, accountType) => async dispatch => {
                 payload: res.data
             });
         }
+        
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+
+export const updateAccountMail = (newAccountMail) => async dispatch => {
+    console.log("UserActions - updateAccountMail = ", newAccountMail);
+    try {
+        const res = await axios.patch(`${servURL}/account/updateMail`, {newAccountMail}, { headers: await authHeader() });
+        console.log("res : ",res.data)
+
+        dispatch({
+            type: "UPDATEMAIL_SUCCESS",
+            payload: res.data
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+export const updateAccountPassword = (oldAccountPassword, newAccountPassword) => async dispatch => {
+    //console.log("UserActions - updateUser = ", user);
+    try {
+        const res = await axios.patch(`${servURL}/account/updatePassword`, {oldAccountPassword, newAccountPassword}, { headers: await authHeader() });
+        console.log(res.data)
+
+        dispatch({
+            type: "UPDATEPASSWORD_SUCCESS",
+            payload: res.data
+        });
 
     } catch (err) {
         console.log(err);
@@ -135,12 +167,12 @@ export const getAllAccounts = () => async dispatch => {
     try {
         const res = await axios.get(`${servURL}/account/getAll`, { headers: authHeader() });
         console.log("UserActions - getAllAcounts - res : ", res.data, "\n\n")
-
+        
         dispatch({
             type: "TODO",
             payload: res.data
         });
-
+        
     } catch (err) {
         console.log(err);
     }
