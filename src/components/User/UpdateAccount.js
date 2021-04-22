@@ -1,23 +1,48 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Alert, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser, updateAccountMail, updateAccountPassword } from "../../actions/UserActions";
 import { Card, Input, Button, Icon, Text, useTheme } from 'react-native-elements'
 
 function UpdateAccountScreen({ navigation }) {
     const user = useSelector(state => state.User.user);
+    const errorUpdateMail = useSelector(state => state.User.errorUpdateMail);
     const dispatch = useDispatch();
     const [newAccountMail, setNewAccountMail] = React.useState("");
     const [newAccountPassword, setNewAccountPassword] = React.useState("");
     const [oldAccountPassword, setOldAccountPassword] = React.useState("");
-    
+
+    const wrongInputsAlert = () => {
+        alert(
+            'Champs invalides',
+            'Veuillez rentrer des informations valides',
+        );
+    }
+
     const changeEmail = () => {
-        dispatch(updateAccountMail(newAccountMail));
+        if (!newAccountMail) {
+            wrongInputsAlert()
+        } else {
+            dispatch(updateAccountMail(newAccountMail));
+        }
     };
 
     const changePassword = () => {
-        dispatch(updateAccountPassword(oldAccountPassword, newAccountPassword))
-    }
+        if (!oldAccountPassword || !newAccountPassword) {
+            wrongInputsAlert()
+        } else {
+            dispatch(updateAccountPassword(oldAccountPassword, newAccountPassword))
+        }
+    };
+
+    const styles = StyleSheet.create({
+        errorText: {
+            fontWeight: 'bold',
+            color: 'red',
+            fontSize: 20,
+            backgroundColor: 'lightgray'
+        },
+    });
 
 
     return (
@@ -32,7 +57,8 @@ function UpdateAccountScreen({ navigation }) {
                     onChangeText={setNewAccountMail}
                 />
                 <Button title="Modifier" onPress={changeEmail} />
-                <br/>
+                {errorUpdateMail && <Text style={styles.errorText}> Ce mail est déjà utilisé </Text>}
+                <br />
                 <Text h4> Changer de mot de passe ? </Text>
                 <Input
                     placeholder="ancien"

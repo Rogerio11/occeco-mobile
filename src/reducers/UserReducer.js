@@ -47,7 +47,14 @@ const UserReducer = (state = DefaultState, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
-                user: action.payload
+                user: action.payload,
+                errorUpdateMail: false
+            };
+        case "UPDATEMAIL_FAILURE":
+            return {
+                ...state,
+                isLoggedIn: true,
+                errorUpdateMail: true//action.payload
             };
         case "UPDATEPASSWORD_SUCCESS":
             return {

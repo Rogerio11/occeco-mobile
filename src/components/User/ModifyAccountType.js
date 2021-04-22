@@ -54,7 +54,7 @@ function ModifyAccountType({ navigation }) {
                     value={emailToFind}
                     onChangeText={setEmailToFind}
                 />
-                <Button title="Rechercher" type="outline" onPress={searchAccount} />
+                <Button title="Rechercher" onPress={searchAccount} />
             </Card>
 
 
