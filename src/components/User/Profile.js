@@ -37,7 +37,7 @@ function ProfileScreen({ navigation }) {
       <br />
 
       <View style={{ flexDirection: "row" }}>
-        <Button title="Modifier" onPress={() => navigation.push('Update')} buttonStyle={{backgroundColor:'green'}}/>
+        <Button title="Modifier" onPress={() => navigation.push('UpdateAccount')} buttonStyle={{backgroundColor:'green'}}/>
         <Text> </Text>
         <Button title="Deconnexion" onPress={trylogout} buttonStyle={{backgroundColor:'green'}}/>
       </View>

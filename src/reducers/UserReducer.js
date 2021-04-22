@@ -1,6 +1,7 @@
 import { getData } from '../useStorage'
 const user = getData('user');
 
+// C'est pas inversé ça ?
 const DefaultState = 
     user ?
     {
@@ -41,6 +42,25 @@ const UserReducer = (state = DefaultState, action) => {
                 ...state,
                 isLoggedIn: true,
                 user: {...state.user, user: action.payload }
+            };
+        case "UPDATEMAIL_SUCCESS":
+            return {
+                ...state,
+                isLoggedIn: true,
+                user: action.payload,
+                errorUpdateMail: false
+            };
+        case "UPDATEMAIL_FAILURE":
+            return {
+                ...state,
+                isLoggedIn: true,
+                errorUpdateMail: true//action.payload
+            };
+        case "UPDATEPASSWORD_SUCCESS":
+            return {
+                ...state,
+                isLoggedIn: true,
+                user: action.payload
             };
         default:
             return state;
