@@ -12,7 +12,7 @@ const TypeArticleReducer = (state = DefaultState, action) => {
         case "UPDATE_TYPE_ARTICLE_SUCCESS":
             return {
                 ...state,
-                typesArticle: action.payload.map(t => {
+                typesArticle: state.typesArticle.map(t => {
                     if (t._id === action.payload._id){
                         t = action.payload
                     }
@@ -22,12 +22,12 @@ const TypeArticleReducer = (state = DefaultState, action) => {
         case "DELETE_TYPE_ARTICLE_SUCCESS":
             return {
                 ...state,
-                typesArticle: action.payload.filter(t => (t._id === action.payload._id))
+                typesArticle: state.typesArticle.filter(t => t._id !== action.payload._id)
             };
         case "CREATE_TYPE_ARTICLE_SUCCESS":
             return {
                 ...state,
-                typesArticle: state.typesArticle.push(action.payload)
+                typesArticle: [...state.typesArticle, action.payload]
             };
         default:
             return state;

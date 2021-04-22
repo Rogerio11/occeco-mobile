@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Button, Overlay, Input, Icon } from 'react-native-elements';
 import {useDispatch} from "react-redux";
 import { View, Text,  } from 'react-native';
-import {createTypeArticle} from "../../actions/TypeArticleActions";
+import {updateTypeArticle} from "../../actions/TypeArticleActions";
 import DropDownPicker from 'react-native-dropdown-picker';
 import iconList from '../../iconList';
 
-const AddTypeArticle = ({handleClose}) => {
-    const initialType = { nameType: "", colorType: "", iconType: ""}
+const UpdateTypeArticle = ({initialType, handleClose}) => {
+    
     const [newType, setNewType] = useState(initialType);
     const dispatch = useDispatch();
 
@@ -18,8 +18,7 @@ const AddTypeArticle = ({handleClose}) => {
 
     const handleSave = () => {
         console.log("handleSave", newType)
-        dispatch(createTypeArticle(newType));
-        setNewType(initialType);
+        dispatch(updateTypeArticle(newType));
         handleClose()
     }
 
@@ -73,4 +72,4 @@ const AddTypeArticle = ({handleClose}) => {
     );
 };
 
-export default AddTypeArticle;
+export default UpdateTypeArticle;

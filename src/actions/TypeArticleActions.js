@@ -16,10 +16,10 @@ export const getAllTypes = () => async dispatch => {
     }
 };
 
-export const updateTypeArticle = (nameType) => async dispatch => {
-    //console.log("UserActions - updateUser = ", user);
+export const updateTypeArticle = (typeArticle) => async dispatch => {
+    //console.log("TypeArticleActions - updateTypeArticle = ", typeArticle);
     try {
-        const res = await axios.patch(`${servURL}/typeArticle/update`, nameType, { headers: await authHeader() });
+        const res = await axios.patch(`${servURL}/typeArticle/update`, typeArticle, { headers: await authHeader() });
         console.log(res.data)
 
         dispatch({
@@ -33,9 +33,10 @@ export const updateTypeArticle = (nameType) => async dispatch => {
 };
 
 export const deleteTypeArticle = (id) => async dispatch => {
-    //console.log("UserActions - updateUser = ", user);
+    console.log("TypeArticleActions - deleteTypeArticle = ", id);
     try {
-        const res = await axios.delete(`${servURL}/typeArticle/delete`, id, { headers: await authHeader() });
+        console.log(id)
+        const res = await axios.delete(`${servURL}/typeArticle/delete`, {data: {id},  headers: await authHeader() });
         console.log(res.data)
 
         dispatch({
@@ -48,43 +49,16 @@ export const deleteTypeArticle = (id) => async dispatch => {
     }
 };
 
-export const createTypeArticle = (nameType) => async dispatch => {
-    //console.log("UserActions - updateUser = ", user);
+export const createTypeArticle = (typeArticle) => async dispatch => {
+    //console.log("TypeArticleActions - createTypeArticle = ", typeArticle);
     try {
-        const res = await axios.post(`${servURL}/typeArticle/add`, nameType, { headers: await authHeader() });
+        const res = await axios.post(`${servURL}/typeArticle/add`, typeArticle, { headers: await authHeader() });
         console.log(res.data)
 
         dispatch({
             type: "CREATE_TYPE_ARTICLE_SUCCESS",
             payload: res.data
         });
-
-    } catch (err) {
-        console.log(err);
-    }
-};
-
-/**
- * 
- * @param {String} accountMail 
- * @returns The account if it exists
- */
-export const searchAccountByMail = (accountMail) => async dispatch => {
-    try {
-        const res = await axios.post(`${servURL}/account/getByMail`, { accountMail }, { headers: await authHeader() });
-
-        if (res.data) {
-            console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
-            dispatch({
-                type: "GETBYMAIL_SUCCESS",
-                payload: res.data
-            });
-        } else {
-            dispatch({
-                type: "GETBYMAIL_ERROR",
-                payload: res.data
-            });
-        }
 
     } catch (err) {
         console.log(err);
