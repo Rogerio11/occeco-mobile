@@ -7,6 +7,7 @@ import configureStore  from "./src/Store";
 import Loading from './src/components/Loading'
 import { ThemeProvider } from 'react-native-elements';
 import theme from './theme';
+import FlashMessage from "react-native-flash-message";
 
 function App() {
   const store = configureStore().store;
@@ -17,6 +18,7 @@ function App() {
       <Provider store={store}>
         <PersistGate loading={<Loading/>} persistor={persistor}>
           <Navigator />
+          <FlashMessage position="top" />
         </PersistGate>
       </Provider>
   </NavigationContainer>

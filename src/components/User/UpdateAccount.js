@@ -1,25 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { View, Alert, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, updateAccountMail, updateAccountPassword } from "../../actions/UserActions";
-import { Card, Input, Button, Icon, Text, useTheme } from 'react-native-elements'
+import { updateAccountMail, updateAccountPassword } from "../../actions/UserActions";
+import { Card, Input, Button, Text } from 'react-native-elements'
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 function UpdateAccountScreen({ navigation }) {
     const user = useSelector(state => state.User.user);
     const errorUpdateMail = useSelector(state => state.User.errorUpdateMail);
+    // const [printErrorUpdateMail, setPrintErrorUpdateMail] = React.useState(false);
     const dispatch = useDispatch();
     const [newAccountMail, setNewAccountMail] = React.useState("");
     const [newAccountPassword, setNewAccountPassword] = React.useState("");
     const [oldAccountPassword, setOldAccountPassword] = React.useState("");
 
     const wrongInputsAlert = () => {
-        alert(
-            'Champs invalides',
-            'Veuillez rentrer des informations valides',
-        );
+        showMessage({
+            message: "Champs invalides",
+            type: "danger",
+        });
     }
+    
+    // const emailAlreadyUsedAlert = () => {
+    //     showMessage({
+    //         message: "Email déjà utilisé",
+    //         type: "danger",
+    //         autoHide: false
+    //     });
+    // }
+
+    // useEffect(
+    //     () => {
+    //         if (errorUpdateMail) {
+    //             emailAlreadyUsedAlert();
+    //         }
+    //     },
+    //     [errorUpdateMail]
+    // )
 
     const changeEmail = () => {
+        // setPrintErrorUpdateMail(false)
         if (!newAccountMail) {
             wrongInputsAlert()
         } else {
@@ -43,7 +63,6 @@ function UpdateAccountScreen({ navigation }) {
             backgroundColor: 'lightgray'
         },
     });
-
 
     return (
         <Card>
