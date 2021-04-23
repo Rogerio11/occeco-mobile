@@ -138,60 +138,37 @@ export const updateAccountMail = (newAccountMail) => async dispatch => {
     console.log("UserActions - updateAccountMail = ", newAccountMail);
     try {
         const res = await axios.patch(`${servURL}/account/updateMail`, { newAccountMail }, { headers: await authHeader() });
-        console.log("res : ", res.data)
-        console.log("full res : ", res)
+        // console.log("res : ", res.data)
         dispatch({
             type: "UPDATEMAIL_SUCCESS",
             payload: res.data
         });
 
     } catch (err) {
-        console.log("erreur : ", err)
         dispatch({
             type: "UPDATEMAIL_FAILURE",
-            payload: err.message
+            payload: err.response.data.error
         });
     }
-
-    // axios.patch(`${servURL}/account/updateMail`, { newAccountMail }, { headers: await authHeader() })
-    //     .then(function (res) {
-    //         if (res.data) {
-    //             console.log(">>> ok ", res);
-    //             dispatch({
-    //                 type: "UPDATEMAIL_SUCCESS",
-    //                 payload: res.data
-    //             });
-    //         } else {
-    //             console.log("erreur ?");
-    //             console.log("erreur : ", res)
-    //             // dispatch({
-    //             //     type: "UPDATEMAIL_FAILURE",
-    //             //     payload: res
-    //             // });            
-    //         }
-    //     })
-    //     .catch(function (error) {
-    //         if (error.config) {
-    //             console.log("ICI");
-    //             console.log("CATCH ", error.error);
-    //         }
-    //         else { console.log("dernier espoir") }
-    //         console.log("on est dans le catch ");
-    //     })
 };
+
+
 export const updateAccountPassword = (oldAccountPassword, newAccountPassword) => async dispatch => {
     //console.log("UserActions - updateUser = ", user);
     try {
         const res = await axios.patch(`${servURL}/account/updatePassword`, { oldAccountPassword, newAccountPassword }, { headers: await authHeader() });
         console.log(res.data)
-
+        
         dispatch({
             type: "UPDATEPASSWORD_SUCCESS",
             payload: res.data
         });
-
+        
     } catch (err) {
-        console.log(err);
+        dispatch({
+            type: "UPDATEPASSWORD_FAILURE",
+            payload: err.response.data.error
+        });
     }
 };
 

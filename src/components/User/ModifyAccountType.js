@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { modifyAccountType, searchAccountByMail } from "../../actions/UserActions";
 import { Card, CheckBox, Button, Text, Input, Icon } from 'react-native-elements';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 function ModifyAccountType({ navigation }) {
@@ -12,6 +13,13 @@ function ModifyAccountType({ navigation }) {
     const [emailToFind, setEmailToFind] = React.useState("");
     const [partnerAccount, setPartnerAccount] = React.useState(false);
     const accountSearched = useSelector(state => state.ModifyType.accountSearched);
+
+    const wrongInputsAlert = () => {
+        showMessage({
+            message: "Champs invalides",
+            type: "danger",
+        });
+    }
 
     React.useLayoutEffect(() => {
         if (accountSearched) {
@@ -28,7 +36,11 @@ function ModifyAccountType({ navigation }) {
     };
 
     const searchAccount = () => {
-        dispatch(searchAccountByMail(emailToFind));
+        if (!emailToFind) {
+            wrongInputsAlert()
+        } else {
+            dispatch(searchAccountByMail(emailToFind));
+        }
     };
 
     const styles = StyleSheet.create({
