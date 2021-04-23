@@ -1,45 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { updateAccountMail, updateAccountPassword } from "../../actions/UserActions";
 import { Card, Input, Button, Text } from 'react-native-elements'
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { wrongInputsAlert } from "../Utils/Alerts";
 
 function UpdateAccountScreen({ navigation }) {
     const user = useSelector(state => state.User.user);
     const errorUpdateMail = useSelector(state => state.User.errorUpdateMail);
-    // const [printErrorUpdateMail, setPrintErrorUpdateMail] = React.useState(false);
+    const errorUpdatePassword = useSelector(state => state.User.errorUpdatePassword);
     const dispatch = useDispatch();
     const [newAccountMail, setNewAccountMail] = React.useState("");
     const [newAccountPassword, setNewAccountPassword] = React.useState("");
     const [oldAccountPassword, setOldAccountPassword] = React.useState("");
 
-    const wrongInputsAlert = () => {
-        showMessage({
-            message: "Champs invalides",
-            type: "danger",
-        });
-    }
-    
-    // const emailAlreadyUsedAlert = () => {
-    //     showMessage({
-    //         message: "Email déjà utilisé",
-    //         type: "danger",
-    //         autoHide: false
-    //     });
-    // }
-
-    // useEffect(
-    //     () => {
-    //         if (errorUpdateMail) {
-    //             emailAlreadyUsedAlert();
-    //         }
-    //     },
-    //     [errorUpdateMail]
-    // )
-
     const changeEmail = () => {
-        // setPrintErrorUpdateMail(false)
         if (!newAccountMail) {
             wrongInputsAlert()
         } else {
@@ -76,7 +51,7 @@ function UpdateAccountScreen({ navigation }) {
                     onChangeText={setNewAccountMail}
                 />
                 <Button title="Modifier" onPress={changeEmail} />
-                {errorUpdateMail && <Text style={styles.errorText}> Ce mail est déjà utilisé </Text>}
+                {errorUpdateMail && <Text style={styles.errorText}> {errorUpdateMail} </Text>}
                 <br />
                 <Text h4> Changer de mot de passe ? </Text>
                 <Input
@@ -96,6 +71,7 @@ function UpdateAccountScreen({ navigation }) {
                     secureTextEntry={true}
                 />
                 <Button title="Changer de mot de passe" onPress={changePassword} />
+                {errorUpdatePassword && <Text style={styles.errorText}> {errorUpdatePassword} </Text>}
             </View>
         </Card>
     );

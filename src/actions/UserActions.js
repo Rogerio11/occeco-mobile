@@ -138,16 +138,13 @@ export const updateAccountMail = (newAccountMail) => async dispatch => {
     console.log("UserActions - updateAccountMail = ", newAccountMail);
     try {
         const res = await axios.patch(`${servURL}/account/updateMail`, { newAccountMail }, { headers: await authHeader() });
-        console.log("res : ", res.data)
-        console.log("full res : ", res)
+        // console.log("res : ", res.data)
         dispatch({
             type: "UPDATEMAIL_SUCCESS",
             payload: res.data
         });
 
     } catch (err) {
-        console.log("erreur dans updateAccountMail")
-        console.log(err.response.data.error)
         dispatch({
             type: "UPDATEMAIL_FAILURE",
             payload: err.response.data.error
@@ -161,14 +158,17 @@ export const updateAccountPassword = (oldAccountPassword, newAccountPassword) =>
     try {
         const res = await axios.patch(`${servURL}/account/updatePassword`, { oldAccountPassword, newAccountPassword }, { headers: await authHeader() });
         console.log(res.data)
-
+        
         dispatch({
             type: "UPDATEPASSWORD_SUCCESS",
             payload: res.data
         });
-
+        
     } catch (err) {
-        console.log(err);
+        dispatch({
+            type: "UPDATEPASSWORD_FAILURE",
+            payload: err.response.data.error
+        });
     }
 };
 
