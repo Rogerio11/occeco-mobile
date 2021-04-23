@@ -4,8 +4,8 @@ import Address from './Address';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../../actions/UserActions';
-import { Button, Text} from 'react-native-elements';
-
+import { Button, Text, Card} from 'react-native-elements';
+import MapView from './MapView'
 
 function ProfileScreen({ navigation }) {
   const user = useSelector(state => state.User);
@@ -35,7 +35,9 @@ function ProfileScreen({ navigation }) {
       {user.user.accountType === "admin" &&
         <Text> Vous êtes <b>Administrateur</b></Text>}
       <br />
-
+      
+      <MapView />
+      <br /><br />
       <View style={{ flexDirection: "row" }}>
         <Button title="Modifier" onPress={() => navigation.push('UpdateAccount')} buttonStyle={{backgroundColor:'green'}}/>
         <Text> </Text>
