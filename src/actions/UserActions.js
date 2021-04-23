@@ -146,39 +146,16 @@ export const updateAccountMail = (newAccountMail) => async dispatch => {
         });
 
     } catch (err) {
-        console.log("erreur : ", err)
+        console.log("erreur dans updateAccountMail")
+        console.log(err.response.data.error)
         dispatch({
             type: "UPDATEMAIL_FAILURE",
-            payload: err.message
+            payload: err.response.data.error
         });
     }
-
-    // axios.patch(`${servURL}/account/updateMail`, { newAccountMail }, { headers: await authHeader() })
-    //     .then(function (res) {
-    //         if (res.data) {
-    //             console.log(">>> ok ", res);
-    //             dispatch({
-    //                 type: "UPDATEMAIL_SUCCESS",
-    //                 payload: res.data
-    //             });
-    //         } else {
-    //             console.log("erreur ?");
-    //             console.log("erreur : ", res)
-    //             // dispatch({
-    //             //     type: "UPDATEMAIL_FAILURE",
-    //             //     payload: res
-    //             // });            
-    //         }
-    //     })
-    //     .catch(function (error) {
-    //         if (error.config) {
-    //             console.log("ICI");
-    //             console.log("CATCH ", error.error);
-    //         }
-    //         else { console.log("dernier espoir") }
-    //         console.log("on est dans le catch ");
-    //     })
 };
+
+
 export const updateAccountPassword = (oldAccountPassword, newAccountPassword) => async dispatch => {
     //console.log("UserActions - updateUser = ", user);
     try {
