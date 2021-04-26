@@ -1,11 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
-import Address from './Address';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../../actions/UserActions';
-import { Button, Text, Card} from 'react-native-elements';
-import MapView from './MapView'
+import { Button, Text, Divider} from 'react-native-elements';
+import MapView from './MapView';
 
 function ProfileScreen({ navigation }) {
   const user = useSelector(state => state.User);
@@ -15,33 +14,35 @@ function ProfileScreen({ navigation }) {
     dispatch(logout())
     navigation.navigate('Accueil')
   }
-  return (
+return (
     <View style={{ flex: 1,  justifyContent: 'center' }}>
       <Text h3> Mon Compte</Text>
-      <br />
+      <Divider />
       
       <Text> <Ionicons name="mail" size="large"/> {user.user.accountMail}</Text>
-      <br />
+      <Divider />
       
       <Text>Catégories choisies : TODO !</Text>
-      <br />
+      <Divider />
       <Text><Ionicons name="locate" size="large"/> {user.user.user && user.user.user.userDistance} km</Text>
-      <br />
-      <Text><Ionicons name="map" size="large"/>  {user.user && user.user.user && user.user.user.userLocalisation && 
-          `${user.user.user.userLocalisation.localisationNumber} ${user.user.user.userLocalisation.localisationStreet} ${user.user.user.userLocalisation.localisationPostalCode} ${user.user.user.userLocalisation.localisationCity}`} </Text>
-      <br />
+      <Divider />
+      <Text><Ionicons name="map" size="large"/>  
+      { /* user.user && user.user.user && user.user.user.userLocalisation && 
+          `${user.user.user.userLocalisation.localisationNumber} ${user.user.user.userLocalisation.localisationStreet} ${user.user.user.userLocalisation.localisationPostalCode} ${user.user.user.userLocalisation.localisationCity}`
+      */} </Text>
+      <Divider />
       {user.user.accountType === "partner" &&
         <Text> Vous êtes <b>Partenaire</b></Text>}
       {user.user.accountType === "admin" &&
         <Text> Vous êtes <b>Administrateur</b></Text>}
-      <br />
+      <Divider />
       
       <MapView />
-      <br /><br />
+      <Divider /><Divider />
       <View style={{ flexDirection: "row" }}>
-        <Button title="Modifier" onPress={() => navigation.push('UpdateAccount')} buttonStyle={{backgroundColor:'green'}}/>
+        <Button title="Modifier" onPress={() => navigation.push('UpdateAccount')} />
         <Text> </Text>
-        <Button title="Deconnexion" onPress={trylogout} buttonStyle={{backgroundColor:'green'}}/>
+        <Button title="Deconnexion" onPress={trylogout} />
       </View>
 
     </View>

@@ -4,6 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../actions/UserActions";
 import { Card, Input, Button, Slider, Text, useTheme } from 'react-native-elements'
 import { wrongInputsAlert } from "../Utils/Alerts";
+import { MapContainer, TileLayer, Marker, Circle, useMapEvent  } from 'react-leaflet'
+// To Display Marker on Map
+import L from 'leaflet';
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
 
 
 function UpdateUserScreen({ navigation }) {
@@ -11,27 +20,39 @@ function UpdateUserScreen({ navigation }) {
   const dispatch = useDispatch();
   const [userUpdated, setUserUpdated] = useState(user.user.user);
   const { theme } = useTheme();
-
+  const position = /*user.user.user.userLocalisation || */[43.608294, 3.879343]
+  
+  const [ pos, setPos ] = useState(position)
   const tryUpdate = () => {
+    /*
     if (!newAccountMail) { //TODO : compléter ça avec chacun des champs dans la version finale
       wrongInputsAlert()
     } else {
-      console.log("tryUpadate", userUpdated)
+      */
+      console.log("tryUpdate", userUpdated)
       dispatch(updateUser(userUpdated));
       navigation.goBack();
-      setUserUpdated(user)
-    }
+      setUserUpdated(user.user.user)
+    //}
   };
 
   const handleChange = (evt) => {
     const { name, value } = evt;
+    setUserUpdated({ ...userUpdated, [name]: value }) 
 
-    if (name.split('.').length > 1) {
-      const newName = name.split('.')[1]
-      setUserUpdated({ ...userUpdated, userLocalisation: { ...userUpdated.userLocalisation, [newName]: value } })
-    }
-    else { setUserUpdated({ ...userUpdated, [name]: value }) }
+  }
 
+  function ChangePositionMap() {
+    const map = useMapEvent('drag', () => {
+      setPos(map.getCenter())
+      setUserUpdated({...userUpdated, userLocalisation: {...pos}})
+    })
+    
+    return (
+      <Marker position={pos} >
+        <Circle center={pos} radius={userUpdated.userDistance * 1000} /> 
+      </Marker>
+    )
   }
 
   return (
@@ -51,26 +72,15 @@ function UpdateUserScreen({ navigation }) {
 
         <Text>Adresse : </Text>
 
-        <Input
-          placeholder="N° de rue"
-          value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationNumber}
-          onChangeText={(evt) => handleChange({ name: "userLocalisation.localisationNumber", value: evt })}
+    <MapContainer style={{ width: "100%", height: "30vh" }} center={position} zoom={12} scrollWheelZoom={false}>
+        <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Input
-          placeholder="Rue"
-          value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationStreet}
-          onChangeText={(evt) => handleChange({ name: "userLocalisation.localisationStreet", value: evt })}
-        />
-        <Input
-          placeholder="Code Postal"
-          value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationPostalCode}
-          onChangeText={(evt) => handleChange({ name: "userLocalisation.localisationPostalCode", value: evt })}
-        />
-        <Input
-          placeholder="Ville"
-          value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationCity}
-          onChangeText={(evt) => handleChange({ name: "userLocalisation.localisationCity", value: evt })}
-        />
+
+        <ChangePositionMap />
+        
+    </MapContainer>
         <Button title="Modifier" onPress={tryUpdate} />
       </View>
     </Card>

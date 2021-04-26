@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { updateAccountMail, updateAccountPassword } from "../../actions/UserActions";
-import { Card, Input, Button, Text } from 'react-native-elements'
+import { Card, Input, Button, Text, useTheme, Divider } from 'react-native-elements'
 import { wrongInputsAlert } from "../Utils/Alerts";
 
 function UpdateAccountScreen({ navigation }) {
@@ -13,6 +13,7 @@ function UpdateAccountScreen({ navigation }) {
     const [newAccountMail, setNewAccountMail] = React.useState("");
     const [newAccountPassword, setNewAccountPassword] = React.useState("");
     const [oldAccountPassword, setOldAccountPassword] = React.useState("");
+    const { theme } = useTheme();
 
     const changeEmail = () => {
         if (!newAccountMail) {
@@ -30,15 +31,6 @@ function UpdateAccountScreen({ navigation }) {
         }
     };
 
-    const styles = StyleSheet.create({
-        errorText: {
-            fontWeight: 'bold',
-            color: 'red',
-            fontSize: 20,
-            backgroundColor: 'lightgray'
-        },
-    });
-
     return (
         <Card>
             <View>
@@ -51,8 +43,8 @@ function UpdateAccountScreen({ navigation }) {
                     onChangeText={setNewAccountMail}
                 />
                 <Button title="Modifier" onPress={changeEmail} />
-                {errorUpdateMail && <Text style={styles.errorText}> {errorUpdateMail} </Text>}
-                <br />
+                {errorUpdateMail && <Text style={theme.errorText}> {errorUpdateMail} </Text>}
+                <Divider />
                 <Text h4> Changer de mot de passe ? </Text>
                 <Input
                     placeholder="ancien"
@@ -71,7 +63,7 @@ function UpdateAccountScreen({ navigation }) {
                     secureTextEntry={true}
                 />
                 <Button title="Changer de mot de passe" onPress={changePassword} />
-                {errorUpdatePassword && <Text style={styles.errorText}> {errorUpdatePassword} </Text>}
+                {errorUpdatePassword && <Text style={theme.errorText}> {errorUpdatePassword} </Text>}
             </View>
         </Card>
     );
