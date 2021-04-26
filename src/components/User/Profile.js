@@ -16,34 +16,37 @@ function ProfileScreen({ navigation }) {
     navigation.navigate('Accueil')
   }
   return (
-    <View style={{ flex: 1,  justifyContent: 'center' }}>
-      <Text h3> Mon Compte</Text>
-      <br />
-      
-      <Text> <Ionicons name="mail" size="large"/> {user.user.accountMail}</Text>
-      <br />
-      
-      <Text>Catégories choisies : TODO !</Text>
-      <br />
-      <Text><Ionicons name="locate" size="large"/> {user.user.user && user.user.user.userDistance} km</Text>
-      <br />
-      <Text><Ionicons name="map" size="large"/>  {user.user && user.user.user && user.user.user.userLocalisation && 
-          `${user.user.user.userLocalisation.localisationNumber} ${user.user.user.userLocalisation.localisationStreet} ${user.user.user.userLocalisation.localisationPostalCode} ${user.user.user.userLocalisation.localisationCity}`} </Text>
-      <br />
-      {user.user.accountType === "partner" &&
+    <View style={{ flex: 1, justifyContent: 'center' }}>
+      <Card>
+        <Text h3> Mon Compte</Text>
+        {/* <br /> */}
+
+        <Text> <Ionicons name="mail" size="large" /> {user.user.accountMail}</Text>
+        {/* <br /> */}
+
+        <Text>Catégories choisies : TODO !</Text>
+        {/* <br /> */}
+        <Text><Ionicons name="locate" size="large" /> {user.user.user && user.user.user.userDistance} km</Text>
+        {/* <br /> */}
+        <Text><Ionicons name="map" size="large" />  {user.user && user.user.user && user.user.user.userLocalisation &&
+        `${user.user.user.userLocalisation.localisationNumber} 
+          ${user.user.user.userLocalisation.localisationStreet} 
+          ${user.user.user.userLocalisation.localisationPostalCode} 
+          ${user.user.user.userLocalisation.localisationCity}`}
+      </Text>
+        {/* <br /> */}
+        {user.user.accountType === "partner" &&
         <Text> Vous êtes <b>Partenaire</b></Text>}
       {user.user.accountType === "admin" &&
         <Text> Vous êtes <b>Administrateur</b></Text>}
-      <br />
-      
-      <MapView />
-      <br /><br />
-      <View style={{ flexDirection: "row" }}>
-        <Button title="Modifier" onPress={() => navigation.push('UpdateAccount')} buttonStyle={{backgroundColor:'green'}}/>
-        <Text> </Text>
-        <Button title="Deconnexion" onPress={trylogout} buttonStyle={{backgroundColor:'green'}}/>
-      </View>
+        {/* <br /> */}
 
+        <View style={{ flexDirection: "row" }}>
+          <Button title="Modifier" onPress={() => navigation.push('UpdateAccount')} buttonStyle={{ backgroundColor: 'green' }} />
+          <Text> </Text>
+          <Button title="Deconnexion" onPress={trylogout} buttonStyle={{ backgroundColor: 'green' }} />
+        </View>
+      </Card>
     </View>
 
   );
