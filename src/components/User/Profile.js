@@ -14,6 +14,7 @@ function ProfileScreen({ navigation }) {
     dispatch(logout())
     navigation.navigate('Accueil')
   }
+
 return (
     <View style={{ flex: 1,  justifyContent: 'center' }}>
       <Text h3> Mon Compte</Text>
@@ -45,6 +46,7 @@ return (
         <Button title="Deconnexion" onPress={trylogout} />
       </View>
 
+       
     </View>
 
   );
