@@ -1,10 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, connect } from "react-redux";
 import { logout } from '../../actions/UserActions';
-import { Button, Text, Divider} from 'react-native-elements';
+import { Button, Text, Divider, Icon} from 'react-native-elements';
 import MapView from './MapView';
+import MaterialChip from "react-native-material-chip";
 
 function ProfileScreen({ navigation }) {
   const user = useSelector(state => state.User);
@@ -14,7 +15,7 @@ function ProfileScreen({ navigation }) {
     dispatch(logout())
     navigation.navigate('Accueil')
   }
-
+console.log(user.user.user)
 return (
     <View style={{ flex: 1,  justifyContent: 'center' }}>
       <Text h3> Mon Compte</Text>
@@ -23,7 +24,29 @@ return (
       <Text> <Ionicons name="mail" size="large"/> {user.user.accountMail}</Text>
       <Divider />
       
-      <Text>Catégories choisies : TODO !</Text>
+      <Text>Catégories choisies : </Text>
+      <View style={{ flexDirection: "row" }}>
+        {user.user && user.user.user && user.user.user.userCategories && user.user.user.userCategories.map(cat => 
+          <MaterialChip
+            key={cat._id}
+            text={cat.nameType}
+            leftIcon={
+              <Icon name={cat.iconType} type="material-community" size={18} />
+            }
+            style={{
+              borderBottomColor: cat.colorType,
+              borderLeftColor: cat.colorType,
+              borderTopColor: cat.colorType,
+              borderRightColor: cat.colorType,
+              borderBottomWidth: '3px',
+              borderTopWidth: '3px',
+              borderLeftWidth: '3px',
+              borderRightWidth: '3px',
+            }}
+          /> )
+        }
+      </View>
+      
       <Divider />
       <Text><Ionicons name="locate" size="large"/> {user.user.user && user.user.user.userDistance} km</Text>
       <Divider />
@@ -51,5 +74,9 @@ return (
 
   );
 }
+function mapStateToProps(state) {
+  const { User } = state
+  return { User }
+}
 
-export default ProfileScreen;
+export default connect(mapStateToProps)(ProfileScreen)

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../actions/UserActions";
-import { Card, Input, Button, Slider, Text, useTheme } from 'react-native-elements'
+import { Card, Input, Button, Slider, Text, useTheme, Icon, CheckBox } from 'react-native-elements'
 import { wrongInputsAlert } from "../Utils/Alerts";
-import { MapContainer, TileLayer, Marker, Circle, useMapEvent  } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Circle, useMapEvent  } from 'react-leaflet';
+import {getAllTypes} from "../../actions/TypeArticleActions";
+import DropDownPicker from 'react-native-dropdown-picker';
 // To Display Marker on Map
 import L from 'leaflet';
 delete L.Icon.Default.prototype._getIconUrl;
@@ -17,12 +19,14 @@ L.Icon.Default.mergeOptions({
 
 function UpdateUserScreen({ navigation }) {
   const user = useSelector(state => state.User);
+  const list = useSelector(state => state.TypeArticle);
   const dispatch = useDispatch();
   const [userUpdated, setUserUpdated] = useState(user.user.user);
   const { theme } = useTheme();
-  const position = /*user.user.user.userLocalisation || */[43.608294, 3.879343]
-  
+  const position = user.user.user.userLocalisation || [43.608294, 3.879343]
   const [ pos, setPos ] = useState(position)
+  const listType = Array.isArray(list.typesArticle) ? list.typesArticle : [];
+  
   const tryUpdate = () => {
     /*
     if (!newAccountMail) { //TODO : compléter ça avec chacun des champs dans la version finale
@@ -32,16 +36,22 @@ function UpdateUserScreen({ navigation }) {
       console.log("tryUpdate", userUpdated)
       dispatch(updateUser(userUpdated));
       navigation.goBack();
-      setUserUpdated(user.user.user)
     //}
   };
 
   const handleChange = (evt) => {
+    
     const { name, value } = evt;
     setUserUpdated({ ...userUpdated, [name]: value }) 
 
   }
-
+  const changeCategories = (type) => {
+    const value = userUpdated.userCategories.some(t => t._id === type._id);
+    
+    handleChange({
+      name: 'userCategories', 
+      value: value ? userUpdated.userCategories.filter(t => t._id !== type._id) : [...userUpdated.userCategories, type]})
+  }
   function ChangePositionMap() {
     const map = useMapEvent('drag', () => {
       setPos(map.getCenter())
@@ -59,7 +69,6 @@ function UpdateUserScreen({ navigation }) {
     <Card>
       <View>
 
-
         <Text>Distance : {userUpdated.userDistance} km</Text>
         <Slider
           value={userUpdated.userDistance}
@@ -72,15 +81,26 @@ function UpdateUserScreen({ navigation }) {
 
         <Text>Adresse : </Text>
 
-    <MapContainer style={{ width: "100%", height: "30vh" }} center={position} zoom={12} scrollWheelZoom={false}>
-        <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <MapContainer style={{ width: "100%", height: "30vh" }} center={position} zoom={15} scrollWheelZoom={false}>
+          <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-        <ChangePositionMap />
+          <ChangePositionMap />
+          
+        </MapContainer>
+        <Text>Catégories : </Text>
+        { listType.map(t => 
+          <CheckBox
+            key={t._id}
+            title={t.nameType}
+            checked={userUpdated.userCategories.some(type => t._id === type._id)}
+            onPress={() => changeCategories(t)}
+          />)
+
+        }
         
-    </MapContainer>
         <Button title="Modifier" onPress={tryUpdate} />
       </View>
     </Card>
