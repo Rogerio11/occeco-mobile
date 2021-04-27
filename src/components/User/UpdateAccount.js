@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { updateAccountMail, updateAccountPassword } from "../../actions/UserActions";
 import { Card, Input, Button, Text, useTheme, Divider } from 'react-native-elements'
