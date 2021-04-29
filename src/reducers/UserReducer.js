@@ -82,7 +82,12 @@ const UserReducer = (state = DefaultState, action) => {
         case "RESETPASSWORD_SUCCESS":
             return {
                 ...state,
-                responseUpdatePassword: "success"
+                responseUpdatePassword: action.payload
+            };
+        case "RESETPASSWORD_RESETSTATE":
+            return {
+                ...state,
+                responseUpdatePassword: action.payload
             };
         case "RESETPASSWORD_ERROR":
             return {

@@ -2,9 +2,9 @@ import axios from "axios";
 import servURL from "../../servUrl";
 import { authHeader } from "../utils";
 import { storeData, deleteData } from '../useStorage'
+import * as Linking from "expo-linking";
 
 export const login = (account) => async dispatch => {
-    //console.log("UserActions - login = ", account);
     try {
         const res = await axios.post(`${servURL}/login`, account);
         console.log(res.data)
@@ -99,11 +99,10 @@ export const searchAccountByMail = (accountMail) => async dispatch => {
  */
 export const sendResetPasswordUrl = (accountMail) => async dispatch => {
     try {
-        const res = await axios.post(`${servURL}/forgotPassword`, { accountMail });
-        console.log("UserActions - sendResetPasswordUrl - res : ", res.data, "\n\n")
+        const url = Linking.createURL("");
+        const res = await axios.post(`${servURL}/forgotPassword`, { accountMail, basicUrl: url });
         dispatch({
             type: "SENDRESETPASSWORDURL_SUCCESS",
-            payload: res.data
         });
     } catch (err) {
         dispatch({
@@ -113,14 +112,20 @@ export const sendResetPasswordUrl = (accountMail) => async dispatch => {
     }
 };
 
+export const resetResponseUpdatePassword = () => async dispatch => {
+    dispatch({
+        type: "RESETPASSWORD_RESETSTATE",
+        payload: ""
+    });
+}
+
 export const resetPassword = (token, accountPassword) => async dispatch => {
-    console.log("UserActions - resetPassword ");
     try {
         const res = await axios.post(`${servURL}/resetPassword`, { token, accountPassword });
         console.log("UserActions - sendResetPasswordUrl - res : ", res.data, "\n\n")
         dispatch({
             type: "RESETPASSWORD_SUCCESS",
-            payload: res.data
+            payload: res.data.response
         });
     } catch (err) {
         dispatch({

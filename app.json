@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
+    "scheme": "occeco",
     "splash": {
       "image": "./assets/logo.png",
       "resizeMode": "contain",

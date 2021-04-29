@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, sendResetPasswordUrl } from "../../actions/UserActions";
 import { Card, Input, Button, useTheme, Text } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { wrongInputsAlert } from "../Utils/Alerts";
+import { wrongInputsAlert, customLongSuccessAlert } from "../Utils/Alerts";
 
 function LoginScreen({ navigation }) {
   const initialAccount = {
@@ -38,10 +38,9 @@ function LoginScreen({ navigation }) {
     if (!account || !account.accountMail) {
       wrongInputsAlert()
     } else {
-      console.log("tryResetPassword", account.accountMail)
       dispatch(sendResetPasswordUrl(account.accountMail));
       setAccount(initialAccount);
-      customSuccessAlert("Demande prise en compte");
+      customLongSuccessAlert("Si ce compte existe, un email a été envoyé à :\n" + account.accountMail);
     }
   };
 

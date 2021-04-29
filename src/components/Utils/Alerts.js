@@ -8,10 +8,11 @@ export const wrongInputsAlert = () => {
     });
 }
 
-export const customSuccessAlert = (message) => {
+export const customLongSuccessAlert = (message) => {
     showMessage({
         message: message,
         type: "success",
+        autoHide: false,
     });
 }
 
