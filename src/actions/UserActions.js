@@ -100,7 +100,7 @@ export const searchAccountByMail = (accountMail) => async dispatch => {
 export const sendResetPasswordUrl = (accountMail) => async dispatch => {
     try {
         const res = await axios.post(`${servURL}/forgotPassword`, { accountMail });
-        console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
+        console.log("UserActions - sendResetPasswordUrl - res : ", res.data, "\n\n")
         dispatch({
             type: "SENDRESETPASSWORDURL_SUCCESS",
             payload: res.data
@@ -112,6 +112,23 @@ export const sendResetPasswordUrl = (accountMail) => async dispatch => {
         });
     }
 };
+
+export const resetPassword = (token, accountPassword) => async dispatch => {
+    console.log("UserActions - resetPassword ");
+    try {
+        const res = await axios.post(`${servURL}/resetPassword`, { token, accountPassword });
+        console.log("UserActions - sendResetPasswordUrl - res : ", res.data, "\n\n")
+        dispatch({
+            type: "RESETPASSWORD_SUCCESS",
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: "RESETPASSWORD_ERROR",
+            payload: err.response.data.error
+        });
+    }
+}
 
 /**
  * 

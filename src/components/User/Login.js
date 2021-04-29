@@ -41,7 +41,7 @@ function LoginScreen({ navigation }) {
       console.log("tryResetPassword", account.accountMail)
       dispatch(sendResetPasswordUrl(account.accountMail));
       setAccount(initialAccount);
-      navigation.navigate('Accueil');
+      customSuccessAlert("Demande prise en compte");
     }
   };
 

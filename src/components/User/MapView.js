@@ -26,9 +26,9 @@ function MapView() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <Marker position={position} >
+        {/* <Marker position={position} >
           <Circle center={position} radius={distance} /> 
-        </Marker>
+        </Marker> */}
         
     </MapContainer>
       
