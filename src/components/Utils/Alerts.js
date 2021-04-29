@@ -7,3 +7,17 @@ export const wrongInputsAlert = () => {
         type: "danger",
     });
 }
+
+export const customSuccessAlert = (message) => {
+    showMessage({
+        message: message,
+        type: "success",
+    });
+}
+
+export const customErrorAlert = (message) => {
+    showMessage({
+        message: message,
+        type: "danger",
+    });
+}

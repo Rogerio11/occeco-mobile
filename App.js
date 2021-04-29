@@ -7,6 +7,8 @@ import configureStore  from "./src/Store";
 import Loading from './src/components/Loading'
 import { ThemeProvider } from 'react-native-elements';
 import theme from './theme';
+import FlashMessage from "react-native-flash-message";
+import 'leaflet/dist/leaflet.css'
 
 function App() {
   const store = configureStore().store;

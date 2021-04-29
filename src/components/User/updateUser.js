@@ -2,42 +2,72 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../actions/UserActions";
-import { Card, Input, Button, Slider, Text, useTheme } from 'react-native-elements'
+import { Card, Input, Button, Slider, Text, useTheme, Icon, CheckBox } from 'react-native-elements'
 import { wrongInputsAlert } from "../Utils/Alerts";
+import { MapContainer, TileLayer, Marker, Circle, useMapEvent  } from 'react-leaflet';
+import {getAllTypes} from "../../actions/TypeArticleActions";
+import DropDownPicker from 'react-native-dropdown-picker';
+// To Display Marker on Map
+import L from 'leaflet';
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
 
 
 function UpdateUserScreen({ navigation }) {
   const user = useSelector(state => state.User);
+  const list = useSelector(state => state.TypeArticle);
   const dispatch = useDispatch();
   const [userUpdated, setUserUpdated] = useState(user.user.user);
   const { theme } = useTheme();
-
+  const position = user.user.user.userLocalisation || [43.608294, 3.879343]
+  const [ pos, setPos ] = useState(position)
+  const listType = Array.isArray(list.typesArticle) ? list.typesArticle : [];
+  
   const tryUpdate = () => {
+    /*
     if (!newAccountMail) { //TODO : compléter ça avec chacun des champs dans la version finale
       wrongInputsAlert()
     } else {
-      console.log("tryUpadate", userUpdated)
+      */
+      console.log("tryUpdate", userUpdated)
       dispatch(updateUser(userUpdated));
       navigation.goBack();
-      setUserUpdated(user)
-    }
+    //}
   };
 
   const handleChange = (evt) => {
+    
     const { name, value } = evt;
+    setUserUpdated({ ...userUpdated, [name]: value }) 
 
-    if (name.split('.').length > 1) {
-      const newName = name.split('.')[1]
-      setUserUpdated({ ...userUpdated, userLocalisation: { ...userUpdated.userLocalisation, [newName]: value } })
-    }
-    else { setUserUpdated({ ...userUpdated, [name]: value }) }
-
+  }
+  const changeCategories = (type) => {
+    const value = userUpdated.userCategories.some(t => t._id === type._id);
+    
+    handleChange({
+      name: 'userCategories', 
+      value: value ? userUpdated.userCategories.filter(t => t._id !== type._id) : [...userUpdated.userCategories, type]})
+  }
+  function ChangePositionMap() {
+    const map = useMapEvent('drag', () => {
+      setPos(map.getCenter())
+      setUserUpdated({...userUpdated, userLocalisation: {...pos}})
+    })
+    
+    return (
+      <Marker position={pos} >
+        <Circle center={pos} radius={userUpdated.userDistance * 1000} /> 
+      </Marker>
+    )
   }
 
   return (
     <Card>
       <View>
-
 
         <Text>Distance : {userUpdated.userDistance} km</Text>
         <Slider
@@ -51,26 +81,26 @@ function UpdateUserScreen({ navigation }) {
 
         <Text>Adresse : </Text>
 
-        <Input
-          placeholder="N° de rue"
-          value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationNumber}
-          onChangeText={(evt) => handleChange({ name: "userLocalisation.localisationNumber", value: evt })}
-        />
-        <Input
-          placeholder="Rue"
-          value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationStreet}
-          onChangeText={(evt) => handleChange({ name: "userLocalisation.localisationStreet", value: evt })}
-        />
-        <Input
-          placeholder="Code Postal"
-          value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationPostalCode}
-          onChangeText={(evt) => handleChange({ name: "userLocalisation.localisationPostalCode", value: evt })}
-        />
-        <Input
-          placeholder="Ville"
-          value={userUpdated.userLocalisation && userUpdated.userLocalisation.localisationCity}
-          onChangeText={(evt) => handleChange({ name: "userLocalisation.localisationCity", value: evt })}
-        />
+        <MapContainer style={{ width: "100%", height: "30vh" }} center={position} zoom={15} scrollWheelZoom={false}>
+          <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+
+          <ChangePositionMap />
+          
+        </MapContainer>
+        <Text>Catégories : </Text>
+        { listType.map(t => 
+          <CheckBox
+            key={t._id}
+            title={t.nameType}
+            checked={userUpdated.userCategories.some(type => t._id === type._id)}
+            onPress={() => changeCategories(t)}
+          />)
+
+        }
+        
         <Button title="Modifier" onPress={tryUpdate} />
       </View>
     </Card>

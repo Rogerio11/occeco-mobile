@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Button } from 'react-native';
-import { useDispatch } from "react-redux";
-import { login } from "../../actions/UserActions";
-import { Card, Input } from 'react-native-elements';
+import { View } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
+import { login, sendResetPasswordUrl } from "../../actions/UserActions";
+import { Card, Input, Button, useTheme, Text } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { wrongInputsAlert } from "../Utils/Alerts";
 
@@ -14,6 +14,10 @@ function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const [account, setAccount] = React.useState(initialAccount);
   const [showPassWord, setShowPassword] = React.useState(false);
+  const errorSendResetPasswordUrl = useSelector(state => state.User.errorSendResetPasswordUrl);
+  const { theme } = useTheme();
+
+
 
   const handleChange = (evt) => {
     const { name, value } = evt;
@@ -28,6 +32,16 @@ function LoginScreen({ navigation }) {
       dispatch(login(account));
       setAccount(initialAccount);
       navigation.navigate('Accueil');
+    }
+  };
+  const tryResetPassword = () => {
+    if (!account || !account.accountMail) {
+      wrongInputsAlert()
+    } else {
+      console.log("tryResetPassword", account.accountMail)
+      dispatch(sendResetPasswordUrl(account.accountMail));
+      setAccount(initialAccount);
+      customSuccessAlert("Demande prise en compte");
     }
   };
 
@@ -70,6 +84,8 @@ function LoginScreen({ navigation }) {
           }
         />
         <Button title="Connexion" onPress={tryLogin} />
+        <Button title="Mot de passe oublié ?" onPress={tryResetPassword} />
+        {errorSendResetPasswordUrl && <Text style={theme.errorText}> {errorSendResetPasswordUrl} </Text>}
       </View>
     </Card>
   );
