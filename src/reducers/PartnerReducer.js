@@ -7,27 +7,22 @@ const PartnerReducer = (state = DefaultState, action) => {
         case "GETBYMAIL_SUCCESS":
             return {
                 ...state,
-                accountSearched: action.payload,
-                errorGetByMail: null
+                accountSearched: action.payload
             };
         case "GETBYMAIL_ERROR":
             console.log("erreur lors d'une recherche par mail");
             return {
                 ...state,
-                errorGetByMail: action.payload
             };
         case "CHANGETYPE_SUCCESS":
             return {
                 ...state,
-                accountSearched: action.payload.account,
-                errorChangeType: null
+                accountSearched: action.payload.account
             };
         case "CHANGETYPE_ERROR":
             console.log("erreur lors d'un changement de accountType");
             return {
-                ...state,
-                errorChangeType: action.payload
-
+                ...state
             };
         default:
             return state;

@@ -80,36 +80,22 @@ export const signup = (user) => async dispatch => {
 export const searchAccountByMail = (accountMail) => async dispatch => {
     try {
         const res = await axios.post(`${servURL}/account/getByMail`, { accountMail }, { headers: await authHeader() });
-        console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
-        dispatch({
-            type: "GETBYMAIL_SUCCESS",
-            payload: res.data
-        });
+        
+        if (res.data) {
+            console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
+            dispatch({
+                type: "GETBYMAIL_SUCCESS",
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: "GETBYMAIL_ERROR",
+                payload: res.data
+            });
+        }
+        
     } catch (err) {
-        dispatch({
-            type: "GETBYMAIL_ERROR",
-            payload: err.response.data.error
-        });
-    }
-};
-
-/**
- * Send an email with a secured token if the account exists
- * @param {String} accountMail
- */
-export const sendResetPasswordUrl = (accountMail) => async dispatch => {
-    try {
-        const res = await axios.post(`${servURL}/forgotPassword`, { accountMail });
-        console.log("UserActions - searchAccountByMail - res : ", res.data, "\n\n")
-        dispatch({
-            type: "SENDRESETPASSWORDURL_SUCCESS",
-            payload: res.data
-        });
-    } catch (err) {
-        dispatch({
-            type: "SENDRESETPASSWORDURL_ERROR",
-            payload: err.response.data.error
-        });
+        console.log(err);
     }
 };
 
@@ -125,17 +111,21 @@ export const modifyAccountType = (_id, accountType) => async dispatch => {
             return ("error : not valid type")
         }
         const res = await axios.patch(`${servURL}/account/updateType`, { "accountId": _id, accountType }, { headers: await authHeader() });
-        console.log("UserActions - modifyAccountType - res : ", res.data, "\n\n")
-        dispatch({
-            type: "CHANGETYPE_SUCCESS",
-            payload: res.data
-        });
-
+        if (res.data) {
+            console.log("UserActions - modifyAccountType - res : ", res.data, "\n\n")
+            dispatch({
+                type: "CHANGETYPE_SUCCESS",
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: "CHANGETYPE_ERROR",
+                payload: res.data
+            });
+        }
+        
     } catch (err) {
-        dispatch({
-            type: "CHANGETYPE_ERROR",
-            payload: err.response.data.error
-        });
+        console.log(err);
     }
 };
 
@@ -168,12 +158,12 @@ export const updateAccountPassword = (oldAccountPassword, newAccountPassword) =>
     try {
         const res = await axios.patch(`${servURL}/account/updatePassword`, { oldAccountPassword, newAccountPassword }, { headers: await authHeader() });
         console.log(res.data)
-
+        
         dispatch({
             type: "UPDATEPASSWORD_SUCCESS",
             payload: res.data
         });
-
+        
     } catch (err) {
         dispatch({
             type: "UPDATEPASSWORD_FAILURE",

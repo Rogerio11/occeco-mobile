@@ -3,8 +3,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { modifyAccountType, searchAccountByMail } from "../../actions/UserActions";
-import { Card, CheckBox, Button, Text, Input, Icon, useTheme } from 'react-native-elements';
-import { wrongInputsAlert } from "../Utils/Alerts";
+import { Card, CheckBox, Button, Text, Input, Icon } from 'react-native-elements';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 function ModifyAccountType({ navigation }) {
@@ -13,9 +13,13 @@ function ModifyAccountType({ navigation }) {
     const [emailToFind, setEmailToFind] = React.useState("");
     const [partnerAccount, setPartnerAccount] = React.useState(false);
     const accountSearched = useSelector(state => state.ModifyType.accountSearched);
-    const errorGetByMail = useSelector(state => state.User.errorGetByMail);
-    const errorChangeType = useSelector(state => state.User.errorChangeType);
-    const { theme } = useTheme();
+
+    const wrongInputsAlert = () => {
+        showMessage({
+            message: "Champs invalides",
+            type: "danger",
+        });
+    }
 
     React.useLayoutEffect(() => {
         if (accountSearched) {
@@ -62,9 +66,7 @@ function ModifyAccountType({ navigation }) {
                     value={emailToFind}
                     onChangeText={setEmailToFind}
                 />
-                <Button title="Rechercher" onPress={searchAccount} />
-                {errorGetByMail && <Text style={theme.errorText}> {errorGetByMail} </Text>}
-
+                <Button title="Rechercher" type="outline" onPress={searchAccount} />
             </Card>
 
 
@@ -88,7 +90,6 @@ function ModifyAccountType({ navigation }) {
                                     checked={partnerAccount}
                                     onPress={() => changeAccountType()}
                                 />
-                                {errorChangeType && <Text style={theme.errorText}> {errorChangeType} </Text>}
                             </Card>
                             )
                     }
