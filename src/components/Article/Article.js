@@ -1,29 +1,26 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { Button, Input} from 'react-native-elements';
+import {useDispatch} from "react-redux";
+import { View} from 'react-native';
 
-function ArticleScreen({ navigation }) {
-  const user = useSelector(state => state.User)
-  return (
+const ArticleScreen = ({ navigation, route}) => {
+    console.log("////////////params/////////")
+    console.log(route.params)
+    console.log("/////////////////////")
+    const article = route.params.article;
     
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>
-        Bienvenue sur l'appli OCCECO
-      </Text>
 
-      <Text>TODO : Affichage liste articles</Text>
-      {
-        user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
-        <Button
-          title="Voir Catégories"
-          onPress={() => navigation.push('Catégories')}
-        />
-      }
-      
-      
-    </View>
-    
-  );
-}
 
-export default ArticleScreen;
+    return (
+        <View>
+
+            <Text>{article.articleTitle}</Text>
+            <Text>{article.articleDescription}</Text>
+            <Text>{article.articleLink}</Text>
+            
+
+        </View>
+    );
+};
+
+export default  ArticleScreen;

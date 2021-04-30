@@ -83,8 +83,10 @@ function LoginScreen({ navigation }) {
             />
           }
         />
-        <Button title="Connexion" onPress={tryLogin} />
-        <Button title="Mot de passe oublié ?" onPress={tryResetPassword} />
+        <View style={{ flexDirection: "row" }}>
+        <Button style={{minWidth: '50%'}} title="Connexion" onPress={tryLogin} />
+        <Button style={{minWidth: '50%'}} title="Mot de passe oublié ?" onPress={tryResetPassword} />
+        </View>
         {errorSendResetPasswordUrl && <Text style={theme.errorText}> {errorSendResetPasswordUrl} </Text>}
       </View>
     </Card>
