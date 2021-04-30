@@ -34,7 +34,7 @@ const TypeArticleList = ({navigation}) => {
         {addType &&  <AddTypeArticle handleClose={() => setAddType(false)}/> }
         {editType &&  <UpdateTypeArticle initialType={editType} handleClose={() => setEditType(false)}/> }
 
-        { Array.isArray(list.typesArticle) &&
+        { Array.isArray(listType) &&
           listType.map(l => (
             <ListItem key={l._id} bottomDivider>
                 <Icon name={l.iconType} color={l.colorType} type="material-community" />

@@ -15,6 +15,7 @@ const theme = {
         }
         
     },
+    /*
     Text: {
         style:{
             errorText: {
@@ -25,6 +26,7 @@ const theme = {
             }
         }
     }
+    */
 };
 
 export default theme;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import servURL from "../../servUrl";
+import { servURL } from "../../servUrl";
 import { authHeader } from "../utils";
 import { storeData, deleteData } from '../useStorage'
 import * as Linking from "expo-linking";

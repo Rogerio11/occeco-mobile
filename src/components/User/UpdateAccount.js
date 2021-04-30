@@ -35,7 +35,9 @@ function UpdateAccountScreen({ navigation }) {
         <Card>
             <View>
                 <Card.Title> Modifier votre compte</Card.Title>
+                
                 <Text> Votre adresse email est actuellement : <b>{user.accountMail}</b> </Text>
+
                 <Input
                     placeholder="change mail ?"
                     leftIcon={{ type: 'feather', name: 'mail' }}

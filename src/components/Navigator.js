@@ -25,7 +25,7 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="Connexion" component={LoginScreen} />
       <Stack.Screen name="Inscription" component={SignUpScreen} />
       <Stack.Screen name="Profil" component={ProfileScreen} />
-      <Stack.Screen name="UpdateUser" component={UpdateUserScreen} />
+      
       <Stack.Screen name="UpdateAccount" component={UpdateAccountScreen} />
 
     </Stack.Navigator>
@@ -45,10 +45,10 @@ const ArticleStackNavigator = () => {
   );
 }
 
-const PartnerStackNavigator = () => {
+const PreferenceStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Article" component={ListArticleScreen} />
+      <Stack.Screen name="Préférences" component={UpdateUserScreen} />
     </Stack.Navigator>
   );
 }
@@ -90,7 +90,7 @@ const Navigator = () => {
 
       <Tab.Screen name="Mon Compte" component={ProfileStackNavigator} />
       { user && user.user
-        ? <Tab.Screen name="Préférences" component={UpdateUserScreen} />
+        ? <Tab.Screen name="Préférences" component={PreferenceStackNavigator} />
         : <></>
       }
       { user && user.user && user.user.accountType == "admin"
