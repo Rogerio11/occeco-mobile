@@ -6,11 +6,13 @@ import PartnerReducer from "./PartnerReducer";
 
 // ARTICLE REDUCERS
 import TypeArticleReducer from "./TypeArticleReducer";
+import ArticleReducer from "./ArticleReducer";
 
 const RootReducer = combineReducers({ 
     User: UserReducer,
     ModifyType: PartnerReducer,
-    TypeArticle: TypeArticleReducer
+    TypeArticle: TypeArticleReducer,
+    Article : ArticleReducer
 });
 
 export default RootReducer;

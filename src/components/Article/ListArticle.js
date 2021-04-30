@@ -1,0 +1,95 @@
+import React, {useState} from 'react';
+import { View, Text, Button, FlatList } from 'react-native';
+import {useDispatch, useSelector} from "react-redux";
+import {getAllArticles} from "../../actions/ArticleActions";
+import DeleteArticle from "./DeleteArticle"
+
+
+function ListArticleScreen({ navigation }) {
+  const user = useSelector(state => state.User)
+  const dispatch = useDispatch();
+  const list = useSelector(state => state.Article);
+  // const [addType, setAddType] = useState(false);
+  const [listArticle, setListArticle] = useState(Array.isArray(list.articles) ? list.articles : []);
+  const [deleteArticle, setDeleteArticle] = useState(false);
+  const [idArticleDelete, setIdArticleDelete] = useState(null);
+  // const [editType, setEditType] = useState(false);
+  if (listArticle.length && listArticle.length === 0 ){
+    dispatch(getAllArticles());
+    setListArticle(useSelector(state => state.articles))
+  }
+
+  console.log("Dans la LISTE ARTICLE")
+  const handleDelete = (id) => {
+    setIdArticleDelete(id)
+    setDeleteArticle(true)
+  }
+  const DATA = [
+    {
+      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+      title: "First Item",
+    },
+    {
+      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+      title: "Second Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-145571e29d72",
+      title: "Third Item",
+    },
+  ];
+  return (
+    
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>
+        Bienvenue sur l'appli OCCECO
+      </Text>
+      <Text>
+        Bienvenue sur l'appli OCCECO
+      </Text>
+      <Text>TODO : Affichage liste articles</Text>
+
+      <FlatList
+        data={listArticle}
+        keyExtractor={(item) => item._id}
+        renderItem={({item}) => <View>
+          <Text>{item.articleTitle}</Text>
+          <Button
+          title="Duplicate"
+          onPress={() => navigation.push('Duplicate Article', {article: item})}
+        />
+        <Button
+          title="Update"
+          onPress={() => navigation.push('Update Article', {article: item})}
+        />
+        <Button
+          title="Delete"
+          onPress={() => handleDelete(item._id)}
+        />
+          </View>}
+      />
+
+      {deleteArticle &&  <DeleteArticle handleClose={() => setDeleteArticle(false)} idArticle={idArticleDelete}/> }
+
+      {
+        user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
+        <View>
+          <Button
+          title="add Article"
+          onPress={() => navigation.push('Add Article')}
+        />
+
+        <Button
+          title="Voir Catégories"
+          onPress={() => navigation.push('Catégories')}
+        />
+        </View>
+      }
+      
+      
+    </View>
+    
+  );
+}
+
+export default ListArticleScreen;
