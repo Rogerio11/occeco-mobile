@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector, useDispatch, connect } from "react-redux";
 import { logout } from '../../actions/UserActions';
-import { Button, Text, Divider, Icon} from 'react-native-elements';
-import MapView from './MapView';
+import { Button, Divider, Icon, Card, Text} from 'react-native-elements';
+import MapViewScreen from './MapView';
 import MaterialChip from "react-native-material-chip";
 
 function ProfileScreen({ navigation }) {
@@ -17,15 +17,16 @@ function ProfileScreen({ navigation }) {
   }
 console.log(user.user.user)
 return (
-    <View style={{ flex: 1,  justifyContent: 'center' }}>
-      <Text h3> Mon Compte</Text>
-      <Divider />
+  <Card containerStyle={{width: '99%', height: '99%'}}>
+
+      <Text h3>Mon Compte</Text>
       
-      <Text> <Ionicons name="mail" size="large"/> {user.user.accountMail}</Text>
+      <Divider /><Divider />
+      <Text><Ionicons name="mail" size="large"/> {user.user.accountMail}</Text> 
       <Divider />
-      
+
       <Text>Catégories choisies : </Text>
-      <View style={{ flexDirection: "row" }}>
+     
         {user.user && user.user.user && user.user.user.userCategories && user.user.user.userCategories.map(cat => 
           <MaterialChip
             key={cat._id}
@@ -45,38 +46,32 @@ return (
             }}
           /> )
         }
-      </View>
+     
+     <Divider />
+      
+     <Text><Ionicons name="locate" size="large"/>  {user.user.user && user.user.user.userDistance} km</Text> 
       
       <Divider />
-      <Text><Ionicons name="locate" size="large"/> {user.user.user && user.user.user.userDistance} km</Text>
-      <Divider />
-      <Text><Ionicons name="map" size="large"/>  
-      { /* user.user && user.user.user && user.user.user.userLocalisation && 
-          `${user.user.user.userLocalisation.localisationNumber} ${user.user.user.userLocalisation.localisationStreet} ${user.user.user.userLocalisation.localisationPostalCode} ${user.user.user.userLocalisation.localisationCity}`
-      */} </Text>
-      <Divider />
+
       {user.user.accountType === "partner" &&
-        <Text> Vous êtes <b>Partenaire</b></Text>}
+        <Text> Vous êtes Partenaire</Text>}
       {user.user.accountType === "admin" &&
-        <Text> Vous êtes <b>Administrateur</b></Text>}
-      <Divider />
+        <Text> Vous êtes Administrateur</Text>}
       
-      <MapView />
+      
+     {/* <MapViewScreen /> */}
+    
       <Divider /><Divider />
       <View style={{ flexDirection: "row" }}>
-        <Button title="Modifier" onPress={() => navigation.push('UpdateAccount')} />
+        <Button style={{minWidth: '50%'}} title="Modifier" onPress={() => navigation.push('UpdateAccount')} />
         <Text> </Text>
-        <Button title="Deconnexion" onPress={trylogout} />
+        <Button style={{minWidth: '50%'}} title="Deconnexion" onPress={trylogout} />
       </View>
-
-       
-    </View>
-
+    </Card>
+   
+    
   );
 }
-function mapStateToProps(state) {
-  const { User } = state
-  return { User }
-}
 
-export default connect(mapStateToProps)(ProfileScreen)
+
+export default ProfileScreen;

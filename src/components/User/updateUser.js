@@ -4,17 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../actions/UserActions";
 import { Card, Input, Button, Slider, Text, useTheme, Icon, CheckBox } from 'react-native-elements'
 import { wrongInputsAlert } from "../Utils/Alerts";
-import { MapContainer, TileLayer, Marker, Circle, useMapEvent  } from 'react-leaflet';
 import {getAllTypes} from "../../actions/TypeArticleActions";
 import DropDownPicker from 'react-native-dropdown-picker';
-// To Display Marker on Map
-import L from 'leaflet';
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-    iconUrl: require('leaflet/dist/images/marker-icon.png'),
-    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-});
 
 
 function UpdateUserScreen({ navigation }) {
@@ -67,7 +58,7 @@ function UpdateUserScreen({ navigation }) {
 
   return (
     <Card>
-      <View>
+      
 
         <Text>Distance : {userUpdated.userDistance} km</Text>
         <Slider
@@ -81,15 +72,7 @@ function UpdateUserScreen({ navigation }) {
 
         <Text>Adresse : </Text>
 
-        <MapContainer style={{ width: "100%", height: "30vh" }} center={position} zoom={15} scrollWheelZoom={false}>
-          <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-
-          <ChangePositionMap />
-          
-        </MapContainer>
+       
         <Text>Catégories : </Text>
         { listType.map(t => 
           <CheckBox
@@ -102,7 +85,7 @@ function UpdateUserScreen({ navigation }) {
         }
         
         <Button title="Modifier" onPress={tryUpdate} />
-      </View>
+      
     </Card>
   );
 }

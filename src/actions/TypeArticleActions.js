@@ -1,5 +1,5 @@
 import axios from "axios";
-import servURL from "../../servUrl";
+import { servURL } from "../../servUrl";
 import {authHeader} from "../utils";
 
 export const getAllTypes = () => async dispatch => {

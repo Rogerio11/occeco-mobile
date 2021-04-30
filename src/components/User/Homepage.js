@@ -11,14 +11,13 @@ function HomepageScreen({ navigation }) {
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Card containerStyle={{width: '99%', height: '99%'}}>
-
+            
             {
                 user.isLoggedIn 
                 ? (<ProfileScreen navigation={navigation}/>)
                 : (
                     <>
-                    <Card containerStyle={{width: '95%', backgroundColor:theme.colors.secondary}}>
+                    <Card containerStyle={{width: '99%', backgroundColor:theme.colors.secondary}}>
                         <Card.Title>Vous avez déjà un compte ?</Card.Title>
                         <Card.Divider/>
                         <Button
@@ -26,7 +25,7 @@ function HomepageScreen({ navigation }) {
                             onPress={() => navigation.push('Connexion')}
                         />
                     </Card>
-                    <Card containerStyle={{width: '95%', backgroundColor:theme.colors.secondary}}>
+                    <Card containerStyle={{width: '99%', backgroundColor:theme.colors.secondary}}>
                         <Card.Title>Vous êtes nouveau ?</Card.Title>
                         <Card.Divider/>
                         <Button
@@ -38,7 +37,7 @@ function HomepageScreen({ navigation }) {
                     </>
                 )
             }
-            </Card>
+           
         </View>
     );
 }

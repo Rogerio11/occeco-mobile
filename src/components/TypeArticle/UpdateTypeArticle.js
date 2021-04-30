@@ -65,7 +65,7 @@ const UpdateTypeArticle = ({initialType, handleClose}) => {
                 }
             />
             <Text>La couleur doit être au format hexadécimal</Text>
-            <Text>Appuyer <a href="https://htmlcolorcodes.com/fr/">ici</a> pour convertir dans le bon format</Text>
+            <Text>Voir https://htmlcolorcodes.com/fr/ pour convertir dans le bon format</Text>
             <Button title="Sauvegarder" onPress={handleSave} />
             </Overlay>
         </View>
