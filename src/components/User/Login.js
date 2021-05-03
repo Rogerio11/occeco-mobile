@@ -17,8 +17,6 @@ function LoginScreen({ navigation }) {
   const errorSendResetPasswordUrl = useSelector(state => state.User.errorSendResetPasswordUrl);
   const { theme } = useTheme();
 
-
-
   const handleChange = (evt) => {
     const { name, value } = evt;
     setAccount({ ...account, [name]: value })

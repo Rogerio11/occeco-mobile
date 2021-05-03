@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from "react-redux";
 import { signup } from "../../actions/UserActions";
-import { Card, Input } from 'react-native-elements';
+import { Card, Input, Button } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { wrongInputsAlert } from "../Utils/Alerts";
 
@@ -69,7 +69,7 @@ function SignUpScreen({ navigation }) {
             />
           }
         />
-        <Button title="Inscription" onPress={trySignup} buttonStyle={{ backgroundColor: 'green' }} />
+        <Button title="Inscription" onPress={trySignup} />
 
       </View>
     </Card>

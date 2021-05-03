@@ -9,7 +9,7 @@ import { openURL, createURL } from 'expo-linking';
 function ResetPasswordScreen({ navigation }) {
     const dispatch = useDispatch();
     const user = useSelector(state => state.User);
-    var urlParams = new URLSearchParams(window.location.search);
+    //var urlParams = new URLSearchParams(window.location.search);
     const [newPassword, setNewPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
     const responseUpdatePassword = useSelector(state => state.User.responseUpdatePassword);

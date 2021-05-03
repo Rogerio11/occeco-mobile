@@ -9,7 +9,7 @@ function HomepageScreen({ navigation }) {
 
     const user = useSelector(state => state.User);
     const { theme } = useTheme();
-    var urlParams = new URLSearchParams(window.location.search);
+    //var urlParams = new URLSearchParams(window.location.search);
 
 
     return (
