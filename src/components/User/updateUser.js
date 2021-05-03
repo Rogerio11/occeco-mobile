@@ -15,43 +15,38 @@ function UpdateUserScreen({ navigation }) {
   const [userUpdated, setUserUpdated] = useState(user.user.user);
   const { theme } = useTheme();
   const position = user.user.user.userLocalisation || [43.608294, 3.879343]
-  const [ pos, setPos ] = useState(position)
+  const [pos, setPos] = useState(position)
   const listType = Array.isArray(list.typesArticle) ? list.typesArticle : [];
-  
+
   const tryUpdate = () => {
-    /*
-    if (!newAccountMail) { //TODO : compléter ça avec chacun des champs dans la version finale
-      wrongInputsAlert()
-    } else {
-      */
-      console.log("tryUpdate", userUpdated)
-      dispatch(updateUser(userUpdated));
-      navigation.goBack();
-    //}
+    console.log("tryUpdate", userUpdated)
+    dispatch(updateUser(userUpdated));
+    navigation.goBack();
   };
 
   const handleChange = (evt) => {
-    
+
     const { name, value } = evt;
-    setUserUpdated({ ...userUpdated, [name]: value }) 
+    setUserUpdated({ ...userUpdated, [name]: value })
 
   }
   const changeCategories = (type) => {
     const value = userUpdated.userCategories.some(t => t._id === type._id);
-    
+
     handleChange({
-      name: 'userCategories', 
-      value: value ? userUpdated.userCategories.filter(t => t._id !== type._id) : [...userUpdated.userCategories, type]})
+      name: 'userCategories',
+      value: value ? userUpdated.userCategories.filter(t => t._id !== type._id) : [...userUpdated.userCategories, type]
+    })
   }
   function ChangePositionMap() {
     const map = useMapEvent('drag', () => {
       setPos(map.getCenter())
-      setUserUpdated({...userUpdated, userLocalisation: {...pos}})
+      setUserUpdated({ ...userUpdated, userLocalisation: { ...pos } })
     })
-    
+
     return (
       <Marker position={pos} >
-        <Circle center={pos} radius={userUpdated.userDistance * 1000} /> 
+        <Circle center={pos} radius={userUpdated.userDistance * 1000} />
       </Marker>
     )
   }
@@ -74,7 +69,7 @@ function UpdateUserScreen({ navigation }) {
 
        
         <Text>Catégories : </Text>
-        { listType.map(t => 
+        {listType.map(t =>
           <CheckBox
             key={t._id}
             title={t.nameType}
@@ -83,7 +78,7 @@ function UpdateUserScreen({ navigation }) {
           />)
 
         }
-        
+
         <Button title="Modifier" onPress={tryUpdate} />
       
     </Card>

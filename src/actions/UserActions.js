@@ -146,7 +146,7 @@ export const modifyAccountType = (_id, accountType) => async dispatch => {
         if (accountType != "client" && accountType != "partner") {
             return ("error : not valid type")
         }
-        const res = await axios.patch(`${servURL}/account/updateType`, { "accountId": _id, accountType }, { headers: await authHeader() });
+        const res = await axios.patch(`${servURL}/account/updateType`, { accountId: _id, accountType }, { headers: await authHeader() });
         console.log("UserActions - modifyAccountType - res : ", res.data, "\n\n")
         dispatch({
             type: "CHANGETYPE_SUCCESS",

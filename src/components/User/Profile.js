@@ -67,6 +67,11 @@ return (
         <Text> </Text>
         <Button style={{minWidth: '50%'}} title="Deconnexion" onPress={trylogout} />
       </View>
+
+      <Button title="Notifications" onPress={() => navigation.push('EnableNotifications')} />
+       
+    </View>
+
     </Card>
    
     

@@ -8,6 +8,8 @@ import UpdateAccountScreen from './User/UpdateAccount'
 import ProfileScreen from './User/Profile';
 import ListArticleScreen from './Article/ListArticle';
 import ModifyAccountTypeScreen from './User/ModifyAccountType';
+import EnableNotificationsScreen from './User/EnableNotifications';
+import ArticleScreen from './Article/Article';
 import TypeArticleList from './TypeArticle/TypeArticleList';
 import AddArticleScreen from './Article/AddArticle';
 import DuplicateArticleScreen from './Article/DuplicateArticle';
@@ -28,6 +30,7 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="Profil" component={ProfileScreen} />
       
       <Stack.Screen name="UpdateAccount" component={UpdateAccountScreen} />
+      <Stack.Screen name="EnableNotifications" component={EnableNotificationsScreen} />
 
     </Stack.Navigator>
   );
