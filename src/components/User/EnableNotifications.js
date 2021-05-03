@@ -31,15 +31,15 @@ function EnableNotificationsScreen({ navigation }) {
         } else {
             customErrorAlert('Must use physical device for Push Notifications');
         }
-            // Default things needed
-            if (Platform.OS === 'android') {
-                Notifications.setNotificationChannelAsync('default', {
-                    name: 'default',
-                    importance: Notifications.AndroidImportance.MAX,
-                    vibrationPattern: [0, 250, 250, 250],
-                    lightColor: '#FF231F7C',
-                });
-            }
+        // Default things needed
+        if (Platform.OS === 'android') {
+            Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
     };
 
     return (
@@ -53,7 +53,7 @@ function EnableNotificationsScreen({ navigation }) {
                     user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
                     <View ><Button
                         title="Activer les notifications"
-                        // onPress={() => registerForPushNotificationsAsync()}
+                    // onPress={() => registerForPushNotificationsAsync()}
                     /> </View>
                 }
             </Card>

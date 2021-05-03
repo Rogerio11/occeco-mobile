@@ -6,15 +6,14 @@ import SignUpScreen from './User/SignUp';
 import UpdateUserScreen from './User/UpdateUser'
 import UpdateAccountScreen from './User/UpdateAccount'
 import ProfileScreen from './User/Profile';
-import ListArticleScreen from './Article/ListArticle';
 import ModifyAccountTypeScreen from './User/ModifyAccountType';
 import EnableNotificationsScreen from './User/EnableNotifications';
+import ListArticleScreen from './Article/ListArticle';
 import ArticleScreen from './Article/Article';
-import TypeArticleList from './TypeArticle/TypeArticleList';
 import AddArticleScreen from './Article/AddArticle';
 import DuplicateArticleScreen from './Article/DuplicateArticle';
 import UpdateArticleScreen from './Article/UpdateArticle';
-import ArticleScreen from './Article/Article';
+import TypeArticleList from './TypeArticle/TypeArticleList';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from "react-redux";

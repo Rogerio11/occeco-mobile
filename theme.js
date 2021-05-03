@@ -13,7 +13,6 @@ const theme = {
             backgroundColor: 'white' , 
             height: 10
         }
-        
     },
     /*
     Text: {
