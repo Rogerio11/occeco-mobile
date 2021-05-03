@@ -5,24 +5,14 @@ import { View} from 'react-native';
 import {createArticle} from "../../actions/ArticleActions";
 
 const DuplicateArticleScreen = ({ navigation, route}) => {
-    console.log("////////////params/////////")
-    console.log(route.params)
-    console.log("/////////////////////")
+    
     const article = route.params.article;
-    var articleTitle = "";
-    var articleLink = "";
-    var articleDescription = "";
 
-
-    if(article){
-        articleTitle = article.articleTitle;
-        articleLink = article.articleLink;
-        articleDescription = article.articleDescription;
-    }
-    const initialArticle = {  
-        articleTitle: articleTitle,
-        articleLink: articleLink, 
-        articleDescription: articleDescription
+    const initialArticle = { 
+        _id: article._id, 
+        articleTitle: article.articleTitle,
+        articleLink: article.articleLink, 
+        articleDescription: article.articleDescription
     }
     
     const [newArticle, setNewArticle] = useState(initialArticle);

@@ -2,7 +2,8 @@ const DefaultState = {
     articles: []
 }
 
-const TypeArticleReducer = (state = DefaultState, action) => {
+const ArticleReducer = (state = DefaultState, action) => {
+
     switch (action.type) {
         case "GET_ALL_ARTICLES_SUCCESS":
             return {
@@ -34,4 +35,5 @@ const TypeArticleReducer = (state = DefaultState, action) => {
     }
 }
 
-export default TypeArticleReducer;
+export default ArticleReducer;
+

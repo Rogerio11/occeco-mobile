@@ -19,7 +19,8 @@ const AddArticleScreen = ({ navigation }) => {
     }
 
     const handleSave = () => {
-        console.log("///////dans le handle///////")
+        console.log("saveArticle : ", newArticle)
+
         dispatch(createArticle(newArticle));
         setNewArticle(initialArticle);
         navigation.goBack()

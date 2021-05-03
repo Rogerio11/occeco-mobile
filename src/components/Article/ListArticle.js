@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
+
+import { View, FlatList } from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {getAllArticles} from "../../actions/ArticleActions";
 import DeleteArticle from "./DeleteArticle"
+import { Text, Button, } from 'react-native-elements';
 
 
 function ListArticleScreen({ navigation }) {
@@ -19,7 +21,7 @@ function ListArticleScreen({ navigation }) {
     setListArticle(useSelector(state => state.articles))
   }
 
-  console.log("Dans la LISTE ARTICLE")
+  
   const handleDelete = (id) => {
     setIdArticleDelete(id)
     setDeleteArticle(true)
@@ -27,58 +29,60 @@ function ListArticleScreen({ navigation }) {
   const DATA = [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Item",
+      articleTitle: "First Item",
     },
     {
       id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Item",
+      articleTitle: "Second Item",
     },
     {
       id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Item",
+      articleTitle: "Third Item",
     },
   ];
   return (
     
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>
-        Bienvenue sur l'appli OCCECO
-      </Text>
-      <Text>
-        Bienvenue sur l'appli OCCECO
-      </Text>
-      <Text>TODO : Affichage liste articles</Text>
 
       <FlatList
-        data={listArticle}
+        data={DATA}
         keyExtractor={(item) => item._id}
-        renderItem={({item}) => <View>
-          <Text>{item.articleTitle}</Text>
-          <Button
-          title="Duplicate"
-          onPress={() => navigation.push('Duplicate Article', {article: item})}
-        />
-        <Button
-          title="Update"
-          onPress={() => navigation.push('Update Article', {article: item})}
-        />
-        <Button
-          title="Delete"
-          onPress={() => handleDelete(item._id)}
-        />
-          </View>}
+        renderItem={({item}) => 
+        <View>
+            <Text h4>{item.articleTitle}</Text>
+            
+            <View style={{ flexDirection: "row" }}>
+            <Button
+                title="Duplicate"
+                onPress={() => navigation.push('Duplicate Article', {article: item})}
+            />
+            <Text> </Text>
+            <Button
+                title="Update"
+                onPress={() => navigation.push('Update Article', {article: item})}
+            />
+            <Text> </Text>
+            <Button
+                title="Delete"
+                onPress={() => handleDelete(item._id)}
+            />
+            </View>
+        </View>}
       />
 
       {deleteArticle &&  <DeleteArticle handleClose={() => setDeleteArticle(false)} idArticle={idArticleDelete}/> }
 
       {
         user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
-        <View>
+
+        <View style={{ flexDirection: "row" }}>
+
           <Button
           title="add Article"
           onPress={() => navigation.push('Add Article')}
         />
-
+        <Text> </Text>
+        
         <Button
           title="Voir Catégories"
           onPress={() => navigation.push('Catégories')}

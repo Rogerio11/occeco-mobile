@@ -5,30 +5,15 @@ import { View} from 'react-native';
 import {updateArticle} from "../../actions/ArticleActions";
 
 const UpdateArticleScreen = ({ navigation, route}) => {
-    console.log("////////////params/////////")
-    console.log(route.params)
-    console.log("/////////////////////")
+    
     const article = route.params.article;
-    var _id = "";
-    var articleTitle = "";
-    var articleLink = "";
-    var articleDescription = "";
 
-
-    if(article){
-        console.log("///////l'id de l'article")
-        console.log(article._id)
-        console.log("/////////////////////")
-        _id = article._id;
-        articleTitle = article.articleTitle;
-        articleLink = article.articleLink;
-        articleDescription = article.articleDescription;
-    }
     const initialArticle = { 
-        _id: _id, 
-        articleTitle: articleTitle,
-        articleLink: articleLink, 
-        articleDescription: articleDescription
+        _id: article._id, 
+        articleTitle: article.articleTitle,
+        articleLink: article.articleLink, 
+        articleDescription: article.articleDescription
+
     }
     
     const [articleUpdate, setArticleUpdate] = useState(initialArticle);
@@ -40,7 +25,7 @@ const UpdateArticleScreen = ({ navigation, route}) => {
     }
 
     const handleUpdate = () => {
-        console.log("///////dans le handle Update///////")
+        console.log("update article = ", articleUpdate)
         dispatch(updateArticle(articleUpdate));
         navigation.goBack()
     }

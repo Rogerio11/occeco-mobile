@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Overlay, Input, Icon } from 'react-native-elements';
+import { Button, Overlay, Input, Icon, Text } from 'react-native-elements';
 import {useDispatch} from "react-redux";
-import { View, Text,  } from 'react-native';
+import { View } from 'react-native';
 import {createTypeArticle} from "../../actions/TypeArticleActions";
 import DropDownPicker from 'react-native-dropdown-picker';
 import iconList from '../../iconList';
