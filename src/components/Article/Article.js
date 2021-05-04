@@ -22,7 +22,7 @@ const ArticleScreen = ({ navigation, route}) => {
             
             <Text h3>{article.articleTitle}</Text>
             <Divider />
-            <Text>{moment(article.articleStartDate).format('DD/MM/YYYY')} - {moment(article.articleEndDate).format('DD/MM/YYYY')}</Text>
+            <Text>{moment(article.articleStartDate).format('DD-MM-YYYY')} - {moment(article.articleEndDate).format('DD-MM-YYYY')}</Text>
             <Text>Description : {article.articleDescription}</Text>
             <Text>Lien : {article.articleLink}</Text>
             

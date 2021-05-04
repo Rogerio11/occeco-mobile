@@ -5,7 +5,6 @@ import { View, Modal, StyleSheet, Pressable, Text} from 'react-native';
 import {createArticle} from "../../actions/ArticleActions";
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
-import { Value } from 'react-native-reanimated';
 moment.updateLocale('fr');
 
 const AddArticleScreen = ({ navigation }) => {
@@ -19,8 +18,6 @@ const AddArticleScreen = ({ navigation }) => {
     }
 
     const [newArticle, setNewArticle] = useState(initialArticle);
-    const [maxDateEndDate, setMaxDateEndDate] = useState(moment(newArticle.articleStartDate).add(31, 'day'));
-    const [minDateEndDate, setMinDateEndDate] = useState(moment(newArticle.articleStartDate).add(1, 'day'));
     const [modalVisible, setModalVisible] = useState(false);
     const [msgModal, setMsgModal] = useState("");
     const dispatch = useDispatch();
