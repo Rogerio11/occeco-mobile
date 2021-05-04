@@ -42,10 +42,6 @@ const UpdateArticleScreen = ({ navigation, route}) => {
         const year = parseInt(date.substring(6))
         const newStartDate = new Date(year, (month-1), day)
 
-        console.log("%%%%%%%%%%%%%%%%%%")
-        console.log(newStartDate)
-        console.log("%%%%%%%%%%%%%%%%%%")
-
         setMinDateEndDate(newStartDate)
         setMaxDateEndDate(addDays(newStartDate, 30))
 
@@ -64,18 +60,17 @@ const UpdateArticleScreen = ({ navigation, route}) => {
     }
 
     const handleUpdate = () => {
-        console.log("update article = ", articleUpdate)
-        console.log(articleUpdate.articleStartDate.toString())
-        console.log(articleUpdate.articleEndDate.toString())
-        if(articleUpdate.articleStartDate > articleUpdate.articleEndDate){
-            setMsgModal("date d'entrée superieur à date finale")
+        if(articleUpdate.articleStartDate >= articleUpdate.articleEndDate){
+            setMsgModal("date d'entrée superieur ou égale à date finale")
             setModalVisible(true)
         }else if(addDays(articleUpdate.articleStartDate, 30) < articleUpdate.articleEndDate){
             setMsgModal("date finale superieur à date d'entrée + 30")
             setModalVisible(true)
+        }else{
+            dispatch(updateArticle(articleUpdate));
+            navigation.goBack()
         }
-        dispatch(updateArticle(articleUpdate));
-        navigation.goBack()
+        
     }
 
 

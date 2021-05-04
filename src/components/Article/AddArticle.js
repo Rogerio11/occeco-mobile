@@ -37,11 +37,11 @@ const AddArticleScreen = ({ navigation }) => {
         }else if((moment(newArticle.articleEndDate, 'DD-MM-YYYY')).isAfter(moment(newArticle.articleStartDate, 'DD-MM-YYYY').add(31, 'day'))){
             setMsgModal("date finale superieur à date d'entrée + 31")
             setModalVisible(true)
-        }
-        
-        dispatch(createArticle(newArticle));
-        setNewArticle(initialArticle);
-        navigation.goBack();
+        }else{
+            dispatch(createArticle(newArticle));
+            setNewArticle(initialArticle);
+            navigation.goBack();
+        } 
     }
 
 
@@ -64,7 +64,7 @@ const AddArticleScreen = ({ navigation }) => {
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => setModalVisible(!modalVisible)}
                         >
-                        <Text style={styles.textStyle}>Hide Modal</Text>
+                        <Text style={styles.textStyle}>Fermé</Text>
                         </Pressable>
                     </View>
                 </View>
@@ -110,6 +110,7 @@ const AddArticleScreen = ({ navigation }) => {
             />
             <Text>Date de fin</Text>
             <DatePicker
+
                 date={moment(newArticle.articleEndDate, "DD-MM-YYYY").toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
