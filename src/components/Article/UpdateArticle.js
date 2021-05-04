@@ -41,7 +41,7 @@ const UpdateArticleScreen = ({ navigation, route}) => {
         const month = parseInt(date.substring(3,5))
         const year = parseInt(date.substring(6))
         const newStartDate = new Date(year, (month-1), day)
-        
+
         setMinDateEndDate(newStartDate)
         setMaxDateEndDate(addDays(newStartDate, 30))
 
@@ -60,8 +60,8 @@ const UpdateArticleScreen = ({ navigation, route}) => {
     }
 
     const handleUpdate = () => {
-        if(articleUpdate.articleStartDate > articleUpdate.articleEndDate){
-            setMsgModal("date d'entrée superieur à date finale")
+        if(articleUpdate.articleStartDate >= articleUpdate.articleEndDate){
+            setMsgModal("date d'entrée superieur ou égale à date finale")
             setModalVisible(true)
         }else if(addDays(articleUpdate.articleStartDate, 30) < articleUpdate.articleEndDate){
             setMsgModal("date finale superieur à date d'entrée + 30")

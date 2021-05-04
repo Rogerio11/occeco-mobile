@@ -63,20 +63,17 @@ const AddArticleScreen = ({ navigation }) => {
 
 
     const handleSave = () => {
-        console.log("saveArticle : ", newArticle);
-        console.log(newArticle.articleStartDate.toString())
-        console.log(newArticle.articleEndDate.toString())
-        if(newArticle.articleStartDate > newArticle.articleEndDate){
-            setMsgModal("date d'entrée superieur à date finale")
+        if(newArticle.articleStartDate >= newArticle.articleEndDate){
+            setMsgModal("date d'entrée superieur ou égale à date finale")
             setModalVisible(true)
         }else if(addDays(newArticle.articleStartDate, 30) < newArticle.articleEndDate){
             setMsgModal("date finale superieur à date d'entrée + 30")
             setModalVisible(true)
-        }
-        
-        dispatch(createArticle(newArticle));
-        setNewArticle(initialArticle);
-        navigation.goBack();
+        }else{
+            dispatch(createArticle(newArticle));
+            setNewArticle(initialArticle);
+            navigation.goBack();
+        } 
     }
 
 
@@ -99,7 +96,7 @@ const AddArticleScreen = ({ navigation }) => {
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => setModalVisible(!modalVisible)}
                         >
-                        <Text style={styles.textStyle}>Hide Modal</Text>
+                        <Text style={styles.textStyle}>Fermé</Text>
                         </Pressable>
                     </View>
                 </View>
@@ -148,13 +145,13 @@ const AddArticleScreen = ({ navigation }) => {
             <Text>Date Finale</Text>
             <DatePicker
                 
-                date={newArticle.articleEndDate} // Initial date from state
+                date={moment(newArticle.articleEndDate)} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 placeholder="select date"
                 format="DD-MM-YYYY"
-                minDate={minDateEndDate}
-                maxDate={maxDateEndDate}
+                minDate={moment(minDateEndDate)}
+                maxDate={moment(maxDateEndDate)}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancell"
                 customStyles={{

@@ -63,8 +63,8 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
 
 
     const handleSave = () => {
-        if(newArticle.articleStartDate > newArticle.articleEndDate){
-            setMsgModal("date d'entrée superieur à date finale")
+        if(newArticle.articleStartDate >= newArticle.articleEndDate){
+            setMsgModal("date d'entrée superieur ou égale à date finale")
             setModalVisible(true)
         }else if(addDays(newArticle.articleStartDate, 30) < newArticle.articleEndDate){
             setMsgModal("date finale superieur à date d'entrée + 30")
