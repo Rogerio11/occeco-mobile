@@ -25,10 +25,10 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
-        "backgroundColor": "#FFFFFF",
-        "package": "com.occeco.occecoApp",
-        "versionCode": 1
-      }
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.occeco.occecoApp",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/logo.png"

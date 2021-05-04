@@ -22,7 +22,7 @@ function ProfileScreen({ navigation }) {
       <Text h3>Mon Compte</Text>
 
       <Divider /><Divider />
-      <Text><Ionicons name="mail" size="large" /> {user.user.accountMail}</Text>
+      {/* <Text><Ionicons name="mail" size="large" /> {user.user.accountMail}</Text> */}
       <Divider />
 
       <Text>Catégories choisies : </Text>
@@ -49,7 +49,7 @@ function ProfileScreen({ navigation }) {
 
       <Divider />
 
-      <Text><Ionicons name="locate" size="large" />  {user.user.user && user.user.user.userDistance} km</Text>
+      {/* <Text><Ionicons name="locate" size="large" />  {user.user.user && user.user.user.userDistance} km</Text> */}
 
       <Divider />
 

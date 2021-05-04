@@ -24,9 +24,9 @@ export const login = (account) => async dispatch => {
 };
 
 export const updateUser = (user) => async dispatch => {
-    //console.log("UserActions - updateUser = ", user);
+    // console.log("UserActions - updateUser = ", user);
     try {
-        const res = await axios.patch(`${servURL}/updateUser`, user, { headers: await authHeader() });
+        const res = await axios.patch(`${servURL}/user/updateUser`, user, { headers: await authHeader() });
         console.log(res.data)
 
         dispatch({
@@ -186,7 +186,7 @@ export const updateAccountMail = (newAccountMail) => async dispatch => {
 
 
 export const updateAccountPassword = (oldAccountPassword, newAccountPassword) => async dispatch => {
-    //console.log("UserActions - updateUser = ", user);
+    //console.log("UserActions - updateAccountPassword = ", user);
     try {
         const res = await axios.patch(`${servURL}/account/updatePassword`, { oldAccountPassword, newAccountPassword }, { headers: await authHeader() });
         console.log(res.data)
@@ -199,6 +199,24 @@ export const updateAccountPassword = (oldAccountPassword, newAccountPassword) =>
     } catch (err) {
         dispatch({
             type: "UPDATEPASSWORD_FAILURE",
+            payload: err.response.data.error
+        });
+    }
+};
+
+
+export const addPushToken = (_id, userPushToken) => async dispatch => {
+    try {
+        const res = await axios.post(`${servURL}/user/addPushToken`, { _id, userPushToken }, { headers: await authHeader() });
+
+        dispatch({
+            type: "ADDPUSHTOKEN_SUCCESS",
+            payload: res.data
+        });
+
+    } catch (err) {
+        dispatch({
+            type: "ADDPUSHTOKEN_FAILURE",
             payload: err.response.data.error
         });
     }

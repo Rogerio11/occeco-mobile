@@ -2,17 +2,17 @@ import { getData } from '../useStorage'
 const user = getData('user');
 
 // C'est pas inversé ça ? #Timi
-const DefaultState = 
+const DefaultState =
     user ?
-    {
-        isLoggedIn : false,
-        user: null
-    }
-    :
-    {
-        isLoggedIn: true,
-        user
-    }
+        {
+            isLoggedIn: false,
+            user: null
+        }
+        :
+        {
+            isLoggedIn: true,
+            user
+        }
 
 const UserReducer = (state = DefaultState, action) => {
     switch (action.type) {
@@ -41,7 +41,7 @@ const UserReducer = (state = DefaultState, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
-                user: {...state.user, user: action.payload }
+                user: { ...state.user, user: action.payload }
             };
         case "UPDATEMAIL_SUCCESS":
             return {
@@ -93,6 +93,17 @@ const UserReducer = (state = DefaultState, action) => {
             return {
                 ...state,
                 responseUpdatePassword: action.payload
+            };
+        case "ADDPUSHTOKEN_SUCCESS":
+            return {
+                ...state,
+                errorAddPushToken: null,
+                user: { ...state.user, user: action.payload }
+            };
+        case "ADDPUSHTOKEN_FAILURE":
+            return {
+                ...state,
+                errorAddPushToken: action.payload
             };
         default:
             return state;

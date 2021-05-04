@@ -22,3 +22,11 @@ export const customErrorAlert = (message) => {
         type: "danger",
     });
 }
+
+export const customInfiniteErrorAlert = (message) => {
+    showMessage({
+        message: message,
+        type: "danger",
+        autoHide: false,
+    });
+}
