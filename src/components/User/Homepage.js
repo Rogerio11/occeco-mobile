@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { View } from 'react-native';
 import { Button, Card, useTheme, Text } from 'react-native-elements';
 import ProfileScreen from './Profile';
-import ResetPasswordScreen from './ResetPassword';
 
 function HomepageScreen({ navigation }) {
 

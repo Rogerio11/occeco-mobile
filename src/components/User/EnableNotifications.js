@@ -1,14 +1,22 @@
 import React from 'react';
 import { Button, Card, useTheme, Text } from 'react-native-elements';
 import { View, Platform } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addPushToken } from "../../actions/UserActions";
 import * as Notifications from 'expo-notifications';
-import { customErrorAlert, customLongSuccessAlert } from "../Utils/Alerts";
-import * as Constants from 'expo-constants';
+import { customInfiniteErrorAlert, wrongInputsAlert, customLongSuccessAlert } from "../Utils/Alerts";
+import Constants from 'expo-constants';
 
 function EnableNotificationsScreen({ navigation }) {
-    const user = useSelector(state => state.User)
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.User.user)
+    const errorAddPushToken = useSelector(state => state.User.errorAddPushToken);
 
+    React.useEffect(() => {
+        if (errorAddPushToken) {
+            customInfiniteErrorAlert(errorAddPushToken);
+        }
+    }, [errorAddPushToken])
 
     const registerForPushNotificationsAsync = async () => {
         //Check if the user is really on a mobile
@@ -16,18 +24,20 @@ function EnableNotificationsScreen({ navigation }) {
             const { status: existingStatus } = await Notifications.getPermissionsAsync();
             let finalStatus = existingStatus;
             if (existingStatus !== 'granted') {
+                console.log(" >>> Autorisation déjà obtenue");
+            }
+            if (existingStatus !== 'granted') {
                 const { status } = await Notifications.requestPermissionsAsync();
                 finalStatus = status;
             }
             if (finalStatus !== 'granted') {
-                alert('Failed to get push token for push notification!');
+                customInfiniteErrorAlert('Failed to get push token for push notification!');
                 return;
             }
             //Now that the permission is accorded, we ask for the token
             const token = (await Notifications.getExpoPushTokenAsync()).data;
-            console.log("registerForPushNotificationsAsync - token : ", token);
-            customLongSuccessAlert('Permission ok !')
-            //   this.setState({ expoPushToken: token });
+            customLongSuccessAlert('Permission ok !');
+            dispatch(addPushToken(user.user._id, token));
         } else {
             customErrorAlert('Must use physical device for Push Notifications');
         }
@@ -49,13 +59,10 @@ function EnableNotificationsScreen({ navigation }) {
                 <Text>
                     Cette application a pour principal but de vous envoyer des notifications, ce serait dommage de passer à côté !
                 </Text>
-                {
-                    user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
-                    <View ><Button
-                        title="Activer les notifications"
-                    // onPress={() => registerForPushNotificationsAsync()}
-                    /> </View>
-                }
+                <Button
+                    title="Activer les notifications"
+                    onPress={() => registerForPushNotificationsAsync()}
+                />
             </Card>
         </View>
 
