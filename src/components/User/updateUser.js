@@ -16,7 +16,12 @@ function UpdateUserScreen({ navigation }) {
   const { theme } = useTheme();
   const position = user.user.user.userLocalisation || [43.608294, 3.879343]
   const [pos, setPos] = useState(position)
-  const listType = Array.isArray(list.typesArticle) ? list.typesArticle : [];
+  var listType = Array.isArray(list.typesArticle) ? list.typesArticle : [];
+
+  if (listType.length === 0 ){
+    dispatch(getAllTypes());
+    listType = useSelector(state => state.TypeArticle)
+}
 
   const tryUpdate = () => {
     console.log("tryUpdate", userUpdated)

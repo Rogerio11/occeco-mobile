@@ -3,17 +3,14 @@ import { View } from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {getAllTypes, deleteTypeArticle} from "../../actions/TypeArticleActions";
 import { ListItem, Button, FAB, Icon } from 'react-native-elements';
-import AddTypeArticle from './AddTypeArticle';
 import UpdateTypeArticle from './UpdateTypeArticle';
 
 const TypeArticleList = ({navigation}) => {
     const dispatch = useDispatch();
     const list = useSelector(state => state.TypeArticle);
-    const [addType, setAddType] = useState(false);
-    const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
     const [editType, setEditType] = useState(false);
-    
-    
+    const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
+
     if (listType.length === 0 ){
         dispatch(getAllTypes());
         setListType(useSelector(state => state.TypeArticle))
@@ -26,12 +23,12 @@ const TypeArticleList = ({navigation}) => {
     console.log(listType)
     return (
     <View>
-        <Button
-            title="Nouveau"
-            onPress={() => setAddType(true)}
+        <FAB
+            visible={true}
+            icon={{ name: 'add', color: 'white' }}
+            buttonStyle={{backgroundColor:'green'}}
+            onPress={() => navigation.push('Create TypeArticle')}
         />
-
-        {addType &&  <AddTypeArticle handleClose={() => setAddType(false)}/> }
         {editType &&  <UpdateTypeArticle initialType={editType} handleClose={() => setEditType(false)}/> }
 
         { Array.isArray(listType) &&

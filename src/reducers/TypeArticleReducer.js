@@ -22,12 +22,12 @@ const TypeArticleReducer = (state = DefaultState, action) => {
         case "DELETE_TYPE_ARTICLE_SUCCESS":
             return {
                 ...state,
-                typesArticle: state.typesArticle.filter(t => t._id !== action.payload._id)
+                typesArticle: state.typesArticle.filter(t => t._id != action.payload._id)
             };
         case "CREATE_TYPE_ARTICLE_SUCCESS":
             return {
                 ...state,
-                typesArticle: [...state.typesArticle, action.payload]
+                typesArticle: state.typesArticle.push(action.payload)
             };
         default:
             return state;

@@ -6,12 +6,13 @@ import {createTypeArticle} from "../../actions/TypeArticleActions";
 import DropDownPicker from 'react-native-dropdown-picker';
 import iconList from '../../iconList';
 
-const AddTypeArticle = ({handleClose}) => {
+const AddTypeArticle = ({navigation}) => {
     const initialType = { nameType: "", colorType: "", iconType: ""}
     const [newType, setNewType] = useState(initialType);
     const dispatch = useDispatch();
 
     const handleChange = (evt) => {
+        console.log(evt)
         const { name, value } = evt;
         setNewType({...newType, [name] : value})
     }
@@ -20,13 +21,12 @@ const AddTypeArticle = ({handleClose}) => {
         console.log("handleSave", newType)
         dispatch(createTypeArticle(newType));
         setNewType(initialType);
-        handleClose()
+        navigation.goBack();
     }
 
 
     return (
         <View>
-            <Overlay isVisible={true} onBackdropPress={handleClose}>
             <Input
                 placeholder="Nom"
                 value={newType.nameType}
@@ -66,9 +66,9 @@ const AddTypeArticle = ({handleClose}) => {
                 }
             />
             <Text>La couleur doit être au format hexadécimal</Text>
-            <Text>Appuyer <a href="https://htmlcolorcodes.com/fr/">ici</a> pour convertir dans le bon format</Text>
+            <Text>Appuyer "https://htmlcolorcodes.com/fr/" pour convertir dans le bon format</Text>
             <Button title="Sauvegarder" onPress={handleSave} />
-            </Overlay>
+            
         </View>
     );
 };

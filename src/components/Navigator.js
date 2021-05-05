@@ -14,6 +14,7 @@ import AddArticleScreen from './Article/AddArticle';
 import DuplicateArticleScreen from './Article/DuplicateArticle';
 import UpdateArticleScreen from './Article/UpdateArticle';
 import TypeArticleList from './TypeArticle/TypeArticleList';
+import AddTypeArticle from './TypeArticle/AddTypeArticle';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from "react-redux";
@@ -44,6 +45,7 @@ const ArticleStackNavigator = () => {
       <Stack.Screen name="Add Article" component={AddArticleScreen} />
       <Stack.Screen name="Duplicate Article" component={DuplicateArticleScreen} />
       <Stack.Screen name="Update Article" component={UpdateArticleScreen} />
+      <Stack.Screen name="Create TypeArticle" component={AddTypeArticle} />
       
     </Stack.Navigator>
   );
