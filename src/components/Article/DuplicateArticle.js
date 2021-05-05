@@ -1,83 +1,64 @@
 import React, { useState } from 'react';
 import { Button, Input} from 'react-native-elements';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { View, Modal, StyleSheet, Pressable, Text} from 'react-native';
-import DatePicker from 'react-native-datepicker';
 import {createArticle} from "../../actions/ArticleActions";
+import {getAllTypes} from "../../actions/TypeArticleActions";
+import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
-import { Value } from 'react-native-reanimated';
 moment.updateLocale('fr');
 
 const DuplicateArticleScreen = ({ navigation, route}) => {
-    function addDays(date, days) {
-        var result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
+    const initialArticle = {  
+        articleTitle: "",
+        articleLink: "", 
+        articleDescription: "",
+        articleStartDate: moment(),
+        articleEndDate: moment().add(1, 'day'),
+        articleCategories: []
     }
-    const article = route.params.article;
 
-    const initialArticle = { 
-        articleTitle: article.articleTitle,
-        articleLink: article.articleLink, 
-        articleDescription: article.articleDescription,
-        articleStartDate: article.articleStartDate,
-        articleEndDate: article.articleEndDate
-    }
-    
     const [newArticle, setNewArticle] = useState(initialArticle);
-    const [maxDateEndDate, setMaxDateEndDate] = useState(addDays(newArticle.articleStartDate, 30));
-    const [minDateEndDate, setMinDateEndDate] = useState(addDays(newArticle.articleStartDate, 1));
     const [modalVisible, setModalVisible] = useState(false);
     const [msgModal, setMsgModal] = useState("");
     const dispatch = useDispatch();
+    const list = useSelector(state => state.Article);
+    const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
 
+    if (listType.length === 0 ){
+        dispatch(getAllTypes());
+        setListType(useSelector(state => state.TypeArticle))
+    }
+    
     const handleChange = (evt) => {
         const { name, value } = evt;
-        
         setNewArticle({...newArticle, [name]: value});
-        
     }
-
-    const handleStartDateChange = (date) => {
-        const day = parseInt(date.substring(0,2))
-        const month = parseInt(date.substring(3,5))
-        const year = parseInt(date.substring(6))
-        const newStartDate = new Date(year, (month-1), day)
-
-        setMinDateEndDate(newStartDate)
-        setMaxDateEndDate(addDays(newStartDate, 30))
-
-        if(newStartDate >= newArticle.articleEndDate){
-            setNewArticle({...newArticle, ["articleEndDate"] : addDays(newStartDate, 1)});
-        }
-        setNewArticle({...newArticle, ["articleStartDate"] : newStartDate});
-    }
-
-
-    const handleEndDateChange = (date) => {
-        const day = parseInt(date.substring(0,2))
-        const month = parseInt(date.substring(3,5))
-        const year = parseInt(date.substring(6))
-        setNewArticle({...newArticle, ["articleEndDate"] : new Date(year, (month-1), day)  });
-    }
-
 
     const handleSave = () => {
-        if(newArticle.articleStartDate >= newArticle.articleEndDate){
-            setMsgModal("date d'entrée superieur ou égale à date finale")
+        console.log("saveArticle : ", newArticle);
+        
+        if(moment(newArticle.articleStartDate, 'DD-MM-YYYY').isAfter(moment(newArticle.articleEndDate, 'DD-MM-YYYY'))){
+            setMsgModal("date d'entrée superieur à date finale")
             setModalVisible(true)
-        }else if(addDays(newArticle.articleStartDate, 30) < newArticle.articleEndDate){
-            setMsgModal("date finale superieur à date d'entrée + 30")
+        }else if((moment(newArticle.articleEndDate, 'DD-MM-YYYY')).isAfter(moment(newArticle.articleStartDate, 'DD-MM-YYYY').add(31, 'day'))){
+            setMsgModal("date finale superieur à date d'entrée + 31")
             setModalVisible(true)
         }else{
             dispatch(createArticle(newArticle));
             setNewArticle(initialArticle);
             navigation.goBack();
-        }
-
+        } 
     }
 
-
+    const changeCategories = (type) => {
+        const value = newArticle.articleCategories.some(t => t._id === type._id);
+        
+        handleChange({
+          name: 'articleCategories',
+          value: value ? newArticle.articleCategories.filter(t => t._id !== type._id) : [...newArticle.articleCategories, type]
+        })
+    }
 
     return (
         <View>
@@ -102,6 +83,7 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
                     </View>
                 </View>
             </Modal>
+            <Card>
             <Input
                 placeholder="Titre"
                 value={newArticle.articleTitle}
@@ -117,16 +99,25 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
                 value={newArticle.articleLink}
                 onChangeText={(evt) => handleChange({name: "articleLink", value: evt})}
             />
-            <Text>Date D'entrée</Text>
+            <Text>Catégories concernées :</Text>
+            {listType.map(t =>
+                <CheckBox
+                    key={t._id}
+                    title={t.nameType}
+                    checked={newArticle.articleCategories.some(type => t._id === type._id)}
+                    onPress={() => changeCategories(t)}
+                />)
+
+            }
+            <Text>Date de début</Text>
             <DatePicker
-                
-                date={moment(newArticle.articleStartDate)} // Initial date from state
+                date={moment(newArticle.articleStartDate,"DD-MM-YYYY").toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 placeholder="select date"
                 format="DD-MM-YYYY"
-                minDate={new Date()}
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
+                minDate={moment().toDate()}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
                 customStyles={{
                     dateIcon: {
                     //display: 'none',
@@ -139,22 +130,21 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
                     marginLeft: 36,
                     },
                 }}
-                onDateChange={(date) => {
-                    handleStartDateChange(date);
-                  }}
+                useNativeDriver='false'
+                onDateChange={(evt) => handleChange({name: "articleStartDate", value: moment(evt,"DD-MM-YYYY").toDate()})}
             />
-            <Text>Date Finale</Text>
+            <Text>Date de fin</Text>
             <DatePicker
-                
-                date={moment(newArticle.articleEndDate)} // Initial date from state
+
+                date={moment(newArticle.articleEndDate, "DD-MM-YYYY").toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 placeholder="select date"
                 format="DD-MM-YYYY"
-                minDate={moment(minDateEndDate)}
-                maxDate={moment(maxDateEndDate)}
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancell"
+                minDate={moment(newArticle.articleStartDate, "DD-MM-YYYY").add(1, 'day').toDate()}
+                maxDate={moment(newArticle.articleStartDate, "DD-MM-YYYY").add(31, 'day').toDate()}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
                 customStyles={{
                     dateIcon: {
                     //display: 'none',
@@ -168,11 +158,11 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
                     },
                 }}
 
-                onDateChange={(date) => handleEndDateChange(date)}
+                onDateChange={(date) => handleChange({name: "articleEndDate", value: moment(date,"DD-MM-YYYY").toDate()})}
             />
             
             <Button title="Sauvegarder" onPress={handleSave} />
-
+            </Card>
         </View>
     );
 };

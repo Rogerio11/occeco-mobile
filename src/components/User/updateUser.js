@@ -11,17 +11,17 @@ import DropDownPicker from 'react-native-dropdown-picker';
 function UpdateUserScreen({ navigation }) {
   const user = useSelector(state => state.User);
   const list = useSelector(state => state.TypeArticle);
-  const dispatch = useDispatch();
   const [userUpdated, setUserUpdated] = useState(user.user.user);
+  const dispatch = useDispatch();
   const { theme } = useTheme();
   const position = user.user.user.userLocalisation || [43.608294, 3.879343]
   const [pos, setPos] = useState(position)
-  var listType = Array.isArray(list.typesArticle) ? list.typesArticle : [];
+  const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
 
   if (listType.length === 0 ){
     dispatch(getAllTypes());
-    listType = useSelector(state => state.TypeArticle)
-}
+    setListType(useSelector(state => state.TypeArticle))
+  }
 
   const tryUpdate = () => {
     console.log("tryUpdate", userUpdated)

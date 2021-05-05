@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Input} from 'react-native-elements';
-import {useDispatch} from "react-redux";
-import { View, Modal, StyleSheet, Pressable, Text} from 'react-native';
+import { Button, Input, CheckBox, Card, Text} from 'react-native-elements';
+import {useDispatch, useSelector} from "react-redux";
+import { View, Modal, StyleSheet, Pressable} from 'react-native';
 import {createArticle} from "../../actions/ArticleActions";
+import {getAllTypes} from "../../actions/TypeArticleActions";
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 moment.updateLocale('fr');
@@ -14,18 +15,25 @@ const AddArticleScreen = ({ navigation }) => {
         articleLink: "", 
         articleDescription: "",
         articleStartDate: moment(),
-        articleEndDate: moment().add(1, 'day')
+        articleEndDate: moment().add(1, 'day'),
+        articleCategories: []
     }
 
     const [newArticle, setNewArticle] = useState(initialArticle);
     const [modalVisible, setModalVisible] = useState(false);
     const [msgModal, setMsgModal] = useState("");
     const dispatch = useDispatch();
+    const list = useSelector(state => state.Article);
+    const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
 
+    if (listType.length === 0 ){
+        dispatch(getAllTypes());
+        setListType(useSelector(state => state.TypeArticle))
+    }
+    
     const handleChange = (evt) => {
         const { name, value } = evt;
         setNewArticle({...newArticle, [name]: value});
-        
     }
 
     const handleSave = () => {
@@ -44,7 +52,14 @@ const AddArticleScreen = ({ navigation }) => {
         } 
     }
 
-
+    const changeCategories = (type) => {
+        const value = newArticle.articleCategories.some(t => t._id === type._id);
+        
+        handleChange({
+          name: 'articleCategories',
+          value: value ? newArticle.articleCategories.filter(t => t._id !== type._id) : [...newArticle.articleCategories, type]
+        })
+    }
 
     return (
         <View>
@@ -69,6 +84,7 @@ const AddArticleScreen = ({ navigation }) => {
                     </View>
                 </View>
             </Modal>
+            <Card>
             <Input
                 placeholder="Titre"
                 value={newArticle.articleTitle}
@@ -84,6 +100,16 @@ const AddArticleScreen = ({ navigation }) => {
                 value={newArticle.articleLink}
                 onChangeText={(evt) => handleChange({name: "articleLink", value: evt})}
             />
+            <Text>Catégories concernées :</Text>
+            {listType.map(t =>
+                <CheckBox
+                    key={t._id}
+                    title={t.nameType}
+                    checked={newArticle.articleCategories.some(type => t._id === type._id)}
+                    onPress={() => changeCategories(t)}
+                />)
+
+            }
             <Text>Date de début</Text>
             <DatePicker
                 date={moment(newArticle.articleStartDate,"DD-MM-YYYY").toDate()} // Initial date from state
@@ -137,7 +163,7 @@ const AddArticleScreen = ({ navigation }) => {
             />
             
             <Button title="Sauvegarder" onPress={handleSave} />
-
+            </Card>
         </View>
     );
 };

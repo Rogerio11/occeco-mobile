@@ -13,7 +13,7 @@ const ArticleReducer = (state = DefaultState, action) => {
         case "CREATE_ARTICLE_SUCCESS":
             return {
                 ...state,
-                articles: [...state.articles, action.payload]
+                articles: state.articles.push(action.payload)
             };
         case "UPDATE_ARTICLE_SUCCESS":
             return {

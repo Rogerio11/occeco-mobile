@@ -13,33 +13,20 @@ function ListArticleScreen({ navigation }) {
   const [listArticle, setListArticle] = useState(Array.isArray(list.articles) ? list.articles : []);
   const [open, setOpen] = useState(false);
   const { theme } = useTheme();
-  if (listArticle.length && listArticle.length === 0 ){
+
+  if (listArticle.length === 0 ){
     dispatch(getAllArticles());
-    setListArticle(useSelector(state => state.articles))
+    setListArticle(useSelector(state => state.Article))
   }
+  console.log(listArticle)
 
-
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      articleTitle: "First Item",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      articleTitle: "Second Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      articleTitle: "Third Item",
-    },
-  ];
   return (
     
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Card containerStyle={{width: '100%', height:'100%'}}>
         {
           listArticle.length === 0
-          ? <View style={{width: '100%', height:'100%'}}>
+          ? <View style={{width: '100%', height:'97%'}}>
               <Text>Pas d'articles à afficher</Text>
             </View>
           :
@@ -54,15 +41,18 @@ function ListArticleScreen({ navigation }) {
                 onShowUnderlay={separators.highlight}
                 onHideUnderlay={separators.unhighlight}
                 >
-                <View style={{ flexDirection: "row", justifyContent:'space-between', backgroundColor:(index%2 === 0 ? theme.colors.secondary : 'white')}}>
+                <View style={{ flexDirection: "row", justifyContent:'space-between'}}>
                     <Text h4>{item.articleTitle}</Text>
+                    {item.articleCategories && item.articleCategories.map(cat => <Icon key={cat._id} name={cat.iconType} type="material-community" color={cat.colorType}/>)}
                     <Icon name="chevron-right" type="material-community" onPress={() => navigation.push('Article', {article: item})}/>
+                    
                 </View>
               </TouchableHighlight>
               }
             />
           </View>
       }
+
       {
         user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
         <View style={{width: '100%', height:'3%'}}>
