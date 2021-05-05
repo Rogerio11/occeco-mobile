@@ -111,7 +111,7 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
             }
             <Text>Date de début</Text>
             <DatePicker
-                date={moment(newArticle.articleStartDate,"DD-MM-YYYY").toDate()} // Initial date from state
+                date={moment(newArticle.articleStartDate).toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 placeholder="select date"
                 format="DD-MM-YYYY"

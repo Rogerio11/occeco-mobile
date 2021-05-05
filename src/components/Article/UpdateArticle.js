@@ -103,7 +103,7 @@ const UpdateArticleScreen = ({ navigation, route}) => {
             }
             <Text>Date de début</Text>
             <DatePicker
-                date={moment(articleUpdate.articleStartDate,"DD-MM-YYYY").toDate()} // Initial date from state
+                date={moment(articleUpdate.articleStartDate,["DD-MM-YYYY","YYYY-MM-DDTHH:mm:ss.ZZZZ"]).toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 placeholder="select date"
                 format="DD-MM-YYYY"
@@ -128,7 +128,7 @@ const UpdateArticleScreen = ({ navigation, route}) => {
             <Text>Date de fin</Text>
             <DatePicker
 
-                date={moment(articleUpdate.articleEndDate, "DD-MM-YYYY").toDate()} // Initial date from state
+                date={moment(articleUpdate.articleEndDate, ["DD-MM-YYYY","YYYY-MM-DDTHH:mm:ss.ZZZZ"]).toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 placeholder="select date"

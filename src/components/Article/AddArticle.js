@@ -23,7 +23,7 @@ const AddArticleScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [msgModal, setMsgModal] = useState("");
     const dispatch = useDispatch();
-    const list = useSelector(state => state.Article);
+    const list = useSelector(state => state.TypeArticle);
     const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
 
     if (listType.length === 0 ){
@@ -60,6 +60,7 @@ const AddArticleScreen = ({ navigation }) => {
           value: value ? newArticle.articleCategories.filter(t => t._id !== type._id) : [...newArticle.articleCategories, type]
         })
     }
+    console.log(listType)
 
     return (
         <View>
