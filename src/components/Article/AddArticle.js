@@ -45,13 +45,13 @@ const AddArticleScreen = ({ navigation }) => {
     }
 
     const handleSave = () => {
-        if(moment(updateArticle.articleStartDate).isAfter(moment(updateArticle.articleEndDate))){
+        if(moment(newArticle.articleStartDate).isAfter(moment(newArticle.articleEndDate))){
             setMsgModal("date d'entrée superieur à date finale")
             setModalVisible(true)
-        }else if((moment(updateArticle.articleEndDate)).isAfter(moment(updateArticle.articleStartDate).add(31, 'day'))){
+        }else if((moment(newArticle.articleEndDate)).isAfter(moment(newArticle.articleStartDate).add(31, 'day'))){
             setMsgModal("date finale superieur à date d'entrée + 31")
             setModalVisible(true)
-        }else if(updateArticle.isEvent && moment(updateArticle.articleDateEvent).isBefore(moment(updateArticle.articleStartDate))){
+        }else if(newArticle.isEvent && moment(newArticle.articleDateEvent).isBefore(moment(newArticle.articleStartDate))){
             setMsgModal("date evènement inférieur à date d'entrée")
             setModalVisible(true)
         }else{
