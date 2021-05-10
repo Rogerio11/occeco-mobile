@@ -19,7 +19,10 @@ const AddArticleScreen = ({ navigation }) => {
         articleStartDate: moment(),
         articleEndDate: moment().add(1, 'day'),
         articleCategories: [], 
-        articleLocalisation: null
+        articleLocalisation: null,
+        articleDateEvent: moment().toDate(),
+        isEvent: false,
+
     }
 
     const [newArticle, setNewArticle] = useState(initialArticle);
@@ -28,7 +31,9 @@ const AddArticleScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const list = useSelector(state => state.TypeArticle);
     const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
+
     const [addLocalisation, setLocalisation] = useState(false);
+
 
     if (listType.length === 0 ){
         dispatch(getAllTypes());
@@ -40,7 +45,13 @@ const AddArticleScreen = ({ navigation }) => {
         setNewArticle({...newArticle, [name]: value});
     }
 
+    const toggleIsEvent = () =>{
+        const value = newArticle.isEvent ? false : true;
+        setNewArticle({...newArticle, ["isEvent"]: value});
+    }
+
     const handleSave = () => {
+
         console.log("saveArticle : ", newArticle);
         
         if(moment(newArticle.articleStartDate, formatMoments).isAfter(moment(newArticle.articleEndDate, formatMoments))){
@@ -52,19 +63,24 @@ const AddArticleScreen = ({ navigation }) => {
         }else{
             dispatch(createArticle(newArticle));
             setNewArticle(initialArticle);
-            navigation.goBack();
+            navigation.navigate("Liste Article");
+        //     console.log("%%%%%%%%%%%%%%%")
+        // console.log(newArticle)
+        // console.log(moment(newArticle.articleStartDate).format('DD-MM-YYYY'))
+        // console.log(moment(newArticle.articleDateEvent).format('DD-MM-YYYY'))
+        // console.log(moment(newArticle.articleEndDate).format('DD-MM-YYYY'))
+        // console.log("%%%%%%%%%%%%%%%")
         } 
     }
 
     const changeCategories = (type) => {
-        const value = newArticle.articleCategories.some(t => t._id === type._id);
-        
+        const value = newArticle.articleCategories.some(t => t === type._id);
         handleChange({
           name: 'articleCategories',
-          value: value ? newArticle.articleCategories.filter(t => t._id !== type._id) : [...newArticle.articleCategories, type]
+          value: value ? newArticle.articleCategories.filter(t => t !== type._id) : [...newArticle.articleCategories, type._id]
         })
+        
     }
-    console.log(listType)
 
     return (
         <View>
@@ -110,18 +126,19 @@ const AddArticleScreen = ({ navigation }) => {
                 <CheckBox
                     key={t._id}
                     title={t.nameType}
-                    checked={newArticle.articleCategories.some(type => t._id === type._id)}
+                    checked={newArticle.articleCategories.some(type => t._id === type)}
                     onPress={() => changeCategories(t)}
                 />)
 
             }
             <Text>Date de début</Text>
             <DatePicker
+
                 date={moment(newArticle.articleStartDate,formatMoments).toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 placeholder="select date"
                 format="DD-MM-YYYY"
-                minDate={moment().toDate()}
+                minDate={moment()}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
                 customStyles={{
@@ -139,6 +156,44 @@ const AddArticleScreen = ({ navigation }) => {
                 useNativeDriver='false'
                 onDateChange={(evt) => handleChange({name: "articleStartDate", value: moment(evt,formatMoments).toDate()})}
             />
+            <CheckBox
+                    title="evenement"
+                    checked={newArticle.isEvent}
+                    onPress={() => toggleIsEvent()}
+                />
+
+        {
+            newArticle.isEvent &&
+            <View>
+            <Text>Date Event</Text>
+            <DatePicker
+
+                date={ moment(newArticle.articleDateEvent).format(formatMoments)} // Initial date from state
+                mode="date" // The enum of date, datetime and time
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                minDate={moment(moment(newArticle.articleStartDate).add(-1, 'day').toDate()).format(formatMoments)}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
+                customStyles={{
+                    dateIcon: {
+                    //display: 'none',
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                    },
+                    dateInput: {
+                    marginLeft: 36,
+                    },
+                }}
+
+                onDateChange={(date) => handleChange({name: "articleDateEvent", value: moment(date,formatMoments).toDate()})}
+            />
+            </View>
+      }
+            
             <Text>Date de fin</Text>
             <DatePicker
 
@@ -224,6 +279,7 @@ const styles = StyleSheet.create({
       textAlign: "center"
     },
   });
+
   
 
 export default AddArticleScreen;

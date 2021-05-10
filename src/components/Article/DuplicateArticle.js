@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Input, Card, CheckBox} from 'react-native-elements';
+import { Button, Input, CheckBox, Card, Text} from 'react-native-elements';
 import {useDispatch, useSelector} from "react-redux";
-import { View, Modal, StyleSheet, Pressable, Text} from 'react-native';
+import { View, Modal, StyleSheet, Pressable} from 'react-native';
 import {createArticle} from "../../actions/ArticleActions";
 import {getAllTypes} from "../../actions/TypeArticleActions";
 import DatePicker from 'react-native-datepicker';
@@ -9,31 +9,39 @@ import moment from 'moment';
 import formatMoments from '../formatMoments';
 moment.updateLocale('fr');
 
-const DuplicateArticleScreen = ({ navigation, route}) => {
-    const initialArticle = {  
-        articleTitle: "",
-        articleLink: "", 
-        articleDescription: "",
-        articleStartDate: moment(),
-        articleEndDate: moment().add(1, 'day'),
-        articleCategories: []
-    }
-
+const DuplicateArticleScreen = ({ navigation, route }) => {
+    
+    const initialArticle = route.params.article;
     const [newArticle, setNewArticle] = useState(initialArticle);
     const [modalVisible, setModalVisible] = useState(false);
     const [msgModal, setMsgModal] = useState("");
     const dispatch = useDispatch();
-    const list = useSelector(state => state.Article);
+    const list = useSelector(state => state.TypeArticle);
     const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
+
     const [addLocalisation, setLocalisation] = useState(false);
     
-    
+
+    /*
+
+    if (listType.length === 0 ){
+        dispatch(getAllTypes());
+        setListType(useSelector(state => state.TypeArticle))
+    }
+    */
+   
     const handleChange = (evt) => {
         const { name, value } = evt;
         setNewArticle({...newArticle, [name]: value});
     }
 
+    const toggleIsEvent = () =>{
+        const value = newArticle.isEvent ? false : true;
+        setNewArticle({...newArticle, ["isEvent"]: value});
+    }
+
     const handleSave = () => {
+
         console.log("saveArticle : ", newArticle);
         
         if(moment(newArticle.articleStartDate, formatMoments).isAfter(moment(newArticle.articleEndDate, formatMoments))){
@@ -42,20 +50,23 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
         }else if((moment(newArticle.articleEndDate, formatMoments)).isAfter(moment(newArticle.articleStartDate, formatMoments).add(31, 'day'))){
             setMsgModal("La durée maximale d'une notification est d'1 mois. \n Merci de bien vouloir modifier les dates.")
             setModalVisible(true)
+        }else if(newArticle.isEvent && moment(newArticle.articleDateEvent, formatMoments).isBefore(moment(newArticle.articleStartDate, formatMoments))){
+            setMsgModal("La date de l'évenèment est avant la date de début de notification.\n Merci de bien vouloir modifier les dates.")
+            setModalVisible(true)
         }else{
             dispatch(createArticle(newArticle));
             setNewArticle(initialArticle);
-            navigation.goBack();
+            navigation.navigate("Liste Article");
         } 
     }
 
     const changeCategories = (type) => {
-        const value = newArticle.articleCategories.some(t => t._id === type._id);
-        
+        const value = newArticle.articleCategories.some(t => t === type._id);
         handleChange({
           name: 'articleCategories',
-          value: value ? newArticle.articleCategories.filter(t => t._id !== type._id) : [...newArticle.articleCategories, type]
+          value: value ? newArticle.articleCategories.filter(t => t !== type._id) : [...newArticle.articleCategories, type._id]
         })
+        
     }
     console.log(listType)
 
@@ -103,7 +114,7 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
                 <CheckBox
                     key={t._id}
                     title={t.nameType}
-                    checked={newArticle.articleCategories.some(type => t._id === type._id)}
+                    checked={newArticle.articleCategories.some(type => t._id === type)}
                     onPress={() => changeCategories(t)}
                 />)
 
@@ -114,7 +125,7 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
                 mode="date" // The enum of date, datetime and time
                 placeholder="select date"
                 format="DD-MM-YYYY"
-                minDate={moment().toDate()}
+                minDate={moment()}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
                 customStyles={{
@@ -132,12 +143,49 @@ const DuplicateArticleScreen = ({ navigation, route}) => {
                 useNativeDriver='false'
                 onDateChange={(evt) => handleChange({name: "articleStartDate", value: moment(evt,formatMoments).toDate()})}
             />
+            <CheckBox
+                    title="evenement"
+                    checked={newArticle.isEvent}
+                    onPress={() => toggleIsEvent()}
+                />
+
+        {
+            newArticle.isEvent &&
+            <View>
+            <Text>Date Event</Text>
+            <DatePicker
+
+                date={ moment(newArticle.articleDateEvent, formatMoments).toDate()} // Initial date from state
+                mode="date" // The enum of date, datetime and time
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                minDate={moment(moment(newArticle.articleStartDate, formatMoments).add(-1, 'day').toDate())}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
+                customStyles={{
+                    dateIcon: {
+                    //display: 'none',
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                    },
+                    dateInput: {
+                    marginLeft: 36,
+                    },
+                }}
+
+                onDateChange={(date) => handleChange({name: "articleDateEvent", value: moment(date,formatMoments).toDate()})}
+            />
+            </View>
+      }
+            
             <Text>Date de fin</Text>
             <DatePicker
 
                 date={moment(newArticle.articleEndDate, formatMoments).toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
-                
                 placeholder="select date"
                 format="DD-MM-YYYY"
                 minDate={moment(newArticle.articleStartDate, formatMoments).add(1, 'day').toDate()}
@@ -222,4 +270,4 @@ const styles = StyleSheet.create({
   });
   
 
-export default  DuplicateArticleScreen;
+export default DuplicateArticleScreen;

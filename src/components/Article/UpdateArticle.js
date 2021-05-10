@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Input, CheckBox} from 'react-native-elements';
+import { Button, Input, CheckBox, Card, Text} from 'react-native-elements';
 import {useDispatch, useSelector} from "react-redux";
-import { View, Text, Modal, Pressable, StyleSheet} from 'react-native';
+import { View, Modal, StyleSheet, Pressable} from 'react-native';
 import {updateArticle} from "../../actions/ArticleActions";
 import {getAllTypes} from "../../actions/TypeArticleActions";
 import DatePicker from 'react-native-datepicker';
@@ -10,49 +10,59 @@ import moment from 'moment';
 import formatMoments from '../formatMoments';
 moment.updateLocale('fr');
 
-const UpdateArticleScreen = ({ navigation, route}) => {
+const updateArticleScreen = ({ navigation, route }) => {
+    
     const initialArticle = route.params.article;
-    console.log(initialArticle)
-    const [articleUpdate, setArticleUpdate] = useState(initialArticle);
+    const [updArticle, setUpdArticle] = useState(initialArticle);
     const [modalVisible, setModalVisible] = useState(false);
     const [msgModal, setMsgModal] = useState("");
     const dispatch = useDispatch();
     const list = useSelector(state => state.TypeArticle);
     const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
     const [addLocalisation, setLocalisation] = useState(articleUpdate.articleLocalisation);
+/*
 
     if (listType.length === 0 ){
         dispatch(getAllTypes());
         setListType(useSelector(state => state.TypeArticle))
     }
-
+ */   
     const handleChange = (evt) => {
         const { name, value } = evt;
-        setArticleUpdate({...articleUpdate, [name]: value});
+        setUpdArticle({...updArticle, [name]: value});
     }
 
-    const changeCategories = (type) => {
-        const value = articleUpdate.articleCategories.some(t => t._id === type._id);
-        
-        handleChange({
-          name: 'articleCategories',
-          value: value ? articleUpdate.articleCategories.filter(t => t._id !== type._id) : [...articleUpdate.articleCategories, type]
-        })
+    const toggleIsEvent = () =>{
+        const value = updArticle.isEvent ? false : true;
+        setUpdArticle({...updArticle, ["isEvent"]: value});
     }
+
 
     const handleUpdate = () => {
         console.log("saveArticle : ", articleUpdate);
-        console.log(moment(articleUpdate.articleStartDate, formatMoments), moment(articleUpdate.articleEndDate, formatMoments))
         if(moment(articleUpdate.articleStartDate, formatMoments).isAfter(moment(articleUpdate.articleEndDate, formatMoments))){
             setMsgModal("La date de début est après la date de fin de notification.\n Merci de bien vouloir modifier les dates. ")
             setModalVisible(true)
         }else if(moment(articleUpdate.articleEndDate, formatMoments).isAfter(moment(articleUpdate.articleStartDate, formatMoments).add(31, 'day'))){
             setMsgModal("La durée maximale d'une notification est d'1 mois. \n Merci de bien vouloir modifier les dates.")
             setModalVisible(true)
+        }else if(updArticle.isEvent && moment(updArticle.articleDateEvent).isBefore(moment(updArticle.articleStartDate))){
+            setMsgModal("La date de l'évènement est avant la date de début de notification.\n Merci de bien vouloir modifier les dates. ")
+            setModalVisible(true)
         }else{
-            dispatch(updateArticle(articleUpdate));
+            dispatch(updateArticle(updArticle));
+            setUpdArticle(initialArticle);
             navigation.goBack();
         } 
+    }
+
+    const changeCategories = (type) => {
+        const value = updArticle.articleCategories.some(t => t === type._id);
+        handleChange({
+          name: 'articleCategories',
+          value: value ? updArticle.articleCategories.filter(t => t !== type._id) : [...updArticle.articleCategories, type._id]
+        })
+        
     }
 
     return (
@@ -78,20 +88,20 @@ const UpdateArticleScreen = ({ navigation, route}) => {
                     </View>
                 </View>
             </Modal>
-
+            <Card>
             <Input
                 placeholder="Titre"
-                value={articleUpdate.articleTitle}
+                value={updArticle.articleTitle}
                 onChangeText={(evt) => handleChange({name: "articleTitle", value: evt})}
             />
             <Input
                 placeholder="Description"
-                value={articleUpdate.articleDescription}
+                value={updArticle.articleDescription}
                 onChangeText={(evt) => handleChange({name: "articleDescription", value: evt})}
             />
             <Input
                 placeholder="Source"
-                value={articleUpdate.articleLink}
+                value={updArticle.articleLink}
                 onChangeText={(evt) => handleChange({name: "articleLink", value: evt})}
             />
             <Text>Catégories concernées :</Text>
@@ -99,7 +109,7 @@ const UpdateArticleScreen = ({ navigation, route}) => {
                 <CheckBox
                     key={t._id}
                     title={t.nameType}
-                    checked={articleUpdate.articleCategories.some(type => t._id === type._id)}
+                    checked={updArticle.articleCategories.some(type => t._id === type)}
                     onPress={() => changeCategories(t)}
                 />)
 
@@ -113,7 +123,7 @@ const UpdateArticleScreen = ({ navigation, route}) => {
                 mode="date" // The enum of date, datetime and time
                 placeholder="select date"
                 format="DD-MM-YYYY"
-                minDate={moment().toDate()}
+                minDate={moment()}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
                 customStyles={{
@@ -131,9 +141,46 @@ const UpdateArticleScreen = ({ navigation, route}) => {
                 useNativeDriver='false'
                 onDateChange={(evt) => handleChange({name: "articleStartDate", value: moment(evt,formatMoments).toDate()})}
             />
-            <Text>Date de fin</Text>
+            <CheckBox
+                    title="evenement"
+                    checked={updArticle.isEvent}
+                    onPress={() => toggleIsEvent()}
+                />
+
+        {
+            updArticle.isEvent &&
+            <View>
+            <Text>Date Event</Text>
             <DatePicker
 
+                date={ moment(updArticle.articleDateEvent,formatMoments).toDate()} // Initial date from state
+                mode="date" // The enum of date, datetime and time
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                minDate={moment(updArticle.articleStartDate, formatMoments).add(-1, 'day').toDate()}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
+                customStyles={{
+                    dateIcon: {
+                    //display: 'none',
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                    },
+                    dateInput: {
+                    marginLeft: 36,
+                    },
+                }}
+
+                onDateChange={(date) => handleChange({name: "articleDateEvent", value: moment(date,formatMoments).toDate()})}
+            />
+            </View>
+      }
+            
+            <Text>Date de fin</Text>
+            <DatePicker
                 date={moment(articleUpdate.articleEndDate, formatMoments).toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
@@ -156,7 +203,7 @@ const UpdateArticleScreen = ({ navigation, route}) => {
                     },
                 }}
 
-                onDateChange={(date) => handleChange({name: "articleEndDate", value: moment(date,"DD-MM-YYYY").toDate()})}
+                onDateChange={(date) => handleChange({name: "articleEndDate", value: moment(date,formatMoments).toDate()})}
             />
             </View>
             <CheckBox
@@ -171,8 +218,8 @@ const UpdateArticleScreen = ({ navigation, route}) => {
                 </View>
             }
             
-            <Button title="Sauvegarder" onPress={handleUpdate} />
-
+            <Button title="Sauvegarder" onPress={handleSave} />
+            </Card>
         </View>
     );
 };
@@ -220,5 +267,6 @@ const styles = StyleSheet.create({
       textAlign: "center"
     },
   });
+  
 
-export default  UpdateArticleScreen;
+export default updateArticleScreen;
