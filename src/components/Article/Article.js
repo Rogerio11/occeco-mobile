@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { View} from 'react-native';
 import DeleteArticle from "./DeleteArticle";
 import moment from 'moment';
+import MapViewScreen from '../User/MapView'
 
 moment.updateLocale('fr');
 const ArticleScreen = ({ navigation, route}) => {
@@ -25,7 +26,11 @@ const ArticleScreen = ({ navigation, route}) => {
             <Text>{moment(article.articleStartDate).format('DD-MM-YYYY')} - {moment(article.articleEndDate).format('DD-MM-YYYY')}</Text>
             <Text>Description : {article.articleDescription}</Text>
             <Text>Lien : {article.articleLink}</Text>
+            {
+                article.articleLocalisation && <MapViewScreen localisation={article.articleLocalisation}/>
+            }
             
+
             {deleteArticle &&  <DeleteArticle handleClose={() => setDeleteArticle(false)} idArticle={idArticleDelete}/> }
 
             {
@@ -50,10 +55,13 @@ const ArticleScreen = ({ navigation, route}) => {
                       visible={true}
                       icon={{ name: 'delete', color: 'white' }}
                       buttonStyle={{backgroundColor:'red'}}
-                      onPress={() => handleDelete(article._id)}
+                      onPress={() => navigation.push('Delete Article', {idArticle: article._id, handleClose:() => setDeleteArticle(false) })}
                   />
                   </View>
             }
+            
+            
+            
             </Card>
         </View>
     );

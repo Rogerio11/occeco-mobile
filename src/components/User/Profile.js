@@ -16,13 +16,14 @@ function ProfileScreen({ navigation }) {
     navigation.navigate('Accueil')
   }
   console.log(user.user.user)
+  const position = user.user.user.userLocalisation || [43.608294, 3.879343]
   return (
     <Card containerStyle={{ width: '99%', height: '99%' }}>
 
       <Text h3>Mon Compte</Text>
 
       <Divider /><Divider />
-      {/* <Text><Ionicons name="mail" size="large" /> {user.user.accountMail}</Text> */}
+    <Icon name="mail" size="large" type="ionicon" /><Text> {user.user.accountMail}</Text> 
       <Divider />
 
       <Text>Catégories choisies : </Text>
@@ -49,7 +50,7 @@ function ProfileScreen({ navigation }) {
 
       <Divider />
 
-      {/* <Text><Ionicons name="locate" size="large" />  {user.user.user && user.user.user.userDistance} km</Text> */}
+    <Icon name="locate" size="large" type="ionicon"/><Text>{user.user.user && user.user.user.userDistance} km</Text> 
 
       <Divider />
 
@@ -58,10 +59,11 @@ function ProfileScreen({ navigation }) {
       {user.user.accountType === "admin" &&
         <Text> Vous êtes Administrateur</Text>}
 
-
-      {/* <MapViewScreen /> */}
-
       <Divider /><Divider />
+      <View style={{width:'100%', height:'30%'}}>
+        <MapViewScreen />
+      </View>
+      
       <View style={{ flexDirection: "row" }}>
         <Button style={{ minWidth: '50%' }} title="Modifier" onPress={() => navigation.push('UpdateAccount')} />
         <Text> </Text>

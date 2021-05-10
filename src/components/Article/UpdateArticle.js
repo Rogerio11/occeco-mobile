@@ -5,7 +5,9 @@ import { View, Text, Modal, Pressable, StyleSheet} from 'react-native';
 import {updateArticle} from "../../actions/ArticleActions";
 import {getAllTypes} from "../../actions/TypeArticleActions";
 import DatePicker from 'react-native-datepicker';
+import MapViewScreen from '../User/MapView'
 import moment from 'moment';
+import formatMoments from '../formatMoments';
 moment.updateLocale('fr');
 
 const UpdateArticleScreen = ({ navigation, route}) => {
@@ -17,6 +19,7 @@ const UpdateArticleScreen = ({ navigation, route}) => {
     const dispatch = useDispatch();
     const list = useSelector(state => state.TypeArticle);
     const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
+    const [addLocalisation, setLocalisation] = useState(articleUpdate.articleLocalisation);
 
     if (listType.length === 0 ){
         dispatch(getAllTypes());
@@ -39,12 +42,12 @@ const UpdateArticleScreen = ({ navigation, route}) => {
 
     const handleUpdate = () => {
         console.log("saveArticle : ", articleUpdate);
-        
-        if(moment(articleUpdate.articleStartDate, 'DD-MM-YYYY').isAfter(moment(articleUpdate.articleEndDate, 'DD-MM-YYYY'))){
-            setMsgModal("date d'entrée superieur à date finale")
+        console.log(moment(articleUpdate.articleStartDate, formatMoments), moment(articleUpdate.articleEndDate, formatMoments))
+        if(moment(articleUpdate.articleStartDate, formatMoments).isAfter(moment(articleUpdate.articleEndDate, formatMoments))){
+            setMsgModal("La date de début est après la date de fin de notification.\n Merci de bien vouloir modifier les dates. ")
             setModalVisible(true)
-        }else if((moment(articleUpdate.articleEndDate, 'DD-MM-YYYY')).isAfter(moment(articleUpdate.articleStartDate, 'DD-MM-YYYY').add(31, 'day'))){
-            setMsgModal("date finale superieur à date d'entrée + 31")
+        }else if(moment(articleUpdate.articleEndDate, formatMoments).isAfter(moment(articleUpdate.articleStartDate, formatMoments).add(31, 'day'))){
+            setMsgModal("La durée maximale d'une notification est d'1 mois. \n Merci de bien vouloir modifier les dates.")
             setModalVisible(true)
         }else{
             dispatch(updateArticle(articleUpdate));
@@ -101,9 +104,12 @@ const UpdateArticleScreen = ({ navigation, route}) => {
                 />)
 
             }
+            <View style={{flexDirection:'row'}}>
+
+            
             <Text>Date de début</Text>
             <DatePicker
-                date={moment(articleUpdate.articleStartDate,["DD-MM-YYYY","YYYY-MM-DDTHH:mm:ss.ZZZZ"]).toDate()} // Initial date from state
+                date={moment(articleUpdate.articleStartDate,formatMoments).toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 placeholder="select date"
                 format="DD-MM-YYYY"
@@ -123,18 +129,18 @@ const UpdateArticleScreen = ({ navigation, route}) => {
                     },
                 }}
                 useNativeDriver='false'
-                onDateChange={(evt) => handleChange({name: "articleStartDate", value: moment(evt,"DD-MM-YYYY").toDate()})}
+                onDateChange={(evt) => handleChange({name: "articleStartDate", value: moment(evt,formatMoments).toDate()})}
             />
             <Text>Date de fin</Text>
             <DatePicker
 
-                date={moment(articleUpdate.articleEndDate, ["DD-MM-YYYY","YYYY-MM-DDTHH:mm:ss.ZZZZ"]).toDate()} // Initial date from state
+                date={moment(articleUpdate.articleEndDate, formatMoments).toDate()} // Initial date from state
                 mode="date" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 placeholder="select date"
                 format="DD-MM-YYYY"
-                minDate={moment(articleUpdate.articleStartDate, "DD-MM-YYYY").add(1, 'day').toDate()}
-                maxDate={moment(articleUpdate.articleStartDate, "DD-MM-YYYY").add(31, 'day').toDate()}
+                minDate={moment(articleUpdate.articleStartDate, formatMoments).add(1, 'day').toDate()}
+                maxDate={moment(articleUpdate.articleStartDate, formatMoments).add(31, 'day').toDate()}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
                 customStyles={{
@@ -152,6 +158,18 @@ const UpdateArticleScreen = ({ navigation, route}) => {
 
                 onDateChange={(date) => handleChange({name: "articleEndDate", value: moment(date,"DD-MM-YYYY").toDate()})}
             />
+            </View>
+            <CheckBox
+                title="Ajouter localisation ?"
+                checked={addLocalisation}
+                onPress={() => setLocalisation(!addLocalisation)}
+            />
+            {
+                addLocalisation && 
+                <View style={{width:'100%', height:'50%'}}>
+                    <MapViewScreen changeLocalisation={(evt) => handleChange({name:'articleLocalisation', value: evt})} localisation={articleUpdate.articleLocalisation ? {lat: articleUpdate.articleLocalisation.lat, lng:articleUpdate.articleLocalisation.lng} : null}/>
+                </View>
+            }
             
             <Button title="Sauvegarder" onPress={handleUpdate} />
 

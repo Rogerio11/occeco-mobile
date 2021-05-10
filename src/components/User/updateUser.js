@@ -6,6 +6,7 @@ import { Card, Input, Button, Slider, Text, useTheme, Icon, CheckBox } from 'rea
 import { wrongInputsAlert } from "../Utils/Alerts";
 import {getAllTypes} from "../../actions/TypeArticleActions";
 import DropDownPicker from 'react-native-dropdown-picker';
+import MapView, { Marker, Circle } from 'react-native-maps';
 
 
 function UpdateUserScreen({ navigation }) {
@@ -17,12 +18,13 @@ function UpdateUserScreen({ navigation }) {
   const position = user.user.user.userLocalisation || [43.608294, 3.879343]
   const [pos, setPos] = useState(position)
   const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
-
+  const [delta, setDelta] = useState({lat:0.01, lng:0.01})
+/*
   if (listType.length === 0 ){
     dispatch(getAllTypes());
     setListType(useSelector(state => state.TypeArticle))
   }
-
+*/
   const tryUpdate = () => {
     console.log("tryUpdate", userUpdated)
     dispatch(updateUser(userUpdated));
@@ -43,23 +45,13 @@ function UpdateUserScreen({ navigation }) {
       value: value ? userUpdated.userCategories.filter(t => t._id !== type._id) : [...userUpdated.userCategories, type]
     })
   }
-  function ChangePositionMap() {
-    const map = useMapEvent('drag', () => {
-      setPos(map.getCenter())
-      setUserUpdated({ ...userUpdated, userLocalisation: { ...pos } })
-    })
-
-    return (
-      <Marker position={pos} >
-        <Circle center={pos} radius={userUpdated.userDistance * 1000} />
-      </Marker>
-    )
+  const changePosition = (evt) => {
+    setUserUpdated({ ...userUpdated, userLocalisation: { lat: evt.latitude, lng: evt.longitude}})
+    setDelta({lat: evt.latitudeDelta, lng: evt.longitudeDelta})
   }
 
   return (
-    <Card>
-      
-
+    <Card containerStyle={{width:'99%', height:'99%'}}>
         <Text>Distance : {userUpdated.userDistance} km</Text>
         <Slider
           value={userUpdated.userDistance}
@@ -71,17 +63,38 @@ function UpdateUserScreen({ navigation }) {
         />
 
         <Text>Adresse : </Text>
-
-       
+        <View style={{width:'100%', height:'50%'}}>
+        <MapView
+          style={{flex:1}}
+          region={{
+              latitude: userUpdated.userLocalisation.lat,
+              longitude: userUpdated.userLocalisation.lng,
+              latitudeDelta: delta.lat,
+              longitudeDelta: delta.lng
+          }}
+          onRegionChange={changePosition}
+        >
+          <Marker 
+            coordinate={{ latitude : userUpdated.userLocalisation.lat , longitude : userUpdated.userLocalisation.lng }}
+          />
+          <Circle 
+              center={{ latitude : userUpdated.userLocalisation.lat , longitude : userUpdated.userLocalisation.lng }} 
+              radius={userUpdated.userDistance*1000} 
+              fillColor={"rgba(137,209,254,.4)"}
+            />
+          
+        </MapView>
+        </View>
         <Text>Catégories : </Text>
-        {listType.map(t =>
+        {/*
+        listType.map(t =>
           <CheckBox
             key={t._id}
             title={t.nameType}
             checked={userUpdated.userCategories.some(type => t._id === type._id)}
             onPress={() => changeCategories(t)}
           />)
-
+          */
         }
 
         <Button title="Modifier" onPress={tryUpdate} />

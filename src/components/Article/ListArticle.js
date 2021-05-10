@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import { View, FlatList, TouchableHighlight } from 'react-native';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector, connect} from "react-redux";
 import {getAllArticles} from "../../actions/ArticleActions";
 import { Text, Icon, Card, SpeedDial, useTheme } from 'react-native-elements';
 
@@ -13,20 +13,26 @@ function ListArticleScreen({ navigation }) {
   const [listArticle, setListArticle] = useState(Array.isArray(list.articles) ? list.articles : []);
   const [open, setOpen] = useState(false);
   const { theme } = useTheme();
-
-  if (listArticle.length === 0 ){
-    dispatch(getAllArticles());
-    setListArticle(useSelector(state => state.Article))
-  }
+  /*
+  React.useEffect(() => {
+    if (!Array.isArray(listArticle) || listArticle.length === 0 ){
+      dispatch(getAllArticles());
+      
+    }
+  })
+  */
+  
+  
   console.log(listArticle)
 
   return (
     
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Card containerStyle={{width: '100%', height:'100%'}}>
+      <View style={{width: '100%', minHeight:'97%'}}>
         {
           listArticle.length === 0
-          ? <View style={{width: '100%', height:'97%'}}>
+          ? <View style={{width: '100%', minHeight:'97%'}}>
               <Text>Pas d'articles à afficher</Text>
             </View>
           :
@@ -52,13 +58,13 @@ function ListArticleScreen({ navigation }) {
             />
           </View>
       }
-
+</View>
       {
         user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
-        <View style={{width: '100%', height:'3%'}}>
+        <View style={{width: '100%', minHeight:'3%'}}>
           <SpeedDial
             isOpen={open}
-            icon={{ name: 'edit', color: 'white' }}
+            icon={{ name: 'add', color: 'white' }}
             openIcon={{ name: 'close', color: 'white' }}
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
@@ -86,4 +92,5 @@ function ListArticleScreen({ navigation }) {
   );
 }
 
-export default ListArticleScreen;
+const mapStateToProps = (state) => state
+export default connect(mapStateToProps)(ListArticleScreen);

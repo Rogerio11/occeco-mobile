@@ -1,12 +1,12 @@
 import React from 'react';
-import { Button, Overlay, Input, Icon } from 'react-native-elements';
+import { Button, Overlay, Text, Divider } from 'react-native-elements';
 import {useDispatch} from "react-redux";
 import { View} from 'react-native';
 import {deleteArticle} from "../../actions/ArticleActions";
 
 
-const DeleteArticle = ({handleClose, idArticle}) => {
-    
+const DeleteArticle = ({navigation, route }) => {
+    const { handleClose, idArticle } = route.params
     const dispatch = useDispatch();
 
     console.log("Je suis rentré dans le delete")
@@ -20,15 +20,22 @@ const DeleteArticle = ({handleClose, idArticle}) => {
         console.log(idArticle)
         dispatch(deleteArticle(idArticle));
         handleClose()
+        navigation.navigate('Liste Article')
     }
 
 
     return (
         <View>
-            <Overlay isVisible={true} onBackdropPress={handleClose}>
+            <Overlay isVisible={true} onBackdropPress={handleClose} style={{ minWidth: '50%' }}>
+            <Text h4>Voulez-vous vraiment supprimer cet article ?</Text>
+            <Divider />
+            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                <Button title="Oui" onPress={handleOui} style={{ minWidth: '48%' }}/>
+                
+                <Button title="Non" onPress={handleNon} style={{ minWidth: '48%' }}/>
+                
+            </View>
             
-            <Button title="Non" onPress={handleNon} />
-            <Button title="Oui" onPress={handleOui} />
             </Overlay>
         </View>
     );
