@@ -26,7 +26,7 @@ export const login = (account) => async dispatch => {
 export const updateUser = (user) => async dispatch => {
     // console.log("UserActions - updateUser = ", user);
     try {
-        const res = await axios.patch(`${servURL}/updateUser`, user, { headers: await authHeader() });
+        const res = await axios.patch(`${servURL}/user/updateUser`, user, { headers: await authHeader() });
         console.log(res.data)
 
         dispatch({
