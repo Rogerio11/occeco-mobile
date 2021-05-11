@@ -19,7 +19,7 @@ const updateArticleScreen = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const list = useSelector(state => state.TypeArticle);
     const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
-    const [addLocalisation, setLocalisation] = useState(articleUpdate.articleLocalisation);
+    const [addLocalisation, setLocalisation] = useState(updArticle.articleLocalisation);
 /*
 
     if (listType.length === 0 ){
@@ -34,16 +34,16 @@ const updateArticleScreen = ({ navigation, route }) => {
 
     const toggleIsEvent = () =>{
         const value = updArticle.isEvent ? false : true;
-        setUpdArticle({...updArticle, ["isEvent"]: value});
+        setUpdArticle({...updArticle, "isEvent": value});
     }
 
 
     const handleUpdate = () => {
-        console.log("saveArticle : ", articleUpdate);
-        if(moment(articleUpdate.articleStartDate, formatMoments).isAfter(moment(articleUpdate.articleEndDate, formatMoments))){
+        console.log("saveArticle : ", updArticle);
+        if(moment(updArticle.articleStartDate, formatMoments).isAfter(moment(updArticle.articleEndDate, formatMoments))){
             setMsgModal("La date de début est après la date de fin de notification.\n Merci de bien vouloir modifier les dates. ")
             setModalVisible(true)
-        }else if(moment(articleUpdate.articleEndDate, formatMoments).isAfter(moment(articleUpdate.articleStartDate, formatMoments).add(31, 'day'))){
+        }else if(moment(updArticle.articleEndDate, formatMoments).isAfter(moment(updArticle.articleStartDate, formatMoments).add(31, 'day'))){
             setMsgModal("La durée maximale d'une notification est d'1 mois. \n Merci de bien vouloir modifier les dates.")
             setModalVisible(true)
         }else if(updArticle.isEvent && moment(updArticle.articleDateEvent).isBefore(moment(updArticle.articleStartDate))){
@@ -114,15 +114,17 @@ const updateArticleScreen = ({ navigation, route }) => {
                 />)
 
             }
+
+        <Text>Dates de parution</Text>
             <View style={{flexDirection:'row'}}>
 
             
-            <Text>Date de début</Text>
+            <Text>Du </Text>
             <DatePicker
-                date={moment(articleUpdate.articleStartDate,formatMoments).toDate()} // Initial date from state
-                mode="date" // The enum of date, datetime and time
+                date={moment(updArticle.articleStartDate,formatMoments).toDate()} // Initial date from state
+                mode="datetime" // The enum of date, datetime and time
                 placeholder="select date"
-                format="DD-MM-YYYY"
+                format="DD-MM-YYYY HH:mm"
                 minDate={moment()}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
@@ -141,53 +143,16 @@ const updateArticleScreen = ({ navigation, route }) => {
                 useNativeDriver='false'
                 onDateChange={(evt) => handleChange({name: "articleStartDate", value: moment(evt,formatMoments).toDate()})}
             />
-            <CheckBox
-                    title="evenement"
-                    checked={updArticle.isEvent}
-                    onPress={() => toggleIsEvent()}
-                />
-
-        {
-            updArticle.isEvent &&
-            <View>
-            <Text>Date Event</Text>
-            <DatePicker
-
-                date={ moment(updArticle.articleDateEvent,formatMoments).toDate()} // Initial date from state
-                mode="date" // The enum of date, datetime and time
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                placeholder="select date"
-                format="DD-MM-YYYY"
-                minDate={moment(updArticle.articleStartDate, formatMoments).add(-1, 'day').toDate()}
-                confirmBtnText="Valider"
-                cancelBtnText="Annuler"
-                customStyles={{
-                    dateIcon: {
-                    //display: 'none',
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0,
-                    },
-                    dateInput: {
-                    marginLeft: 36,
-                    },
-                }}
-
-                onDateChange={(date) => handleChange({name: "articleDateEvent", value: moment(date,formatMoments).toDate()})}
-            />
-            </View>
-      }
             
-            <Text>Date de fin</Text>
+            <Text> au </Text>
             <DatePicker
-                date={moment(articleUpdate.articleEndDate, formatMoments).toDate()} // Initial date from state
-                mode="date" // The enum of date, datetime and time
+                date={moment(updArticle.articleEndDate, formatMoments).toDate()} // Initial date from state
+                mode="datetime" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 placeholder="select date"
-                format="DD-MM-YYYY"
-                minDate={moment(articleUpdate.articleStartDate, formatMoments).add(1, 'day').toDate()}
-                maxDate={moment(articleUpdate.articleStartDate, formatMoments).add(31, 'day').toDate()}
+                format="DD-MM-YYYY HH:mm"
+                minDate={moment(updArticle.articleStartDate, formatMoments).add(1, 'day').toDate()}
+                maxDate={moment(updArticle.articleStartDate, formatMoments).add(31, 'day').toDate()}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
                 customStyles={{
@@ -207,6 +172,43 @@ const updateArticleScreen = ({ navigation, route }) => {
             />
             </View>
             <CheckBox
+                    title="Est-ce un évènement ?"
+                    checked={updArticle.isEvent}
+                    onPress={() => toggleIsEvent()}
+                />
+
+        {
+            updArticle.isEvent &&
+            <View>
+            <Text>Date Event</Text>
+            <DatePicker
+
+                date={ moment(updArticle.articleDateEvent,formatMoments).toDate()} // Initial date from state
+                mode="datetime" // The enum of date, datetime and time
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                placeholder="select date"
+                format="DD-MM-YYYY HH:mm"
+                minDate={moment(updArticle.articleStartDate, formatMoments).toDate()}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
+                customStyles={{
+                    dateIcon: {
+                    //display: 'none',
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                    },
+                    dateInput: {
+                    marginLeft: 36,
+                    },
+                }}
+
+                onDateChange={(date) => handleChange({name: "articleDateEvent", value: moment(date,formatMoments).toDate()})}
+            />
+            </View>
+      }
+            <CheckBox
                 title="Ajouter localisation ?"
                 checked={addLocalisation}
                 onPress={() => setLocalisation(!addLocalisation)}
@@ -218,7 +220,7 @@ const updateArticleScreen = ({ navigation, route }) => {
                 </View>
             }
             
-            <Button title="Sauvegarder" onPress={handleSave} />
+            <Button title="Sauvegarder" onPress={handleUpdate} />
             </Card>
         </View>
     );

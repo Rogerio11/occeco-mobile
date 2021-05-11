@@ -122,9 +122,9 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
             <Text>Date de début</Text>
             <DatePicker
                 date={moment(newArticle.articleStartDate, formatMoments).toDate()} // Initial date from state
-                mode="date" // The enum of date, datetime and time
+                mode="datetime" // The enum of date, datetime and time
                 placeholder="select date"
-                format="DD-MM-YYYY"
+                format="DD-MM-YYYY HH:mm"
                 minDate={moment()}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
@@ -144,7 +144,7 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
                 onDateChange={(evt) => handleChange({name: "articleStartDate", value: moment(evt,formatMoments).toDate()})}
             />
             <CheckBox
-                    title="evenement"
+                    title="Est-ce un évènement ?"
                     checked={newArticle.isEvent}
                     onPress={() => toggleIsEvent()}
                 />
@@ -156,10 +156,10 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
             <DatePicker
 
                 date={ moment(newArticle.articleDateEvent, formatMoments).toDate()} // Initial date from state
-                mode="date" // The enum of date, datetime and time
+                mode="datetime" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 placeholder="select date"
-                format="DD-MM-YYYY"
+                format="DD-MM-YYYY HH:mm"
                 minDate={moment(moment(newArticle.articleStartDate, formatMoments).add(-1, 'day').toDate())}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
@@ -185,9 +185,9 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
             <DatePicker
 
                 date={moment(newArticle.articleEndDate, formatMoments).toDate()} // Initial date from state
-                mode="date" // The enum of date, datetime and time
+                mode="datetime" // The enum of date, datetime and time
                 placeholder="select date"
-                format="DD-MM-YYYY"
+                format="DD-MM-YYYY HH:mm"
                 minDate={moment(newArticle.articleStartDate, formatMoments).add(1, 'day').toDate()}
                 maxDate={moment(newArticle.articleStartDate, formatMoments).add(31, 'day').toDate()}
                 confirmBtnText="Valider"
