@@ -1,3 +1,3 @@
-const formatMoments = ["DD-MM-YYYY","YYYY-MM-DDTHH:mm:ss.ZZZZ", "DD-MM-YYYY HH:mm"];
+const formatMoments = ["YYYY-MM-DDTHH:mm:ss.Z", "DD-MM-YYYY HH:mm"];
 
 export default formatMoments;

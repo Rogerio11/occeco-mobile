@@ -15,10 +15,12 @@ function ListArticleScreen({ navigation }) {
   const { theme } = useTheme();
   /*
   React.useEffect(() => {
+    */
     if (!Array.isArray(listArticle) || listArticle.length === 0 ){
       dispatch(getAllArticles());
       
     }
+    /*
   })
   */
   
