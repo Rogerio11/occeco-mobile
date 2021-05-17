@@ -13,16 +13,12 @@ function ListArticleScreen({ navigation }) {
   const [listArticle, setListArticle] = useState(Array.isArray(list.articles) ? list.articles : []);
   const [open, setOpen] = useState(false);
   const { theme } = useTheme();
-  /*
+  
   React.useEffect(() => {
-    */
     if (!Array.isArray(listArticle) || listArticle.length === 0 ){
       dispatch(getAllArticles());
-      
     }
-    /*
-  })
-  */
+  }, [])
   
   
   console.log(listArticle)
@@ -71,8 +67,8 @@ function ListArticleScreen({ navigation }) {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             buttonStyle={{backgroundColor:'green', position:'relative'}}
+            >
             
-          >
             <SpeedDial.Action
               icon={{ name: 'add', color: 'white' }}
               title="Nouvel article"
