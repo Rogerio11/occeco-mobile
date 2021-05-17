@@ -13,6 +13,7 @@ const DeleteArticle = ({navigation, route }) => {
     const handleNon = () => {
         console.log("Je suis dans le Non")
         handleClose()
+        navigation.goBack()
     }
 
     const handleOui = () => {

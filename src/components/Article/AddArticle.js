@@ -16,11 +16,11 @@ const AddArticleScreen = ({ navigation }) => {
         articleTitle: "",
         articleLink: "", 
         articleDescription: "",
-        articleStartDate: moment().set({'hour': 8, 'minutes':0}),
-        articleEndDate: moment().set({'hour': 8, 'minutes':0}).add(1, 'day'),
+        articleStartDate: moment().set({'hour': 8, 'minutes':0}).toDate(),
+        articleEndDate: moment().set({'hour': 8, 'minutes':0}).add(1, 'day').toDate(),
         articleCategories: [], 
         articleLocalisation: null,
-        articleDateEvent: moment().set({'hour': 8, 'minutes':0}),
+        articleDateEvent: moment().set({'hour': 8, 'minutes':0}).toDate(),
         isEvent: false,
 
     }
