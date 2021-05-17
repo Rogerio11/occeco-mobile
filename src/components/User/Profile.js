@@ -23,7 +23,7 @@ function ProfileScreen({ navigation }) {
       <Text h3>Mon Compte</Text>
 
       <Divider /><Divider />
-    <Icon name="mail" size="large" type="ionicon" /><Text> {user.user.accountMail}</Text> 
+      {/* <Icon name="mail" size="large" type="ionicon" /><Text> {user.user.accountMail}</Text> */}
       <Divider />
 
       <Text>Catégories choisies : </Text>
@@ -50,7 +50,7 @@ function ProfileScreen({ navigation }) {
 
       <Divider />
 
-    <Icon name="locate" size="large" type="ionicon"/><Text>{user.user.user && user.user.user.userDistance} km</Text> 
+      {/* <Icon name="locate" size="large" type="ionicon" /><Text>{user.user.user && user.user.user.userDistance} km</Text> */}
 
       <Divider />
 
@@ -60,10 +60,10 @@ function ProfileScreen({ navigation }) {
         <Text> Vous êtes Administrateur</Text>}
 
       <Divider /><Divider />
-      <View style={{width:'100%', height:'30%'}}>
+      <View style={{ width: '100%', height: '30%' }}>
         <MapViewScreen />
       </View>
-      
+
       <View style={{ flexDirection: "row" }}>
         <Button style={{ minWidth: '50%' }} title="Modifier" onPress={() => navigation.push('UpdateAccount')} />
         <Text> </Text>

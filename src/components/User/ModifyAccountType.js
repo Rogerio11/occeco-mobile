@@ -3,7 +3,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { modifyAccountType, searchAccountByMail } from "../../actions/UserActions";
-import { Card, CheckBox, Button, Text, Input, Icon, useTheme } from 'react-native-elements';
+import { Card, CheckBox, Button, Text, Input, Icon, useTheme, Divider } from 'react-native-elements';
 import { wrongInputsAlert } from "../Utils/Alerts";
 
 
@@ -70,10 +70,10 @@ function ModifyAccountType({ navigation }) {
 
             {/* S'affiche uniquement si accountSearched est non nul et correspond au compte recherché*/}
             <Card>
-                {accountSearched && emailToFind == accountSearched.accountMail && <View>
+                {accountSearched && emailToFind.toLowerCase() == accountSearched.accountMail && <View>
                     {(accountSearched.accountType == 'partner' || accountSearched.accountType == 'admin')
-                        ? <Text style={styles.highlightedText}> {accountSearched.accountMail}<br />est un compte partenaire !</Text>
-                        : <Text style={styles.highlightedText}> {accountSearched.accountMail}<br />n'est pas un compte partenaire !</Text>
+                        ? <Text style={styles.highlightedText}> {accountSearched.accountMail}{"\n"}est un compte partenaire !</Text>
+                        : <Text style={styles.highlightedText}> {accountSearched.accountMail}{"\n"}n'est pas un compte partenaire !</Text>
                     }
                     {
                         (accountSearched.accountType === "admin")

@@ -35,7 +35,6 @@ function ListArticleScreen({ navigation }) {
   React.useEffect(() => {
     if (!Array.isArray(listArticle) || listArticle.length === 0 ){
       dispatch(getAllArticles());
-      
     }
   })
   */
@@ -261,8 +260,8 @@ const toggleIsNotEvent = () => {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             buttonStyle={{backgroundColor:'green', position:'relative'}}
+            >
             
-          >
             <SpeedDial.Action
               icon={{ name: 'add', color: 'white' }}
               title="Nouvel article"
