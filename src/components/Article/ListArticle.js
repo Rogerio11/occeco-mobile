@@ -10,17 +10,17 @@ function ListArticleScreen({ navigation }) {
   const user = useSelector(state => state.User)
   const dispatch = useDispatch();
   const list = useSelector(state => state.Article);
-  const [listArticle, setListArticle] = useState(Array.isArray(list.articles) ? list.articles : []);
+  const [listArticle, setListArticle] = useState((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked);
   const [open, setOpen] = useState(false);
   const { theme } = useTheme();
   /*
   React.useEffect(() => {
-    */
-    if (!Array.isArray(listArticle) || listArticle.length === 0 ){
+    
+    if ( (user.user.accountType === "admin" || user.user.accountType === "partner") && (!Array.isArray(listArticle) || listArticle.length === 0 )){
       dispatch(getAllArticles());
       
     }
-    /*
+    
   })
   */
   

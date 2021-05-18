@@ -17,7 +17,7 @@ import DeleteArticleScreen from './Article/DeleteArticle';
 import TypeArticleList from './TypeArticle/TypeArticleList';
 import AddTypeArticle from './TypeArticle/AddTypeArticle';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Icon } from 'react-native-elements';
 import { useSelector } from "react-redux";
 const Stack = createStackNavigator();
 
@@ -72,18 +72,18 @@ const Navigator = () => {
           let iconName;
 
           if (route.name === 'Mon Compte') {
-            iconName = 'ios-person';
+            iconName = 'person';
           } else if (route.name === 'Articles') {
-            iconName = 'ios-list';
+            iconName = 'list';
           } else if (route.name === 'Préférences') {
-            iconName = 'ios-settings';
+            iconName = 'settings';
           }
           else if (route.name === 'Partenaires') {
-            iconName = 'ios-people';
+            iconName = 'people';
           }
 
           // You can return any component that you like here!
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Icon type="ionicons" name={iconName} size={size} color={color} />;
         },
 
       })}
@@ -103,8 +103,12 @@ const Navigator = () => {
         ? <Tab.Screen name="Partenaires" component={ModifyAccountTypeScreen} />
         : <></>
       }
+      { user && user.user 
+        ? <Tab.Screen name="Articles" component={ArticleStackNavigator} />
+        : <></>
+      }
 
-      <Tab.Screen name="Articles" component={ArticleStackNavigator} />
+      
     </Tab.Navigator>
   );
 };

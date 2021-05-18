@@ -15,8 +15,8 @@ function ProfileScreen({ navigation }) {
     dispatch(logout())
     navigation.navigate('Accueil')
   }
-  console.log(user.user.user)
-  const position = user.user.user.userLocalisation || [43.608294, 3.879343]
+  console.log(user)
+  const position = user.user && user.user.user && user.user.user.userLocalisation || [43.608294, 3.879343]
   return (
     <Card containerStyle={{ width: '99%', height: '99%' }}>
 
@@ -61,7 +61,7 @@ function ProfileScreen({ navigation }) {
 
       <Divider /><Divider />
       <View style={{width:'100%', height:'30%'}}>
-        <MapViewScreen />
+        {/* <MapViewScreen /> */}
       </View>
       
       <View style={{ flexDirection: "row" }}>

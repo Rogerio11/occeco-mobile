@@ -67,18 +67,18 @@ function UpdateUserScreen({ navigation }) {
         <MapView
           style={{flex:1}}
           region={{
-              latitude: userUpdated.userLocalisation.lat,
-              longitude: userUpdated.userLocalisation.lng,
+              latitude: userUpdated.userLocalisation && userUpdated.userLocalisation.lat,
+              longitude: userUpdated.userLocalisation && userUpdated.userLocalisation.lng,
               latitudeDelta: delta.lat,
               longitudeDelta: delta.lng
           }}
           onRegionChange={changePosition}
         >
           <Marker 
-            coordinate={{ latitude : userUpdated.userLocalisation.lat , longitude : userUpdated.userLocalisation.lng }}
+            coordinate={{ latitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lat , longitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lng }}
           />
           <Circle 
-              center={{ latitude : userUpdated.userLocalisation.lat , longitude : userUpdated.userLocalisation.lng }} 
+              center={{ latitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lat , longitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lng }} 
               radius={userUpdated.userDistance*1000} 
               fillColor={"rgba(137,209,254,.4)"}
             />
@@ -86,15 +86,16 @@ function UpdateUserScreen({ navigation }) {
         </MapView>
         </View>
         <Text>Catégories : </Text>
-        {/*
-        listType.map(t =>
-          <CheckBox
-            key={t._id}
-            title={t.nameType}
-            checked={userUpdated.userCategories.some(type => t._id === type._id)}
-            onPress={() => changeCategories(t)}
-          />)
-          */
+        {
+          listType.map(t =>
+            <CheckBox
+              key={t._id}
+              title={t.nameType}
+              checked={userUpdated.userCategories.some(type => t._id === type._id)}
+              onPress={() => changeCategories(t)}
+            />
+          )
+          
         }
 
         <Button title="Modifier" onPress={tryUpdate} />
