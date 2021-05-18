@@ -68,11 +68,13 @@ const toggleIsAllTypeSelected = () => {
     setShowEventCheckbox(true)
     setShowNotEventCheckbox(true)
     setIsEvent(true)
+    setIsNotEvent(true)
   }else{
     setShowUserCheckbox(false)
     setShowEventCheckbox(false)
     setShowNotEventCheckbox(false)
     setIsEvent(false)
+    setIsNotEvent(false)
   }
   setIsAllTypeSelected(!isAllTypeSelected)
 }
