@@ -11,6 +11,7 @@ function EnableNotificationsScreen({ navigation }) {
     const dispatch = useDispatch();
     const user = useSelector(state => state.User.user)
     const errorAddPushToken = useSelector(state => state.User.errorAddPushToken);
+    const { theme } = useTheme();
 
     React.useEffect(() => {
         if (errorAddPushToken) {

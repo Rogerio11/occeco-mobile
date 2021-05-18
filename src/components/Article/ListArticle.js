@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
 
-import { View, FlatList, TouchableHighlight } from 'react-native';
+import { View, FlatList, TouchableHighlight, StyleSheet} from 'react-native';
 import {useDispatch, useSelector, connect} from "react-redux";
 import {getAllArticles} from "../../actions/ArticleActions";
-import { Text, Icon, Card, SpeedDial, useTheme } from 'react-native-elements';
+import {getAllTypes} from "../../actions/TypeArticleActions";
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
+moment.updateLocale('fr');
+
+
+import { Text, Icon, Card, SpeedDial, useTheme, CheckBox} from 'react-native-elements';
+import { set } from 'react-native-reanimated';
 
 
 function ListArticleScreen({ navigation }) {
@@ -11,23 +18,105 @@ function ListArticleScreen({ navigation }) {
   const dispatch = useDispatch();
   const list = useSelector(state => state.Article);
   const [listArticle, setListArticle] = useState((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked);
+  const listT = useSelector(state => state.TypeArticle);
+  const [listTypeUser, setListTypeUser] = useState(Array.isArray(listT.typesArticle) ? listT.typesArticle : []);
+  const [listAllType, setListAllType] = useState(Array.isArray(listT.typesArticle) ? listT.typesArticle : []);
   const [open, setOpen] = useState(false);
+  const [isEvent, setIsEvent] = useState(false);
+  const [isNotEvent, setIsNotEvent] = useState(true);
+  const [dateDebut, setDateDebut] = useState(moment().add(-40, "day").toDate())
+  const [dateFin, setDateFin] = useState(moment().add(40, "day").toDate())
+  const [isAllTypeSelected, setIsAllTypeSelected] = useState(true)
   const { theme } = useTheme();
+  const [showUserCheckbox, setShowUserCheckbox] = useState(false)
+  const [showEventCheckbox, setShowEventCheckbox] = useState(false)
+  const [showNotEventCheckbox, setShowNotEventCheckbox] = useState(false)
   /*
   React.useEffect(() => {
     
     if ( (user.user.accountType === "admin" || user.user.accountType === "partner") && (!Array.isArray(listArticle) || listArticle.length === 0 )){
       dispatch(getAllArticles());
-      
     }
-    
   })
   */
-  
-  
-  console.log(listArticle)
+ 
+  if (listTypeUser.length === 0 ){
+      dispatch(getAllTypes());
+      setListTypeUser(useSelector(state => state.TypeArticle))
+      setListAllType(useSelector(state => state.TypeArticle))
+  }
 
+const commonType = (listT, art) => {
+  if(!isEvent && !isNotEvent){
+    return false
+  }
+  return listT.some(t => art.articleCategories.some(artT => artT._id == t._id))
+}
+
+const changeCategories = (type) => {
+  
+  const value = listAllType.some(t => t._id === type._id);
+
+  const newListe = value ? listAllType.filter(t => t._id !== type._id) : [...listAllType, type]
+
+  setListAllType(newListe)
+}
+
+
+const toggleIsAllTypeSelected = () => {
+  if(isAllTypeSelected){
+    setShowUserCheckbox(true)
+    setShowEventCheckbox(true)
+    setShowNotEventCheckbox(true)
+    setIsEvent(true)
+  }else{
+    setShowUserCheckbox(false)
+    setShowEventCheckbox(false)
+    setShowNotEventCheckbox(false)
+    setIsEvent(false)
+  }
+  setIsAllTypeSelected(!isAllTypeSelected)
+}
+
+const isNotEventFilter = (article) => {
+
+  return article.isEvent === !isNotEvent
+  
+}
+const isEventFilter = (article) => {
+
+  if(commonType(listAllType, article) && article.isEvent === isEvent )
+
+
+    console.log("%%%%%%%%%%%%%%%%%%%")
+    console.log( "cest un event")
+    console.log(article.articleTitle)
+    console.log(moment(article.articleDateEvent).format('DD-MM-YYYY'))
+    console.log(moment(dateDebut).format('DD-MM-YYYY'))
+    console.log(moment(dateFin).format('DD-MM-YYYY'))
+    console.log(moment(article.articleDateEvent).isAfter(dateDebut))
+    console.log(moment(article.articleDateEvent).isBefore(dateFin))
+    console.log("%%%%%%%%%%%%%%%%%%%")
+  
+
+  
+  return article.isEvent === isEvent// && moment(article.articleDateEvent).isAfter(moment(dateDebut)) && moment(article.articleDateEvent).isBefore(moment(dateFin)) 
+  
+}
+
+const filterListe = (article) => {
+
+  return commonType(listAllType, article) && (isNotEventFilter(article) || isEventFilter(article))
+}
+
+const toggleIsEvent = () => {
+  isEvent ? setIsEvent(false) : setIsEvent(true)
+}
+const toggleIsNotEvent = () => {
+  isNotEvent ? setIsNotEvent(false) : setIsNotEvent(true)
+}
   return (
+    
     
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Card containerStyle={{width: '100%', height:'100%'}}>
@@ -38,9 +127,108 @@ function ListArticleScreen({ navigation }) {
               <Text>Pas d'articles à afficher</Text>
             </View>
           :
-          <View style={{width: '100%', height:'97%'}}>
+          <View style={{ flex: 1}}>
+        <View style={{ flex: 3}}>
+            <CheckBox
+                  title="All"
+                  checked={isAllTypeSelected}
+                  onPress={() => toggleIsAllTypeSelected()}
+            />
+            {
+              showUserCheckbox &&
+              listTypeUser.map(t =>
+                <CheckBox
+                    key={t._id}
+                    title={t.nameType}
+                    checked={listAllType.some(type => t._id === type._id)}
+                    onPress={() => changeCategories(t)}
+                />)
+            }
+            {
+              showNotEventCheckbox &&
+              <CheckBox
+                title="Not évent"
+                checked={isNotEvent}
+                onPress={() => toggleIsNotEvent()}
+              /> }
+            {
+              showEventCheckbox &&
+              <CheckBox
+                title="Evènement"
+                checked={isEvent}
+                onPress={() => toggleIsEvent()}
+              /> }
+
+
+  { 
+    isEvent && 
+    <View style={{flexDirection:'row'}}>
+
+            
+<Text>Du </Text>
+<DatePicker
+
+                date={moment(dateDebut).format('DD-MM-YYYY')} // Initial date from state
+                mode="date" // The enum of date, datetime and time
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
+                customStyles={{
+                    dateIcon: {
+                    //display: 'none',
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                    },
+                    dateInput: {
+                    marginLeft: 36,
+                    },
+                }}
+                useNativeDriver='false'
+                onDateChange={(evt) => setDateDebut(moment(evt,"DD-MM-YYYY"))}
+            />
+
+<Text> au </Text>
+<DatePicker
+
+                date={moment(dateFin).format('DD-MM-YYYY')} // Initial date from state
+                mode="date" // The enum of date, datetime and time
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                minDate={moment(dateDebut).format('DD-MM-YYYY')}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
+                customStyles={{
+                    dateIcon: {
+                    //display: 'none',
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                    },
+                    dateInput: {
+                    marginLeft: 36,
+                    },
+                }}
+                useNativeDriver='false'
+                onDateChange={(evt) => setDateFin(moment(evt,"DD-MM-YYYY"))}
+            />
+</View>
+
+  }
+
+
+          
+            
+        </View>
+        <View style={{ flex: 3, backgroundColor: 'green' }}>
+
             <FlatList
-              data={listArticle}
+              data={isAllTypeSelected ? listArticle : listArticle.filter(function(article) {
+                return filterListe(article)
+              })}
               keyExtractor={(item) => item._id}
               renderItem={({item, index, separators}) => 
               <TouchableHighlight
@@ -58,7 +246,9 @@ function ListArticleScreen({ navigation }) {
               </TouchableHighlight>
               }
             />
-          </View>
+        </View>
+        
+      </View>
       }
 </View>
       {
@@ -71,8 +261,8 @@ function ListArticleScreen({ navigation }) {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             buttonStyle={{backgroundColor:'green', position:'relative'}}
+            >
             
-          >
             <SpeedDial.Action
               icon={{ name: 'add', color: 'white' }}
               title="Nouvel article"
@@ -94,5 +284,23 @@ function ListArticleScreen({ navigation }) {
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+  checkbox: {
+    alignSelf: "center",
+  },
+  label: {
+    margin: 8,
+  },
+});
+
 const mapStateToProps = (state) => state
-export default connect(mapStateToProps)(ListArticleScreen);
+export default connect(mapStateToProps)(ListArticleScreen);  

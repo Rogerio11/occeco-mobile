@@ -119,6 +119,11 @@ export const resetResponseUpdatePassword = () => async dispatch => {
     });
 }
 
+/**
+ * 
+ * @param {String} token 
+ * @param {String} accountPassword 
+ */
 export const resetPassword = (token, accountPassword) => async dispatch => {
     try {
         const res = await axios.post(`${servURL}/resetPassword`, { token, accountPassword });
@@ -170,7 +175,6 @@ export const updateAccountMail = (newAccountMail) => async dispatch => {
     console.log("UserActions - updateAccountMail = ", newAccountMail);
     try {
         const res = await axios.patch(`${servURL}/account/updateMail`, { newAccountMail }, { headers: await authHeader() });
-        // console.log("res : ", res.data)
         dispatch({
             type: "UPDATEMAIL_SUCCESS",
             payload: res.data

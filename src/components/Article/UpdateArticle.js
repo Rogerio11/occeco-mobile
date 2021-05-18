@@ -121,11 +121,10 @@ const updateArticleScreen = ({ navigation, route }) => {
             
             <Text>Du </Text>
             <DatePicker
-                date={moment(updArticle.articleStartDate,formatMoments).toDate()} // Initial date from state
+                date={moment(updArticle.articleStartDate).format('DD-MM-YYYY HH:mm')} 
                 mode="datetime" // The enum of date, datetime and time
                 placeholder="select date"
                 format="DD-MM-YYYY HH:mm"
-                minDate={moment()}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
                 customStyles={{
@@ -146,13 +145,13 @@ const updateArticleScreen = ({ navigation, route }) => {
             
             <Text> au </Text>
             <DatePicker
-                date={moment(updArticle.articleEndDate, formatMoments).toDate()} // Initial date from state
+                date={moment(updArticle.articleEndDate).format('DD-MM-YYYY HH:mm')}
                 mode="datetime" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 placeholder="select date"
                 format="DD-MM-YYYY HH:mm"
-                minDate={moment(updArticle.articleStartDate, formatMoments).add(1, 'day').toDate()}
-                maxDate={moment(updArticle.articleStartDate, formatMoments).add(31, 'day').toDate()}
+                minDate={moment(moment(updArticle.articleStartDate).add(1, 'day').toDate()).format('DD-MM-YYYY HH:mm')}
+                maxDate={moment(moment(updArticle.articleStartDate).add(31, 'day').toDate()).format('DD-MM-YYYY HH:mm')}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
                 customStyles={{
@@ -183,12 +182,12 @@ const updateArticleScreen = ({ navigation, route }) => {
             <Text>Date Event</Text>
             <DatePicker
 
-                date={ moment(updArticle.articleDateEvent,formatMoments).toDate()} // Initial date from state
+                date={ moment(updArticle.articleDateEvent).format('DD-MM-YYYY HH:mm')} // Initial date from state
                 mode="datetime" // The enum of date, datetime and time
                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 placeholder="select date"
                 format="DD-MM-YYYY HH:mm"
-                minDate={moment(updArticle.articleStartDate, formatMoments).toDate()}
+                minDate={moment(moment(updArticle.articleStartDate).add(-1, 'day').toDate()).format('DD-MM-YYYY HH:mm')}
                 confirmBtnText="Valider"
                 cancelBtnText="Annuler"
                 customStyles={{
