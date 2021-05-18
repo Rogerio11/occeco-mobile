@@ -46,11 +46,11 @@ function ListArticleScreen({ navigation }) {
       setListAllType(useSelector(state => state.TypeArticle))
   }
 
-const commonType = (listT, art) => {
+const commonType = (listT, articleType) => {
   if(!isEvent && !isNotEvent){
     return false
   }
-  return listT.some(t => art.articleCategories.some(artT => artT._id == t._id))
+  return listT.some(t => articleType.articleCategories.some(articleType => articleType._id == t._id))
 }
 
 const changeCategories = (type) => {
@@ -69,11 +69,13 @@ const toggleIsAllTypeSelected = () => {
     setShowEventCheckbox(true)
     setShowNotEventCheckbox(true)
     setIsEvent(true)
+    setIsNotEvent(true)
   }else{
     setShowUserCheckbox(false)
     setShowEventCheckbox(false)
     setShowNotEventCheckbox(false)
     setIsEvent(false)
+    setIsNotEvent(false)
   }
   setIsAllTypeSelected(!isAllTypeSelected)
 }
@@ -84,29 +86,11 @@ const isNotEventFilter = (article) => {
   
 }
 const isEventFilter = (article) => {
-
-  if(commonType(listAllType, article) && article.isEvent === isEvent )
-
-
-    console.log("%%%%%%%%%%%%%%%%%%%")
-    console.log( "cest un event")
-    console.log(article.articleTitle)
-    console.log(moment(article.articleDateEvent).format('DD-MM-YYYY'))
-    console.log(moment(dateDebut).format('DD-MM-YYYY'))
-    console.log(moment(dateFin).format('DD-MM-YYYY'))
-    console.log(moment(article.articleDateEvent).isAfter(dateDebut))
-    console.log(moment(article.articleDateEvent).isBefore(dateFin))
-    console.log("%%%%%%%%%%%%%%%%%%%")
-  
-
-  
-  return article.isEvent === isEvent// && moment(article.articleDateEvent).isAfter(moment(dateDebut)) && moment(article.articleDateEvent).isBefore(moment(dateFin)) 
-  
+  return article.isEvent === isEvent && moment(article.articleDateEvent).isAfter(dateDebut) && moment(article.articleDateEvent).isBefore(dateFin)
 }
 
 const filterListe = (article) => {
-
-  return commonType(listAllType, article) && (isNotEventFilter(article) || isEventFilter(article))
+  return commonType(listAllType, article) && ((isNotEventFilter(article) && isNotEvent ) || (isEventFilter(article) && isEvent))
 }
 
 const toggleIsEvent = () => {
