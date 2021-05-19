@@ -33,9 +33,9 @@ export const createArticle = (newArticle) => async dispatch => {
 };
 
 export const updateArticle = (article) => async dispatch => {
-    //console.log("TypeArticleActions - updateTypeArticle = ", typeArticle);
+    console.log("TypeArticleActions - updateTypeArticle = ", typeArticle);
     try {
-        const res = await axios.post(`${servURL}/article/update`, article, { headers: await authHeader() });
+        const res = await axios.patch(`${servURL}/article/update`, article, { headers: await authHeader() });
         console.log(res.data)
 
         dispatch({

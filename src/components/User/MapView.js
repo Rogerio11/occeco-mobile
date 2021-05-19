@@ -18,7 +18,7 @@ const MapViewScreen = ({changeLocalisation = false, localisation = false }) => {
       changeLocalisation({ lat: evt.latitude, lng: evt.longitude})
     }
   }
-
+console.log(pos)
   return (
     <MapView
       style={{flex:1}}

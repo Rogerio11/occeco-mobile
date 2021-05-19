@@ -112,7 +112,7 @@ const toggleIsNotEvent = () => {
             </View>
           :
           <View style={{ flex: 1}}>
-        <View style={{ flex: 3}}>
+        <View style={{ width:'50%'}}>
             <CheckBox
                   title="All"
                   checked={isAllTypeSelected}
@@ -142,6 +142,7 @@ const toggleIsNotEvent = () => {
                 checked={isEvent}
                 onPress={() => toggleIsEvent()}
               /> }
+              
 
 
   { 
@@ -149,8 +150,8 @@ const toggleIsNotEvent = () => {
     <View style={{flexDirection:'row'}}>
 
             
-<Text>Du </Text>
-<DatePicker
+    <Text>Du </Text>
+    <DatePicker
 
                 date={moment(dateDebut).format('DD-MM-YYYY')} // Initial date from state
                 mode="date" // The enum of date, datetime and time
@@ -202,12 +203,8 @@ const toggleIsNotEvent = () => {
 </View>
 
   }
-
-
-          
-            
         </View>
-        <View style={{ flex: 3, backgroundColor: 'green' }}>
+        <View style={{ minHeight:'50%' }}>
 
             <FlatList
               data={isAllTypeSelected ? listArticle : listArticle.filter(function(article) {
@@ -223,7 +220,12 @@ const toggleIsNotEvent = () => {
                 >
                 <View style={{ flexDirection: "row", justifyContent:'space-between'}}>
                     <Text h4>{item.articleTitle}</Text>
-                    {item.articleCategories && item.articleCategories.map(cat => <Icon key={cat._id} name={cat.iconType} type="material-community" color={cat.colorType}/>)}
+                    <View style={{ flexDirection: "row", justifyContent: 'space-evenly'}}>
+                    {item.articleCategories && item.articleCategories.map(cat => 
+                    
+                      <Icon key={cat._id} name={cat.iconType} type="material-community" color={cat.colorType}/>
+                    )}
+                    </View>
                     <Icon name="chevron-right" type="material-community" onPress={() => navigation.push('Article', {article: item})}/>
                     
                 </View>

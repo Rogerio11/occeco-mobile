@@ -15,7 +15,7 @@ function UpdateUserScreen({ navigation }) {
   const [userUpdated, setUserUpdated] = useState(user.user.user);
   const dispatch = useDispatch();
   const { theme } = useTheme();
-  const position = user.user.user.userLocalisation || [43.608294, 3.879343]
+  const position = user.user.user.userLocalisation || { lat: 43.608294, lng:3.879343}
   const [pos, setPos] = useState(position)
   const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
   const [delta, setDelta] = useState({lat:0.01, lng:0.01})
@@ -32,19 +32,11 @@ function UpdateUserScreen({ navigation }) {
   };
 
   const handleChange = (evt) => {
-
     const { name, value } = evt;
     setUserUpdated({ ...userUpdated, [name]: value })
 
   }
-  const changeCategories = (type) => {
-    const value = userUpdated.userCategories.some(t => t._id === type._id);
-
-    handleChange({
-      name: 'userCategories',
-      value: value ? userUpdated.userCategories.filter(t => t._id !== type._id) : [...userUpdated.userCategories, type]
-    })
-  }
+ 
   const changePosition = (evt) => {
     setUserUpdated({ ...userUpdated, userLocalisation: { lat: evt.latitude, lng: evt.longitude}})
     setDelta({lat: evt.latitudeDelta, lng: evt.longitudeDelta})
@@ -75,10 +67,16 @@ function UpdateUserScreen({ navigation }) {
           onRegionChange={changePosition}
         >
           <Marker 
-            coordinate={{ latitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lat , longitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lng }}
+            coordinate={{ 
+              latitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lat , 
+              longitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lng 
+            }}
           />
           <Circle 
-              center={{ latitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lat , longitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lng }} 
+              center={{ 
+                latitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lat , 
+                longitude : userUpdated.userLocalisation && userUpdated.userLocalisation.lng 
+              }} 
               radius={userUpdated.userDistance*1000} 
               fillColor={"rgba(137,209,254,.4)"}
             />
@@ -86,17 +84,21 @@ function UpdateUserScreen({ navigation }) {
         </MapView>
         </View>
         <Text>Catégories : </Text>
-        {
-          listType.map(t =>
-            <CheckBox
-              key={t._id}
-              title={t.nameType}
-              checked={userUpdated.userCategories.some(type => t._id === type._id)}
-              onPress={() => changeCategories(t)}
-            />
-          )
-          
-        }
+        <DropDownPicker
+            items={listType.map(type => ({
+              label: type.nameType,
+              value: type._id
+            }))}
+            defaultValue={""}
+            containerStyle={{height: 40}}
+            style={{backgroundColor: '#fafafa'}}
+            itemStyle={{
+                justifyContent: 'flex-start'
+            }}
+            multiple={true}
+            dropDownStyle={{backgroundColor: '#fafafa'}}
+            onChangeItem={(t) => handleChange({name: 'userCategories', value:t})}
+        />
 
         <Button title="Modifier" onPress={tryUpdate} />
       

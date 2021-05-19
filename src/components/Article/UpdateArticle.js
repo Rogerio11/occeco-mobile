@@ -8,6 +8,7 @@ import DatePicker from 'react-native-datepicker';
 import MapViewScreen from '../User/MapView'
 import moment from 'moment';
 import formatMoments from '../formatMoments';
+import DropDownPicker from 'react-native-dropdown-picker';
 moment.updateLocale('fr');
 
 const updateArticleScreen = ({ navigation, route }) => {
@@ -105,15 +106,29 @@ const updateArticleScreen = ({ navigation, route }) => {
                 onChangeText={(evt) => handleChange({name: "articleLink", value: evt})}
             />
             <Text>Catégories concernées :</Text>
-            {listType.map(t =>
-                <CheckBox
-                    key={t._id}
-                    title={t.nameType}
-                    checked={updArticle.articleCategories.some(type => t._id === type)}
-                    onPress={() => changeCategories(t)}
-                />)
-
-            }
+            <DropDownPicker
+                items={listType.map(type => ({
+                    label: type.nameType,
+                    value: type._id
+                }))}
+                defaultValue={
+                    listType.filter(t => updArticle.articleCategories.includes(t))
+                    .map(type => ({
+                        label: type.nameType,
+                        value: type._id
+                        })
+                    )
+                }
+                containerStyle={{height: 40}}
+                style={{backgroundColor: '#fafafa'}}
+                itemStyle={{
+                    justifyContent: 'flex-start'
+                }}
+                multiple={true}
+                dropDownStyle={{backgroundColor: '#fafafa'}}
+                onChangeItem={(t) => handleChange({name: 'articleCategories', value:t})}
+                
+            />
 
         <Text>Dates de parution</Text>
             <View style={{flexDirection:'row'}}>
@@ -214,8 +229,8 @@ const updateArticleScreen = ({ navigation, route }) => {
             />
             {
                 addLocalisation && 
-                <View style={{width:'100%', height:'50%'}}>
-                    <MapViewScreen changeLocalisation={(evt) => handleChange({name:'articleLocalisation', value: evt})} localisation={articleUpdate.articleLocalisation ? {lat: articleUpdate.articleLocalisation.lat, lng:articleUpdate.articleLocalisation.lng} : null}/>
+                <View style={{width:'100%', height:'20%'}}>
+                    <MapViewScreen changeLocalisation={(evt) => handleChange({name:'articleLocalisation', value: evt})} localisation={updArticle.articleLocalisation ? {lat: updArticle.articleLocalisation.lat, lng:updArticle.articleLocalisation.lng} : { lat: 43.608294, lng:3.879343}}/>
                 </View>
             }
             

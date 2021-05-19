@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector, useDispatch, connect } from "react-redux";
 import { logout } from '../../actions/UserActions';
 import { Button, Divider, Icon, Card, Text } from 'react-native-elements';
@@ -23,7 +22,11 @@ function ProfileScreen({ navigation }) {
       <Text h3>Mon Compte</Text>
 
       <Divider /><Divider />
-      {/* <Icon name="mail" size="large" type="ionicon" /><Text> {user.user.accountMail}</Text> */}
+      <View style={{ flexDirection: "row" }}>
+        <Icon name="mail" size="large" type="ionicon" />
+        <Text> {user.user.accountMail}</Text> 
+      </View>
+      
       <Divider />
 
       <Text>Catégories choisies : </Text>
@@ -49,9 +52,11 @@ function ProfileScreen({ navigation }) {
       }
 
       <Divider />
-
-      {/* <Icon name="locate" size="large" type="ionicon" /><Text>{user.user.user && user.user.user.userDistance} km</Text> */}
-
+      <View style={{ flexDirection: "row" }}>
+      <Icon name="locate" size="large" type="ionicon" />
+      <Text>{user.user.user && user.user.user.userDistance} km</Text> 
+      </View>
+      
       <Divider />
 
       {user.user.accountType === "partner" &&
@@ -61,7 +66,7 @@ function ProfileScreen({ navigation }) {
 
       <Divider /><Divider />
       <View style={{width:'100%', height:'30%'}}>
-        {/* <MapViewScreen /> */}
+       {<MapViewScreen /> }
       </View>
 
       <View style={{ flexDirection: "row" }}>

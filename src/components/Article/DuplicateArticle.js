@@ -8,16 +8,13 @@ import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 //import 'DD-MM-YYYY HH:mm' from '../'DD-MM-YYYY HH:mm'';
 moment.updateLocale('fr');
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const DuplicateArticleScreen = ({ navigation, route }) => {
     
     const initialArticle = route.params.article;
-    console.log("%%%%%%%ici L'ARTICLE%%%%%%%%%%%%%")
-        console.log(initialArticle)
-        console.log(moment(initialArticle.articleStartDate).format('DD-MM-YYYY HH:mm'))
-        console.log(moment(initialArticle.articleDateEvent).format('DD-MM-YYYY HH:mm'))
-        console.log(moment(initialArticle.articleEndDate).format('DD-MM-YYYY HH:mm'))
-        console.log("%%%%%%%%%%%%%%%")
+    console.log(initialArticle)
+        
 
     const [newArticle, setNewArticle] = useState(initialArticle);
     const [modalVisible, setModalVisible] = useState(false);
@@ -116,15 +113,21 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
                 onChangeText={(evt) => handleChange({name: "articleLink", value: evt})}
             />
             <Text>Catégories concernées :</Text>
-            {listType.map(t =>
-                <CheckBox
-                    key={t._id}
-                    title={t.nameType}
-                    checked={newArticle.articleCategories.some(type => t._id === type)}
-                    onPress={() => changeCategories(t)}
-                />)
-
-            }
+            <DropDownPicker
+                items={listType.map(type => ({
+                    label: type.nameType,
+                    value: type._id
+                }))}
+                defaultValue={""}
+                containerStyle={{height: 40}}
+                style={{backgroundColor: '#fafafa'}}
+                itemStyle={{
+                    justifyContent: 'flex-start'
+                }}
+                multiple={true}
+                dropDownStyle={{backgroundColor: '#fafafa'}}
+                onChangeItem={(t) => handleChange({name: 'articleCategories', value:t})}
+            />
             <Text>Date de début</Text>
             <DatePicker
 

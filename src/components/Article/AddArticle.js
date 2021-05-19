@@ -8,6 +8,7 @@ import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 import MapViewScreen from '../User/MapView';
 import formatMoments from '../formatMoments';
+import DropDownPicker from 'react-native-dropdown-picker';
 moment.updateLocale('fr');
 
 const AddArticleScreen = ({ navigation }) => {
@@ -19,7 +20,7 @@ const AddArticleScreen = ({ navigation }) => {
         articleStartDate: moment().set({'hour': 8, 'minutes':0}).toDate(),
         articleEndDate: moment().set({'hour': 8, 'minutes':0}).add(1, 'day').toDate(),
         articleCategories: [], 
-        articleLocalisation: null,
+        articleLocalisation: { lat: 43.608294, lng:3.879343},
         articleDateEvent: moment().set({'hour': 8, 'minutes':0}).toDate(),
         isEvent: false,
 
@@ -122,14 +123,22 @@ const AddArticleScreen = ({ navigation }) => {
                     onChangeText={(evt) => handleChange({ name: "articleLink", value: evt })}
                 />
                 <Text>Catégories concernées :</Text>
-                {listType.map(t =>
-                    <CheckBox
-                        key={t._id}
-                        title={t.nameType}
-                        checked={newArticle.articleCategories.some(type => t._id === type)}
-                        onPress={() => changeCategories(t)}
-                    />)
-                }
+                <DropDownPicker
+                    items={listType.map(type => ({
+                        label: type.nameType,
+                        value: type._id
+                    }))}
+                    defaultValue={""}
+                    containerStyle={{height: 40}}
+                    style={{backgroundColor: '#fafafa'}}
+                    itemStyle={{
+                        justifyContent: 'flex-start'
+                    }}
+                    multiple={true}
+                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    onChangeItem={(t) => handleChange({name: 'articleCategories', value:t})}
+                />
+                
                 <Text>Date de début</Text>
                 <DatePicker
 
@@ -225,9 +234,15 @@ const AddArticleScreen = ({ navigation }) => {
                     checked={addLocalisation}
                     onPress={() => setLocalisation(!addLocalisation)}
                 />
+                
                 {
-                    addLocalisation && <MapViewScreen changeLocalisation={(evt) => handleChange({ name: 'articleLocalisation', value: evt })} localisation={{ lat: newArticle.articleLocalisation.lat, lng: newArticle.articleLocalisation.lng }} />
+                    addLocalisation
+                    ? <View style={{width:'100%', height:'20%'}}>
+                        <MapViewScreen changeLocalisation={(evt) => handleChange({ name: 'articleLocalisation', value: evt })} localisation={newArticle.articleLocalisation} />
+                        </View>
+                        :<></>
                 }
+                
 
                 <Button title="Sauvegarder" onPress={handleSave} />
             </Card>
