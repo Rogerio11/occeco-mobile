@@ -18,9 +18,15 @@ export const getAllArticles = () => async dispatch => {
 
 export const createArticle = (newArticle) => async dispatch => {
     //console.log("TypeArticleActions - createTypeArticle = ", typeArticle);
+    console.log("-------------Article dans Actions-------------")
+        console.log(newArticle)
+        console.log("--------------------------------------------")
     try {
         const res = await axios.post(`${servURL}/article/add`, newArticle, { headers: await authHeader() });
+        
+        console.log("-------------Article de retour-------------")
         console.log(res.data)
+        console.log("--------------------------------------------")
 
         dispatch({
             type: "CREATE_ARTICLE_SUCCESS",
@@ -33,10 +39,11 @@ export const createArticle = (newArticle) => async dispatch => {
 };
 
 export const updateArticle = (article) => async dispatch => {
-    console.log("TypeArticleActions - updateTypeArticle = ", typeArticle);
+    //console.log("TypeArticleActions - updateTypeArticle = ", typeArticle);
     try {
-        const res = await axios.patch(`${servURL}/article/update`, article, { headers: await authHeader() });
-        console.log(res.data)
+        const res = await axios.post(`${servURL}/article/update`, article, { headers: await authHeader() });
+        
+        
 
         dispatch({
             type: "UPDATE_ARTICLE_SUCCESS",
@@ -63,4 +70,11 @@ export const deleteArticle = (id) => async dispatch => {
     } catch (err) {
         console.log(err);
     }
+};
+
+export const setCurrentArticle = (article) => async dispatch => {
+    dispatch({
+        type: "SET_CURRENT_ARTICLE",
+        payload: article
+    });
 };

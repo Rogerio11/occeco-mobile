@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import { View, FlatList, TouchableHighlight, StyleSheet} from 'react-native';
 import {useDispatch, useSelector, connect} from "react-redux";
-import {getAllArticles} from "../../actions/ArticleActions";
+import {getAllArticles, setCurrentArticle} from "../../actions/ArticleActions";
 import {getAllTypes} from "../../actions/TypeArticleActions";
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
@@ -17,7 +17,7 @@ function ListArticleScreen({ navigation }) {
   const user = useSelector(state => state.User)
   const dispatch = useDispatch();
   const list = useSelector(state => state.Article);
-  const [listArticle, setListArticle] = useState((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked);
+  //const [listArticle, setListArticle] = useState((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked);
   const listT = useSelector(state => state.TypeArticle);
   const [listTypeUser, setListTypeUser] = useState(Array.isArray(listT.typesArticle) ? listT.typesArticle : []);
   const [listAllType, setListAllType] = useState(Array.isArray(listT.typesArticle) ? listT.typesArticle : []);
@@ -31,19 +31,24 @@ function ListArticleScreen({ navigation }) {
   const [showUserCheckbox, setShowUserCheckbox] = useState(false)
   const [showEventCheckbox, setShowEventCheckbox] = useState(false)
   const [showNotEventCheckbox, setShowNotEventCheckbox] = useState(false)
-  /*
+
   React.useEffect(() => {
-    
-    if ( (user.user.accountType === "admin" || user.user.accountType === "partner") && (!Array.isArray(listArticle) || listArticle.length === 0 )){
-      dispatch(getAllArticles());
+    if (!Array.isArray(list.articles) || list.articles.length === 0 ){
+        dispatch(getAllArticles());
     }
   })
-  */
+  
  
   if (listTypeUser.length === 0 ){
       dispatch(getAllTypes());
       setListTypeUser(useSelector(state => state.TypeArticle))
       setListAllType(useSelector(state => state.TypeArticle))
+  }
+
+  const handleFlatlistOnPress = (article) => {
+    console.log(article.articleTitle)
+    dispatch(setCurrentArticle(article))
+    navigation.push('Article')
   }
 
 const commonType = (listT, articleType) => {
@@ -90,7 +95,7 @@ const isEventFilter = (article) => {
 }
 
 const filterListe = (article) => {
-  return commonType(listAllType, article) && ((isNotEventFilter(article) && isNotEvent ) || (isEventFilter(article) && isEvent))
+  return isAllTypeSelected ? true : commonType(listAllType, article) && ((isNotEventFilter(article) && isNotEvent ) || (isEventFilter(article) && isEvent))
 }
 
 const toggleIsEvent = () => {
@@ -106,7 +111,7 @@ const toggleIsNotEvent = () => {
       <Card containerStyle={{width: '100%', height:'100%'}}>
       <View style={{width: '100%', minHeight:'97%'}}>
         {
-          listArticle.length === 0
+          list.articles.length === 0
           ? <View style={{width: '100%', minHeight:'97%'}}>
               <Text>Pas d'articles à afficher</Text>
             </View>
@@ -207,14 +212,14 @@ const toggleIsNotEvent = () => {
         <View style={{ minHeight:'50%' }}>
 
             <FlatList
-              data={isAllTypeSelected ? listArticle : listArticle.filter(function(article) {
+              data={list.articles.filter(function(article) {
                 return filterListe(article)
-              })}
+              }).sort((a, b) => moment(a.articleStartDate).toDate() - moment(b.articleStartDate).toDate() )}
               keyExtractor={(item) => item._id}
               renderItem={({item, index, separators}) => 
               <TouchableHighlight
                 key={item._id}
-                onPress={() => navigation.push('Article', {article: item})}
+                onPress={() => handleFlatlistOnPress(item)}
                 onShowUnderlay={separators.highlight}
                 onHideUnderlay={separators.unhighlight}
                 >
@@ -226,7 +231,7 @@ const toggleIsNotEvent = () => {
                       <Icon key={cat._id} name={cat.iconType} type="material-community" color={cat.colorType}/>
                     )}
                     </View>
-                    <Icon name="chevron-right" type="material-community" onPress={() => navigation.push('Article', {article: item})}/>
+                    <Icon name="chevron-right" type="material-community" onPress={() => handleFlatlistOnPress(item)}/>
                     
                 </View>
               </TouchableHighlight>
@@ -288,5 +293,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => state
-export default connect(mapStateToProps)(ListArticleScreen);  
+
+export default ListArticleScreen;  

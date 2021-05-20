@@ -5,15 +5,14 @@ import { View} from 'react-native';
 import {deleteArticle} from "../../actions/ArticleActions";
 
 
-const DeleteArticle = ({navigation, route }) => {
-    const { handleClose, idArticle } = route.params
+const DeleteArticle = ({navigation, handleClose, idArticle }) => {
+    
     const dispatch = useDispatch();
 
     console.log("Je suis rentré dans le delete")
     const handleNon = () => {
         console.log("Je suis dans le Non")
         handleClose()
-        navigation.goBack()
     }
 
     const handleOui = () => {
@@ -21,7 +20,7 @@ const DeleteArticle = ({navigation, route }) => {
         console.log(idArticle)
         dispatch(deleteArticle(idArticle));
         handleClose()
-        navigation.navigate('Liste Article')
+        navigation.navigate("Liste Article")
     }
 
 

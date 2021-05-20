@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Input, CheckBox, Card, Text} from 'react-native-elements';
 import {useDispatch, useSelector} from "react-redux";
-import { View, Modal, StyleSheet, Pressable} from 'react-native';
+import { View, Modal, StyleSheet, Pressable, ScrollView} from 'react-native';
 import {createArticle} from "../../actions/ArticleActions";
 import {getAllTypes} from "../../actions/TypeArticleActions";
 import DatePicker from 'react-native-datepicker';
+import MapViewScreen from '../User/MapView';
 import moment from 'moment';
+import formatMoments from '../formatMoments';
 //import 'DD-MM-YYYY HH:mm' from '../'DD-MM-YYYY HH:mm'';
 moment.updateLocale('fr');
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -45,36 +47,36 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
 
         console.log("saveArticle : ", newArticle);
         
-        if(moment(newArticle.articleStartDate, 'DD-MM-YYYY HH:mm').isAfter(moment(newArticle.articleEndDate, 'DD-MM-YYYY HH:mm'))){
+        if (moment(newArticle.articleStartDate, formatMoments).isAfter(moment(newArticle.articleEndDate, formatMoments))) {
             setMsgModal("La date de début est après la date de fin de notification.\n Merci de bien vouloir modifier les dates. ")
             setModalVisible(true)
-        }else if((moment(newArticle.articleEndDate, 'DD-MM-YYYY HH:mm')).isAfter(moment(newArticle.articleStartDate, 'DD-MM-YYYY HH:mm').add(31, 'day'))){
+        } else if ((moment(newArticle.articleEndDate, formatMoments)).isAfter(moment(newArticle.articleStartDate, formatMoments).add(31, 'day'))) {
             setMsgModal("La durée maximale d'une notification est d'1 mois. \n Merci de bien vouloir modifier les dates.")
             setModalVisible(true)
         }else{
-            // dispatch(createArticle(newArticle));
-            // setNewArticle(initialArticle);
-            // navigation.navigate("Liste Article");
-            console.log("%%%%%%%%%%%%%%%")
-        console.log(newArticle)
-        console.log(moment(newArticle.articleStartDate).format('DD-MM-YYYY'))
-        console.log(moment(newArticle.articleDateEvent).format('DD-MM-YYYY'))
-        console.log(moment(newArticle.articleEndDate).format('DD-MM-YYYY'))
-        console.log("%%%%%%%%%%%%%%%")
+            dispatch(createArticle(newArticle));
+            setNewArticle(initialArticle);
+            navigation.navigate("Liste Article");
+        //     console.log("%%%%%%%%%%%%%%%")
+        // console.log(newArticle)
+        // console.log(moment(newArticle.articleStartDate).format('DD-MM-YYYY'))
+        // console.log(moment(newArticle.articleDateEvent).format('DD-MM-YYYY'))
+        // console.log(moment(newArticle.articleEndDate).format('DD-MM-YYYY'))
+        // console.log("%%%%%%%%%%%%%%%")
         } 
     }
 
     const changeCategories = (type) => {
-        const value = newArticle.articleCategories.some(t => t === type._id);
+        const value = newArticle.articleCategories.some(t => t._id === type._id);
         handleChange({
-          name: 'articleCategories',
-          value: value ? newArticle.articleCategories.filter(t => t !== type._id) : [...newArticle.articleCategories, type._id]
+            name: 'articleCategories',
+            value: value ? newArticle.articleCategories.filter(t => t._id !== type._id) : [...newArticle.articleCategories, type]
         })
-        
+
     }
 
     return (
-        <View>
+        <ScrollView>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -96,7 +98,8 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
                     </View>
                 </View>
             </Modal>
-            <Card>
+            
+            
             <Input
                 placeholder="Titre"
                 value={newArticle.articleTitle}
@@ -113,21 +116,14 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
                 onChangeText={(evt) => handleChange({name: "articleLink", value: evt})}
             />
             <Text>Catégories concernées :</Text>
-            <DropDownPicker
-                items={listType.map(type => ({
-                    label: type.nameType,
-                    value: type._id
-                }))}
-                defaultValue={""}
-                containerStyle={{height: 40}}
-                style={{backgroundColor: '#fafafa'}}
-                itemStyle={{
-                    justifyContent: 'flex-start'
-                }}
-                multiple={true}
-                dropDownStyle={{backgroundColor: '#fafafa'}}
-                onChangeItem={(t) => handleChange({name: 'articleCategories', value:t})}
-            />
+            {listType.map(t =>
+                    <CheckBox
+                        key={t._id}
+                        title={t.nameType}
+                        checked={newArticle.articleCategories.some(type => t._id === type._id)}
+                        onPress={() => changeCategories(t)}
+                    />)
+                }
             <Text>Date de début</Text>
             <DatePicker
 
@@ -224,13 +220,18 @@ const DuplicateArticleScreen = ({ navigation, route }) => {
                 checked={addLocalisation}
                 onPress={() => setLocalisation(!addLocalisation)}
             />
-            {
-                addLocalisation && <MapViewScreen changeLocalisation={(evt) => handleChange({name:'articleLocalisation', value: evt})} localisation={{lat: newArticle.articleLocalisation.lat, lng:newArticle.articleLocalisation.lng}}/>
-            }
+               {
+                    addLocalisation
+                    ? <View style={{width:'100%', height:'20%'}}>
+                        <MapViewScreen changeLocalisation={(evt) => handleChange({ name: 'articleLocalisation', value: evt })} localisation={newArticle.articleLocalisation} />
+                        </View>
+                        :<></>
+                }
             
             <Button title="Sauvegarder" onPress={handleSave} />
-            </Card>
-        </View>
+            
+            
+            </ScrollView>
     );
 };
 

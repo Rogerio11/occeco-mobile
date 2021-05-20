@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Input, CheckBox, Card, Text} from 'react-native-elements';
 import {useDispatch, useSelector} from "react-redux";
-import { View, Modal, StyleSheet, Pressable} from 'react-native';
-import {updateArticle} from "../../actions/ArticleActions";
+import { View, Modal, StyleSheet, Pressable, ScrollView, SafeAreaView} from 'react-native';
+import {updateArticle, setCurrentArticle} from "../../actions/ArticleActions";
 import {getAllTypes} from "../../actions/TypeArticleActions";
 import DatePicker from 'react-native-datepicker';
 import MapViewScreen from '../User/MapView'
 import moment from 'moment';
 import formatMoments from '../formatMoments';
-import DropDownPicker from 'react-native-dropdown-picker';
 moment.updateLocale('fr');
 
 const updateArticleScreen = ({ navigation, route }) => {
@@ -21,13 +20,13 @@ const updateArticleScreen = ({ navigation, route }) => {
     const list = useSelector(state => state.TypeArticle);
     const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
     const [addLocalisation, setLocalisation] = useState(updArticle.articleLocalisation);
-/*
 
+    
     if (listType.length === 0 ){
         dispatch(getAllTypes());
         setListType(useSelector(state => state.TypeArticle))
     }
- */   
+ 
     const handleChange = (evt) => {
         const { name, value } = evt;
         setUpdArticle({...updArticle, [name]: value});
@@ -52,22 +51,28 @@ const updateArticleScreen = ({ navigation, route }) => {
             setModalVisible(true)
         }else{
             dispatch(updateArticle(updArticle));
+
+            dispatch(setCurrentArticle(updArticle));
             setUpdArticle(initialArticle);
+            
             navigation.goBack();
         } 
     }
 
     const changeCategories = (type) => {
-        const value = updArticle.articleCategories.some(t => t === type._id);
+        const value = updArticle.articleCategories.some(t => t._id === type._id);
         handleChange({
-          name: 'articleCategories',
-          value: value ? updArticle.articleCategories.filter(t => t !== type._id) : [...updArticle.articleCategories, type._id]
+            name: 'articleCategories',
+            value: value ? updArticle.articleCategories.filter(t => t._id !== type._id) : [...updArticle.articleCategories, type]
         })
-        
+
     }
+    
 
     return (
-        <View>
+        
+        <ScrollView>
+        
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -89,7 +94,7 @@ const updateArticleScreen = ({ navigation, route }) => {
                     </View>
                 </View>
             </Modal>
-            <Card>
+            
             <Input
                 placeholder="Titre"
                 value={updArticle.articleTitle}
@@ -106,29 +111,14 @@ const updateArticleScreen = ({ navigation, route }) => {
                 onChangeText={(evt) => handleChange({name: "articleLink", value: evt})}
             />
             <Text>Catégories concernées :</Text>
-            <DropDownPicker
-                items={listType.map(type => ({
-                    label: type.nameType,
-                    value: type._id
-                }))}
-                defaultValue={
-                    listType.filter(t => updArticle.articleCategories.includes(t))
-                    .map(type => ({
-                        label: type.nameType,
-                        value: type._id
-                        })
-                    )
-                }
-                containerStyle={{height: 40}}
-                style={{backgroundColor: '#fafafa'}}
-                itemStyle={{
-                    justifyContent: 'flex-start'
-                }}
-                multiple={true}
-                dropDownStyle={{backgroundColor: '#fafafa'}}
-                onChangeItem={(t) => handleChange({name: 'articleCategories', value:t})}
-                
-            />
+            {listType.map(t =>
+                    <CheckBox
+                        key={t._id}
+                        title={t.nameType}
+                        checked={updArticle.articleCategories.some(type => t._id === type._id)}
+                        onPress={() => changeCategories(t)}
+                    />)
+            }
 
         <Text>Dates de parution</Text>
             <View style={{flexDirection:'row'}}>
@@ -229,14 +219,16 @@ const updateArticleScreen = ({ navigation, route }) => {
             />
             {
                 addLocalisation && 
-                <View style={{width:'100%', height:'20%'}}>
-                    <MapViewScreen changeLocalisation={(evt) => handleChange({name:'articleLocalisation', value: evt})} localisation={updArticle.articleLocalisation ? {lat: updArticle.articleLocalisation.lat, lng:updArticle.articleLocalisation.lng} : { lat: 43.608294, lng:3.879343}}/>
+                <View style={{width:'100%', height:'50%'}}>
+                    <MapViewScreen changeLocalisation={(evt) => handleChange({name:'articleLocalisation', value: evt})} localisation={updArticle.articleLocalisation ? {lat: updArticle.articleLocalisation.lat, lng:updArticle.articleLocalisation.lng} : null}/>
                 </View>
             }
             
             <Button title="Sauvegarder" onPress={handleUpdate} />
-            </Card>
-        </View>
+            
+       
+        </ScrollView>
+        
     );
 };
 

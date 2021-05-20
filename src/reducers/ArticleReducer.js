@@ -1,9 +1,12 @@
 const DefaultState = {
-    articles: []
+    articles: [],
+    currentArticle: null,
 }
 
 const ArticleReducer = (state = DefaultState, action) => {
-
+    console.log("%%%%%%%%%%%%%%%%%%%%%%DANS LE REDUCER%%%%%%%%%%%%%%%%%%%%%%")
+    console.log(action.payload)
+    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
     switch (action.type) {
         case "GET_ALL_ARTICLES_SUCCESS":
             return {
@@ -11,25 +14,19 @@ const ArticleReducer = (state = DefaultState, action) => {
                 articles: action.payload
             };
         case "CREATE_ARTICLE_SUCCESS":
-            return {
-                ...state,
-                articles: state.articles.push(action.payload)
-            };
+            return { ...state, articles: [...state.articles, action.payload] };
+
         case "UPDATE_ARTICLE_SUCCESS":
-            return {
-                ...state,
-                articles: state.articles.map(article => {
-                    if (article._id === action.payload._id){
-                        article = action.payload
-                    }
-                    return article
-                })
-            };
+
+            return { ...state, articles: state.articles.map(article => article._id === action.payload._id ? action.payload : article)}
+    
         case "DELETE_ARTICLE_SUCCESS":
             return {
                 ...state,
                 articles: state.articles.filter(article => article._id !== action.payload._id)
             };
+        case "SET_CURRENT_ARTICLE":
+                return { ...state, currentArticle: action.payload };
         default:
             return state;
     }
