@@ -225,6 +225,20 @@ export const addPushToken = (_id, userPushToken) => async dispatch => {
     }
 };
 
+export const sendDailyNotifications = () => async dispatch => {
+    try {
+        const res = await axios.get(`${servURL}/sendDailyNotifications`, { headers: await authHeader() });
+        dispatch({
+            type: "SENDDAILYNOTIFICATIONS_SUCCESS",
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: "SENDDAILYNOTIFICATIONS_FAILURE",
+            payload: err.response.data.error
+        });
+    }
+};
 
 /*
 export const getAllAccounts = () => async dispatch => {
