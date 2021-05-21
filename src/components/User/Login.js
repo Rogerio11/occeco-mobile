@@ -14,7 +14,7 @@ function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
   const [account, setAccount] = React.useState(initialAccount);
   const [showPassWord, setShowPassword] = React.useState(false);
-  const errorSendResetPasswordUrl = useSelector(state => state.User.errorSendResetPasswordUrl);
+  // const errorSendResetPasswordUrl = useSelector(state => state.User.errorSendResetPasswordUrl);
   const { theme } = useTheme();
 
   const handleChange = (evt) => {
@@ -32,15 +32,15 @@ function LoginScreen({ navigation }) {
       navigation.navigate('Accueil');
     }
   };
-  const tryResetPassword = () => {
-    if (!account || !account.accountMail) {
-      wrongInputsAlert()
-    } else {
-      dispatch(sendResetPasswordUrl(account.accountMail));
-      setAccount(initialAccount);
-      customLongSuccessAlert("Si ce compte existe, un email a été envoyé à :\n" + account.accountMail);
-    }
-  };
+  // const tryResetPassword = () => {
+  //   if (!account || !account.accountMail) {
+  //     wrongInputsAlert()
+  //   } else {
+  //     dispatch(sendResetPasswordUrl(account.accountMail));
+  //     setAccount(initialAccount);
+  //     customLongSuccessAlert("Si ce compte existe, un email a été envoyé à :\n" + account.accountMail);
+  //   }
+  // };
 
   return (
     <Card>
@@ -82,9 +82,9 @@ function LoginScreen({ navigation }) {
         />
         <View style={{ flexDirection: "row" }}>
         <Button style={{minWidth: '50%'}} title="Connexion" onPress={tryLogin} />
-        <Button style={{minWidth: '50%'}} title="Mot de passe oublié ?" onPress={tryResetPassword} />
+        {/* <Button style={{minWidth: '50%'}} title="Mot de passe oublié ?" onPress={tryResetPassword} /> */}
         </View>
-        {errorSendResetPasswordUrl && <Text style={theme.errorText}> {errorSendResetPasswordUrl} </Text>}
+        {/* {errorSendResetPasswordUrl && <Text style={theme.errorText}> {errorSendResetPasswordUrl} </Text>} */}
       </View>
     </Card>
   );

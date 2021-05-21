@@ -14,7 +14,6 @@ function ProfileScreen({ navigation }) {
     dispatch(logout())
     navigation.navigate('Accueil')
   }
-  console.log(user)
   const position = user.user && user.user.user && user.user.user.userLocalisation || [43.608294, 3.879343]
   return (
     <Card containerStyle={{ width: '99%', height: '99%' }}>
@@ -23,15 +22,17 @@ function ProfileScreen({ navigation }) {
 
       <Divider /><Divider />
       <View style={{ flexDirection: "row" }}>
-        <Icon name="mail" size="large" type="ionicon" />
-        <Text> {user.user.accountMail}</Text> 
+        <Icon
+          name="mail"
+          type="ionicon" />
+        <Text> {user.user.accountMail}</Text>
       </View>
-      
+
       <Divider />
 
       <Text>Catégories choisies : </Text>
 
-      {user.user && user.user.user && user.user.user.userCategories && user.user.user.userCategories.map(cat =>
+      {/* {user.user && user.user.user && user.user.user.userCategories && user.user.user.userCategories.map(cat =>
         <MaterialChip
           key={cat._id}
           text={cat.nameType}
@@ -49,14 +50,16 @@ function ProfileScreen({ navigation }) {
             borderRightWidth: '3px',
           }}
         />)
-      }
+      } */}
 
       <Divider />
       <View style={{ flexDirection: "row" }}>
-      <Icon name="locate" size="large" type="ionicon" />
-      <Text>{user.user.user && user.user.user.userDistance} km</Text> 
+        <Icon
+          name="locate"
+          type="ionicon" />
+        <Text>{user.user.user && user.user.user.userDistance} km</Text>
       </View>
-      
+
       <Divider />
 
       {user.user.accountType === "partner" &&
@@ -65,8 +68,8 @@ function ProfileScreen({ navigation }) {
         <Text> Vous êtes Administrateur</Text>}
 
       <Divider /><Divider />
-      <View style={{width:'100%', height:'30%'}}>
-       {<MapViewScreen /> }
+      <View style={{ width: '100%', height: '30%' }}>
+        {<MapViewScreen />}
       </View>
 
       <View style={{ flexDirection: "row" }}>

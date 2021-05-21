@@ -1,7 +1,6 @@
 import { getData } from '../useStorage'
 const user = getData('user');
 
-// C'est pas inversé ça ? #Timi
 const DefaultState =
     user ?
         {

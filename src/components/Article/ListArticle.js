@@ -36,7 +36,7 @@ function ListArticleScreen({ navigation }) {
     if (!Array.isArray(list.articles) || list.articles.length === 0 ){
         dispatch(getAllArticles());
     }
-  })
+  }, [])
   
  
   if (listTypeUser.length === 0 ){

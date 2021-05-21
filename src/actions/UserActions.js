@@ -7,7 +7,6 @@ import * as Linking from "expo-linking";
 export const login = (account) => async dispatch => {
     try {
         const res = await axios.post(`${servURL}/login`, account);
-        console.log(res.data)
 
         if (res.data.token) {
             await storeData("user", JSON.stringify({ token: res.data.token, ...res.data.account }));
