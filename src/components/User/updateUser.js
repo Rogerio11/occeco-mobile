@@ -8,15 +8,13 @@ import {getAllTypes} from "../../actions/TypeArticleActions";
 import DropDownPicker from 'react-native-dropdown-picker';
 import MapView, { Marker, Circle } from 'react-native-maps';
 
-
 function UpdateUserScreen({ navigation }) {
   const user = useSelector(state => state.User);
   const list = useSelector(state => state.TypeArticle);
   const [userUpdated, setUserUpdated] = useState(user.user.user);
   const dispatch = useDispatch();
   const { theme } = useTheme();
-  const position = user.user.user.userLocalisation || { lat: 43.608294, lng:3.879343}
-  const [pos, setPos] = useState(position)
+  const position = { lat: 43.608294, lng:3.879343} || { lat: 43.608294, lng:3.879343}
   const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
   const [delta, setDelta] = useState({lat:0.01, lng:0.01})
 /*
@@ -59,8 +57,8 @@ function UpdateUserScreen({ navigation }) {
         <MapView
           style={{flex:1}}
           region={{
-              latitude: userUpdated.userLocalisation && userUpdated.userLocalisation.lat,
-              longitude: userUpdated.userLocalisation && userUpdated.userLocalisation.lng,
+              latitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lat) || 43.6,
+              longitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lng) || 3.8,
               latitudeDelta: delta.lat,
               longitudeDelta: delta.lng
           }}
@@ -87,7 +85,8 @@ function UpdateUserScreen({ navigation }) {
         <DropDownPicker
             items={listType.map(type => ({
               label: type.nameType,
-              value: type._id
+              value: type._id,
+              icon: () => <Icon name={type.iconType} type="material-community" size={18} color={type.colorType} />
             }))}
             defaultValue={""}
             containerStyle={{height: 40}}

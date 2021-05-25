@@ -20,7 +20,6 @@ function ProfileScreen({ navigation }) {
     <Card containerStyle={{ width: '99%', height: '99%' }}>
 
       <Text h3>Mon Compte</Text>
-
       <Divider /><Divider />
       <View style={{ flexDirection: "row" }}>
         <Icon name="mail" size="large" type="ionicon" />
@@ -66,9 +65,9 @@ function ProfileScreen({ navigation }) {
 
       <Divider /><Divider />
       <View style={{width:'100%', height:'30%'}}>
-       {<MapViewScreen /> }
+       {  <MapViewScreen /> }
       </View>
-
+    
       <View style={{ flexDirection: "row" }}>
         <Button style={{ minWidth: '50%' }} title="Modifier" onPress={() => navigation.push('UpdateAccount')} />
         <Text> </Text>

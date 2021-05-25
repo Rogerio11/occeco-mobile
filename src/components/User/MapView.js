@@ -28,7 +28,7 @@ console.log(pos)
           latitudeDelta: delta.lat,
           longitudeDelta: delta.lng
       }}
-      onRegionChange={changeLocalisation ? handleChange : ''}
+      onRegionChange={changeLocalisation ? handleChange : () => ('')}
     >
       <Marker 
         coordinate={{ latitude : pos.lat , longitude : pos.lng }}

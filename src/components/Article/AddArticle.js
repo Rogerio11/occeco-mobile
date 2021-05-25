@@ -123,14 +123,21 @@ const AddArticleScreen = ({ navigation }) => {
                     onChangeText={(evt) => handleChange({ name: "articleLink", value: evt })}
                 />
                 <Text>Catégories concernées :</Text>
-                {listType.map(t =>
-                    <CheckBox
-                        key={t._id}
-                        title={t.nameType}
-                        checked={newArticle.articleCategories.some(type => t._id === type._id)}
-                        onPress={() => changeCategories(t)}
-                    />)
-                }
+                <DropDownPicker
+                    items={listType.map(type => ({
+                        label: type.nameType,
+                        value: type._id
+                    }))}
+                    defaultValue={""}
+                    containerStyle={{height: 40}}
+                    style={{backgroundColor: '#fafafa'}}
+                    itemStyle={{
+                        justifyContent: 'flex-start'
+                    }}
+                    multiple={true}
+                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    onChangeItem={(t) => handleChange({name: 'articleCategories', value:t})}
+                />
                 
                 <Text>Date de début</Text>
                 <DatePicker

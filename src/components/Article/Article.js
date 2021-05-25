@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Card, Text, FAB, Divider, Overlay, Button} from 'react-native-elements';
+import { Card, Text, FAB, Divider, Overlay, Button, Icon} from 'react-native-elements';
 import {useDispatch, useSelector} from "react-redux";
 import { View} from 'react-native';
 import {deleteArticle} from "../../actions/ArticleActions";
 import moment from 'moment';
-import MapViewScreen from '../User/MapView'
+import MapViewScreen from '../User/MapView';
+import MaterialChip from "react-native-material-chip";
 
 moment.updateLocale('fr');
 const ArticleScreen = ({ navigation}) => {
@@ -37,6 +38,26 @@ const ArticleScreen = ({ navigation}) => {
             <Card containerStyle={{height:'100%', width:'100%'}}>
             
             <Text h3>{currentArticle.articleTitle}</Text>
+            <Divider />
+            {currentArticle.articleCategories.map(cat =>
+        <MaterialChip
+          key={cat._id}
+          text={cat.nameType}
+          leftIcon={
+            <Icon name={cat.iconType} type="material-community" size={18} />
+          }
+          style={{
+            borderBottomColor: cat.colorType,
+            borderLeftColor: cat.colorType,
+            borderTopColor: cat.colorType,
+            borderRightColor: cat.colorType,
+            borderBottomWidth: '3px',
+            borderTopWidth: '3px',
+            borderLeftWidth: '3px',
+            borderRightWidth: '3px',
+          }}
+        />)
+      }
             <Divider />
             <Text>{moment(currentArticle.articleStartDate).format('DD-MM-YYYY')} - {moment(currentArticle.articleEndDate).format('DD-MM-YYYY')}</Text>
             <Text>Description : {currentArticle.articleDescription}</Text>

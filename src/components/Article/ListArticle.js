@@ -17,7 +17,7 @@ function ListArticleScreen({ navigation }) {
   const user = useSelector(state => state.User)
   const dispatch = useDispatch();
   const list = useSelector(state => state.Article);
-  //const [listArticle, setListArticle] = useState((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked);
+  const [listArticle, setListArticle] = useState((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked);
   const listT = useSelector(state => state.TypeArticle);
   const [listTypeUser, setListTypeUser] = useState(Array.isArray(listT.typesArticle) ? listT.typesArticle : []);
   const [listAllType, setListAllType] = useState(Array.isArray(listT.typesArticle) ? listT.typesArticle : []);
@@ -31,11 +31,14 @@ function ListArticleScreen({ navigation }) {
   const [showUserCheckbox, setShowUserCheckbox] = useState(false)
   const [showEventCheckbox, setShowEventCheckbox] = useState(false)
   const [showNotEventCheckbox, setShowNotEventCheckbox] = useState(false)
-
+  
+  
   React.useEffect(() => {
-    if (!Array.isArray(list.articles) || list.articles.length === 0 ){
-        dispatch(getAllArticles());
+    if ( (user.user.accountType === "admin" || user.user.accountType === "partner") 
+      && (!Array.isArray(listArticle) || listArticle.length === 0 )){
+      dispatch(getAllArticles());
     }
+    setListArticle((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked)
   })
   
  
@@ -43,12 +46,6 @@ function ListArticleScreen({ navigation }) {
       dispatch(getAllTypes());
       setListTypeUser(useSelector(state => state.TypeArticle))
       setListAllType(useSelector(state => state.TypeArticle))
-  }
-
-  const handleFlatlistOnPress = (article) => {
-    console.log(article.articleTitle)
-    dispatch(setCurrentArticle(article))
-    navigation.push('Article')
   }
 
 const commonType = (listT, articleType) => {
@@ -65,6 +62,11 @@ const changeCategories = (type) => {
   const newListe = value ? listAllType.filter(t => t._id !== type._id) : [...listAllType, type]
 
   setListAllType(newListe)
+}
+const handleFlatlistOnPress = (article) => {
+  console.log(article.articleTitle)
+  dispatch(setCurrentArticle(article))
+  navigation.push('Article')
 }
 
 
@@ -119,7 +121,7 @@ const toggleIsNotEvent = () => {
           <View style={{ flex: 1}}>
         <View style={{ width:'50%'}}>
             <CheckBox
-                  title="All"
+                  title="Tout afficher"
                   checked={isAllTypeSelected}
                   onPress={() => toggleIsAllTypeSelected()}
             />
@@ -212,7 +214,7 @@ const toggleIsNotEvent = () => {
         <View style={{ minHeight:'50%' }}>
 
             <FlatList
-              data={list.articles.filter(function(article) {
+              data={(list.articles || []).filter(function(article) {
                 return filterListe(article)
               }).sort((a, b) => moment(a.articleStartDate).toDate() - moment(b.articleStartDate).toDate() )}
               keyExtractor={(item) => item._id}
@@ -223,7 +225,7 @@ const toggleIsNotEvent = () => {
                 onShowUnderlay={separators.highlight}
                 onHideUnderlay={separators.unhighlight}
                 >
-                <View style={{ flexDirection: "row", justifyContent:'space-between'}}>
+                <View style={{ flexDirection: "row", justifyContent:'space-between', backgroundColor:index%2===0 ? 'white' : '#DCDCDC'}}>
                     <Text h4>{item.articleTitle}</Text>
                     <View style={{ flexDirection: "row", justifyContent: 'space-evenly'}}>
                     {item.articleCategories && item.articleCategories.map(cat => 
@@ -232,7 +234,7 @@ const toggleIsNotEvent = () => {
                     )}
                     </View>
                     <Icon name="chevron-right" type="material-community" onPress={() => handleFlatlistOnPress(item)}/>
-                    
+
                 </View>
               </TouchableHighlight>
               }
@@ -293,5 +295,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-export default ListArticleScreen;  
+export default ListArticleScreen;
