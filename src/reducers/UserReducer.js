@@ -1,7 +1,6 @@
 import { getData } from '../useStorage'
 const user = getData('user');
 
-// C'est pas inversé ça ? #Timi
 const DefaultState =
     user ?
         {
@@ -104,6 +103,16 @@ const UserReducer = (state = DefaultState, action) => {
             return {
                 ...state,
                 errorAddPushToken: action.payload
+            };
+        case "SENDDAILYNOTIFICATIONS_SUCCESS":
+            return {
+                ...state,
+                errorNotifications: null
+            };
+        case "SENDDAILYNOTIFICATIONS_FAILURE":
+            return {
+                ...state,
+                errorNotifications: action.payload
             };
         default:
             return state;

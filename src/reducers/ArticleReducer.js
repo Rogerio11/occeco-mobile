@@ -4,9 +4,6 @@ const DefaultState = {
 }
 
 const ArticleReducer = (state = DefaultState, action) => {
-    console.log("%%%%%%%%%%%%%%%%%%%%%%DANS LE REDUCER%%%%%%%%%%%%%%%%%%%%%%")
-    console.log(action.payload)
-    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
     switch (action.type) {
         case "GET_ALL_ARTICLES_SUCCESS":
             return {

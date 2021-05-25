@@ -5,7 +5,7 @@ import {authHeader} from "../utils";
 export const getAllTypes = () => async dispatch => {
     try {
         const res = await axios.get(`${servURL}/typeArticle/list`, { headers: await authHeader() });
-        console.log(res.data)
+        // console.log(res.data)
         dispatch({
             type: "GET_ALL_TYPES_SUCCESS",
             payload: res.data
