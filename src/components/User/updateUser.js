@@ -74,7 +74,10 @@ function UpdateUserScreen({ navigation }) {
               longitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lng) || 3.8,
               latitudeDelta: delta.lat,
               longitudeDelta: delta.lng
-              onRegionChange={changePosition}
+            }}
+
+          onRegionChange={changePosition}
+          
         >
           <Marker
             coordinate={{
@@ -91,7 +94,7 @@ function UpdateUserScreen({ navigation }) {
               radius={userUpdated.userDistance*1000} 
               fillColor={"rgba(137,209,254,.4)"}
             />
-          
+          </MapView>
       </View>
       <Text>Catégories : </Text>
       <DropDownPicker
