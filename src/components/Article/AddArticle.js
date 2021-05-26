@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input, CheckBox, Card, Text } from 'react-native-elements';
 import { useDispatch, useSelector } from "react-redux";
-import { View, Modal, StyleSheet, Pressable, ScrollView} from 'react-native';
+import { View, Modal, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { createArticle } from "../../actions/ArticleActions";
 import { getAllTypes } from "../../actions/TypeArticleActions";
 import DatePicker from 'react-native-datepicker';
@@ -17,11 +17,11 @@ const AddArticleScreen = ({ navigation }) => {
         articleTitle: "",
         articleLink: "",
         articleDescription: "",
-        articleStartDate: moment().set({'hour': 8, 'minutes':0}).toDate(),
-        articleEndDate: moment().set({'hour': 8, 'minutes':0}).add(1, 'day').toDate(),
-        articleCategories: [], 
-        articleLocalisation: { lat: 43.608294, lng:3.879343},
-        articleDateEvent: moment().set({'hour': 8, 'minutes':0}).toDate(),
+        articleStartDate: moment().set({ 'hour': 8, 'minutes': 0 }).toDate(),
+        articleEndDate: moment().set({ 'hour': 8, 'minutes': 0 }).add(1, 'day').toDate(),
+        articleCategories: [],
+        articleLocalisation: { lat: 43.608294, lng: 3.879343 },
+        articleDateEvent: moment().set({ 'hour': 8, 'minutes': 0 }).toDate(),
         isEvent: false,
 
     }
@@ -59,6 +59,12 @@ const AddArticleScreen = ({ navigation }) => {
             setMsgModal("La durée maximale d'une notification est d'1 mois. \n Merci de bien vouloir modifier les dates.")
             setModalVisible(true)
         } else {
+            if (!addLocalisation) {
+                delete newArticle['articleLocalisation']
+            }
+            if (!newArticle.isEvent) {
+                delete newArticle['articleDateEvent']
+            }
             dispatch(createArticle(newArticle));
             setNewArticle(initialArticle);
             navigation.navigate("Liste Article");
@@ -97,145 +103,145 @@ const AddArticleScreen = ({ navigation }) => {
                     </View>
                 </View>
             </Modal>
-            
-                <Input
-                    placeholder="Titre"
-                    value={newArticle.articleTitle}
-                    onChangeText={(evt) => handleChange({ name: "articleTitle", value: evt })}
-                />
-                <Input
-                    placeholder="Description"
-                    value={newArticle.articleDescription}
-                    onChangeText={(evt) => handleChange({ name: "articleDescription", value: evt })}
-                />
-                <Input
-                    placeholder="Source"
-                    value={newArticle.articleLink}
-                    onChangeText={(evt) => handleChange({ name: "articleLink", value: evt })}
-                />
-                <Text>Catégories concernées :</Text>
-                <DropDownPicker
-                    items={listType.map(type => ({
-                        label: type.nameType,
-                        value: type._id
-                    }))}
-                    defaultValue={""}
-                    containerStyle={{height: 40}}
-                    style={{backgroundColor: '#fafafa'}}
-                    itemStyle={{
-                        justifyContent: 'flex-start'
-                    }}
-                    multiple={true}
-                    dropDownStyle={{backgroundColor: '#fafafa'}}
-                    onChangeItem={(t) => handleChange({name: 'articleCategories', value:t})}
-                />
-                
-                <Text>Date de début</Text>
-                <DatePicker
 
-                    date={moment(newArticle.articleStartDate, formatMoments).toDate()} // Initial date from state
-                    mode="datetime" // The enum of date, datetime and time
-                    placeholder="select date"
-                    format="DD-MM-YYYY HH:mm"
-                    minDate={moment()}
-                    confirmBtnText="Valider"
-                    cancelBtnText="Annuler"
-                    customStyles={{
-                        dateIcon: {
-                            //display: 'none',
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0,
-                        },
-                        dateInput: {
-                            marginLeft: 36,
-                        },
-                    }}
-                    useNativeDriver='false'
-                    onDateChange={(evt) => handleChange({ name: "articleStartDate", value: moment(evt, formatMoments).toDate() })}
-                />
-                <CheckBox
-                    title="Est-ce un évènement ?"
-                    checked={newArticle.isEvent}
-                    onPress={() => toggleIsEvent()}
-                />
+            <Input
+                placeholder="Titre"
+                value={newArticle.articleTitle}
+                onChangeText={(evt) => handleChange({ name: "articleTitle", value: evt })}
+            />
+            <Input
+                placeholder="Description"
+                value={newArticle.articleDescription}
+                onChangeText={(evt) => handleChange({ name: "articleDescription", value: evt })}
+            />
+            <Input
+                placeholder="Source"
+                value={newArticle.articleLink}
+                onChangeText={(evt) => handleChange({ name: "articleLink", value: evt })}
+            />
+            <Text>Catégories concernées :</Text>
+            <DropDownPicker
+                items={listType.map(type => ({
+                    label: type.nameType,
+                    value: type._id
+                }))}
+                defaultValue={""}
+                containerStyle={{ height: 40 }}
+                style={{ backgroundColor: '#fafafa' }}
+                itemStyle={{
+                    justifyContent: 'flex-start'
+                }}
+                multiple={true}
+                dropDownStyle={{ backgroundColor: '#fafafa' }}
+                onChangeItem={(t) => handleChange({ name: 'articleCategories', value: t })}
+            />
 
-                {
-                    newArticle.isEvent &&
-                    <View>
-                        <Text>Date Event</Text>
-                        <DatePicker
+            <Text>Date de début</Text>
+            <DatePicker
 
-                            date={moment(newArticle.articleDateEvent, formatMoments).toDate()} // Initial date from state
-                            mode="datetime" // The enum of date, datetime and time
-                            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                            placeholder="select date"
-                            format="DD-MM-YYYY HH:mm"
-                            minDate={moment(moment(newArticle.articleStartDate, formatMoments).add(-1, 'day').toDate())}
-                            confirmBtnText="Valider"
-                            cancelBtnText="Annuler"
-                            customStyles={{
-                                dateIcon: {
-                                    //display: 'none',
-                                    position: 'absolute',
-                                    left: 0,
-                                    top: 4,
-                                    marginLeft: 0,
-                                },
-                                dateInput: {
-                                    marginLeft: 36,
-                                },
-                            }}
+                date={moment(newArticle.articleStartDate, formatMoments).toDate()} // Initial date from state
+                mode="datetime" // The enum of date, datetime and time
+                placeholder="select date"
+                format="DD-MM-YYYY HH:mm"
+                minDate={moment()}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
+                customStyles={{
+                    dateIcon: {
+                        //display: 'none',
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0,
+                    },
+                    dateInput: {
+                        marginLeft: 36,
+                    },
+                }}
+                useNativeDriver='false'
+                onDateChange={(evt) => handleChange({ name: "articleStartDate", value: moment(evt, formatMoments).toDate() })}
+            />
+            <CheckBox
+                title="Est-ce un évènement ?"
+                checked={newArticle.isEvent}
+                onPress={() => toggleIsEvent()}
+            />
 
-                            onDateChange={(date) => handleChange({ name: "articleDateEvent", value: moment(date, formatMoments).toDate() })}
-                        />
-                    </View>
-                }
+            {
+                newArticle.isEvent &&
+                <View>
+                    <Text>Date Event</Text>
+                    <DatePicker
 
-                <Text>Date de fin</Text>
-                <DatePicker
+                        date={moment(newArticle.articleDateEvent, formatMoments).toDate()} // Initial date from state
+                        mode="datetime" // The enum of date, datetime and time
+                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                        placeholder="select date"
+                        format="DD-MM-YYYY HH:mm"
+                        minDate={moment(moment(newArticle.articleStartDate, formatMoments).add(-1, 'day').toDate())}
+                        confirmBtnText="Valider"
+                        cancelBtnText="Annuler"
+                        customStyles={{
+                            dateIcon: {
+                                //display: 'none',
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0,
+                            },
+                            dateInput: {
+                                marginLeft: 36,
+                            },
+                        }}
 
-                    date={moment(newArticle.articleEndDate, formatMoments).toDate()} // Initial date from state
-                    mode="datetime" // The enum of date, datetime and time
-                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                    placeholder="select date"
-                    format="DD-MM-YYYY HH:mm"
-                    minDate={moment(newArticle.articleStartDate, formatMoments).add(1, 'day').toDate()}
-                    maxDate={moment(newArticle.articleStartDate, formatMoments).add(31, 'day').toDate()}
-                    confirmBtnText="Valider"
-                    cancelBtnText="Annuler"
-                    customStyles={{
-                        dateIcon: {
-                            //display: 'none',
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0,
-                        },
-                        dateInput: {
-                            marginLeft: 36,
-                        },
-                    }}
+                        onDateChange={(date) => handleChange({ name: "articleDateEvent", value: moment(date, formatMoments).toDate() })}
+                    />
+                </View>
+            }
 
-                    onDateChange={(date) => handleChange({ name: "articleEndDate", value: moment(date, formatMoments).toDate() })}
-                />
-                <CheckBox
-                    title="Ajouter localisation ?"
-                    checked={addLocalisation}
-                    onPress={() => setLocalisation(!addLocalisation)}
-                />
-                
-                {
-                    addLocalisation
-                    ? <View style={{width:'100%', height:'20%'}}>
+            <Text>Date de fin</Text>
+            <DatePicker
+
+                date={moment(newArticle.articleEndDate, formatMoments).toDate()} // Initial date from state
+                mode="datetime" // The enum of date, datetime and time
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                placeholder="select date"
+                format="DD-MM-YYYY HH:mm"
+                minDate={moment(newArticle.articleStartDate, formatMoments).add(1, 'day').toDate()}
+                maxDate={moment(newArticle.articleStartDate, formatMoments).add(31, 'day').toDate()}
+                confirmBtnText="Valider"
+                cancelBtnText="Annuler"
+                customStyles={{
+                    dateIcon: {
+                        //display: 'none',
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0,
+                    },
+                    dateInput: {
+                        marginLeft: 36,
+                    },
+                }}
+
+                onDateChange={(date) => handleChange({ name: "articleEndDate", value: moment(date, formatMoments).toDate() })}
+            />
+            <CheckBox
+                title="Ajouter localisation ?"
+                checked={addLocalisation}
+                onPress={() => setLocalisation(!addLocalisation)}
+            />
+
+            {
+                addLocalisation
+                    ? <View style={{ width: '100%', height: '20%' }}>
                         <MapViewScreen changeLocalisation={(evt) => handleChange({ name: 'articleLocalisation', value: evt })} localisation={newArticle.articleLocalisation} />
-                        </View>
-                        :<></>
-                }
-                
+                    </View>
+                    : <></>
+            }
 
-                <Button title="Sauvegarder" onPress={handleSave} />
+
+            <Button title="Sauvegarder" onPress={handleSave} />
         </ScrollView>
     );
 };
