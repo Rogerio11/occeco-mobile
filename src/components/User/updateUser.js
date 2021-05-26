@@ -28,7 +28,6 @@ function UpdateUserScreen({ navigation }) {
   */
 
   React.useEffect(() => {
-    console.log("Rafraichissement des catégories");
     dispatch(getAllTypes());
     if (list.typesArticle) {
       setListType(list.typesArticle)

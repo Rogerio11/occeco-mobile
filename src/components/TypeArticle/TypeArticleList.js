@@ -12,7 +12,6 @@ const TypeArticleList = ({ navigation }) => {
     const [listType, setListType] = useState(Array.isArray(list.typesArticle) ? list.typesArticle : []);
 
     React.useEffect(() => {
-        console.log("Get all types");
         dispatch(getAllTypes());
     }, []);
 
