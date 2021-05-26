@@ -28,7 +28,6 @@ function UpdateUserScreen({ navigation }) {
   */
 
   React.useEffect(() => {
-    console.log("Rafraichissement des catégories");
     dispatch(getAllTypes());
     if (list.typesArticle) {
       setListType(list.typesArticle)
@@ -79,6 +78,7 @@ function UpdateUserScreen({ navigation }) {
           onRegionChange={changePosition}
           
         >
+
           <Marker
             coordinate={{
               latitude: userUpdated.userLocalisation && userUpdated.userLocalisation.lat,
@@ -94,26 +94,27 @@ function UpdateUserScreen({ navigation }) {
               radius={userUpdated.userDistance*1000} 
               fillColor={"rgba(137,209,254,.4)"}
             />
+
           </MapView>
       </View>
       <Text>Catégories : </Text>
-      <DropDownPicker
-        items={listType.map(type => ({
-          label: type.nameType,
-          value: type._id
-        }))}
-        defaultValue={""}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemStyle={{
-          justifyContent: 'flex-start'
-        }}
-        multiple={true}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(t) => handleChange({ name: 'userCategories', value: t })}
-      />
+        <DropDownPicker
+          items={listType.map(type => ({
+            label: type.nameType,
+            value: type._id
+          }))}
+          defaultValue={""}
+          containerStyle={{ height: 40 }}
+          style={{ backgroundColor: '#fafafa' }}
+          itemStyle={{
+            justifyContent: 'flex-start'
+          }}
+          multiple={true}
+          dropDownStyle={{ backgroundColor: '#fafafa' }}
+          onChangeItem={(t) => handleChange({ name: 'userCategories', value: t })}
+        />
 
-      <Button title="Modifier" onPress={tryUpdate} />
+        <Button title="Modifier" onPress={tryUpdate} />
 
     </Card>
   );

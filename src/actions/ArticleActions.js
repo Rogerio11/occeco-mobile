@@ -17,16 +17,8 @@ export const getAllArticles = () => async dispatch => {
 };
 
 export const createArticle = (newArticle) => async dispatch => {
-    //console.log("TypeArticleActions - createTypeArticle = ", typeArticle);
-    console.log("-------------Article dans Actions-------------")
-        console.log(newArticle)
-        console.log("--------------------------------------------")
     try {
-        const res = await axios.post(`${servURL}/article/add`, newArticle, { headers: await authHeader() });
-        
-        console.log("-------------Article de retour-------------")
-        console.log(res.data)
-        console.log("--------------------------------------------")
+        const res = await axios.post(`${servURL}/article/add`, {newArticle}, { headers: await authHeader() });
 
         dispatch({
             type: "CREATE_ARTICLE_SUCCESS",

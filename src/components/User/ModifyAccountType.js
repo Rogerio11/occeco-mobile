@@ -55,7 +55,7 @@ function ModifyAccountType({ navigation }) {
                     type='font-awesome-5'
                     color='purple'
                 />
-                <Text h2> Gérer les partenaires</Text>
+                <Text h3> Gérer les partenaires</Text>
                 <Input
                     placeholder="put a mail here"
                     leftIcon={{ type: 'feather', name: 'mail' }}
@@ -69,19 +69,20 @@ function ModifyAccountType({ navigation }) {
 
 
             {/* S'affiche uniquement si accountSearched est non nul et correspond au compte recherché*/}
-            <Card>
-                {accountSearched && emailToFind.toLowerCase() == accountSearched.accountMail && <View>
+            {accountSearched && emailToFind.toLowerCase() == accountSearched.accountMail && <Card>
+                <View>
                     {(accountSearched.accountType == 'partner' || accountSearched.accountType == 'admin')
                         ? <Text style={styles.highlightedText}> {accountSearched.accountMail}{"\n"}est un compte partenaire !</Text>
                         : <Text style={styles.highlightedText}> {accountSearched.accountMail}{"\n"}n'est pas un compte partenaire !</Text>
                     }
+                    <Divider />
                     {
                         (accountSearched.accountType === "admin")
-                            ? (<Card>
+                            ? (<View>
                                 <Text>Ce compte est administrateur, vous ne pouvez pas le modifier</Text>
-                            </Card>
+                            </View>
                             )
-                            : (<Card>
+                            : (<View>
                                 <Text>Modifier le type de compte ?</Text>
                                 <CheckBox
                                     title='Compte partenaire'
@@ -89,12 +90,12 @@ function ModifyAccountType({ navigation }) {
                                     onPress={() => changeAccountType()}
                                 />
                                 {errorChangeType && <Text style={theme.errorText}> {errorChangeType} </Text>}
-                            </Card>
+                            </View>
                             )
                     }
                 </View>
-                }
             </Card>
+            }
         </View>
     );
 }

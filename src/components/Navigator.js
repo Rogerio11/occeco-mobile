@@ -29,8 +29,8 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="Inscription" component={SignUpScreen} />
       <Stack.Screen name="Profil" component={ProfileScreen} />
       
-      <Stack.Screen name="UpdateAccount" component={UpdateAccountScreen} />
-      <Stack.Screen name="EnableNotifications" component={EnableNotificationsScreen} />
+      <Stack.Screen name="Modifier mon compte" component={UpdateAccountScreen} />
+      <Stack.Screen name="Notifications" component={EnableNotificationsScreen} />
 
     </Stack.Navigator>
   );
@@ -55,6 +55,14 @@ const PreferenceStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Préférences" component={UpdateUserScreen} />
+    </Stack.Navigator>
+  );
+}
+
+const PartnerStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Partenaires" component={ModifyAccountTypeScreen} />
     </Stack.Navigator>
   );
 }
@@ -100,7 +108,7 @@ const Navigator = () => {
         : <></>
       }
       { user && user.user && user.user.accountType == "admin"
-        ? <Tab.Screen name="Partenaires" component={ModifyAccountTypeScreen} />
+        ? <Tab.Screen name="Partenaires" component={PartnerStackNavigator} />
         : <></>
       }
       { user && user.user 

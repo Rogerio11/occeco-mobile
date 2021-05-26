@@ -52,9 +52,6 @@ const AddArticleScreen = ({ navigation }) => {
     }
 
     const handleSave = () => {
-
-        console.log("saveArticle : ", newArticle);
-
         if (moment(newArticle.articleStartDate, formatMoments).isAfter(moment(newArticle.articleEndDate, formatMoments))) {
             setMsgModal("La date de début est après la date de fin de notification.\n Merci de bien vouloir modifier les dates. ")
             setModalVisible(true)
@@ -65,12 +62,6 @@ const AddArticleScreen = ({ navigation }) => {
             dispatch(createArticle(newArticle));
             setNewArticle(initialArticle);
             navigation.navigate("Liste Article");
-            // console.log("%%%%%%%%%%%%%%%")
-            // console.log(newArticle)
-            // console.log(moment(newArticle.articleStartDate).format('DD-MM-YYYY'))
-            // console.log(moment(newArticle.articleDateEvent).format('DD-MM-YYYY'))
-            // console.log(moment(newArticle.articleEndDate).format('DD-MM-YYYY'))
-            // console.log("%%%%%%%%%%%%%%%")
         }
     }
 
