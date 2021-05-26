@@ -96,7 +96,7 @@ function ProfileScreen({ navigation }) {
     
 
       <View style={{ flexDirection: "row" }}>
-        <Button style={{ minWidth: '50%' }} title="Modifier" onPress={() => navigation.push('UpdateAccount')} />
+        <Button style={{ minWidth: '50%' }} title="Modifier" onPress={() => navigation.push('Modifier mon compte')} />
         <Text> </Text>
         <Button style={{ minWidth: '50%' }} title="Deconnexion" onPress={trylogout} />
       </View>
@@ -104,7 +104,7 @@ function ProfileScreen({ navigation }) {
       <Divider />
 
       <Text>Vous ne recevez pas les notifications ?</Text>
-      <Button title="Notifications" onPress={() => navigation.push('EnableNotifications')} />
+      <Button title="Notifications" onPress={() => navigation.push('Notifications')} />
 
     </Card>
 

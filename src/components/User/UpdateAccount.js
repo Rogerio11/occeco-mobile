@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { updateAccountMail, updateAccountPassword } from "../../actions/UserActions";
 import { Card, Input, Button, Text, useTheme, Divider } from 'react-native-elements';
-import { wrongInputsAlert, customInfiniteErrorAlert } from "../Utils/Alerts";
+import { wrongInputsAlert, customInfiniteErrorAlert, customLongSuccessAlert } from "../Utils/Alerts";
 
 function UpdateAccountScreen({ navigation }) {
     const user = useSelector(state => state.User.user);
@@ -27,6 +27,7 @@ function UpdateAccountScreen({ navigation }) {
             wrongInputsAlert()
         } else {
             dispatch(updateAccountMail(newAccountMail));
+            customLongSuccessAlert("Changement de votre adresse mail")
         }
     };
 
@@ -34,7 +35,10 @@ function UpdateAccountScreen({ navigation }) {
         if (!oldAccountPassword || !newAccountPassword) {
             wrongInputsAlert()
         } else {
-            dispatch(updateAccountPassword(oldAccountPassword, newAccountPassword))
+            dispatch(updateAccountPassword(oldAccountPassword, newAccountPassword));
+            setOldAccountPassword("");
+            setNewAccountPassword("");
+            customLongSuccessAlert("Changement de votre mot de passe")
         }
     };
 

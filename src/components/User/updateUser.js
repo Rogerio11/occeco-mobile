@@ -65,17 +65,16 @@ function UpdateUserScreen({ navigation }) {
       />
 
       <Text>Adresse : </Text>
-      <View style={{ width: '100%', height: '50%' }}>
+      {/* <View style={{ width: '100%', height: '50%' }}>
         <MapView
           style={{ flex: 1 }}
           region={{
-
-              latitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lat) || 43.6,
-              longitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lng) || 3.8,
-              latitudeDelta: delta.lat,
-              longitudeDelta: delta.lng
-              onRegionChange={changePosition}
-        >
+            latitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lat) || 43.6,
+            longitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lng) || 3.8,
+            latitudeDelta: delta.lat,
+            longitudeDelta: delta.lng,
+            onRegionChange={ changePosition }
+            >
           <Marker
             coordinate={{
               latitude: userUpdated.userLocalisation && userUpdated.userLocalisation.lat,
@@ -92,25 +91,25 @@ function UpdateUserScreen({ navigation }) {
               fillColor={"rgba(137,209,254,.4)"}
             />
           
-      </View>
+      </View> */}
       <Text>Catégories : </Text>
-      <DropDownPicker
-        items={listType.map(type => ({
-          label: type.nameType,
-          value: type._id
-        }))}
-        defaultValue={""}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemStyle={{
-          justifyContent: 'flex-start'
-        }}
-        multiple={true}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(t) => handleChange({ name: 'userCategories', value: t })}
-      />
+        <DropDownPicker
+          items={listType.map(type => ({
+            label: type.nameType,
+            value: type._id
+          }))}
+          defaultValue={""}
+          containerStyle={{ height: 40 }}
+          style={{ backgroundColor: '#fafafa' }}
+          itemStyle={{
+            justifyContent: 'flex-start'
+          }}
+          multiple={true}
+          dropDownStyle={{ backgroundColor: '#fafafa' }}
+          onChangeItem={(t) => handleChange({ name: 'userCategories', value: t })}
+        />
 
-      <Button title="Modifier" onPress={tryUpdate} />
+        <Button title="Modifier" onPress={tryUpdate} />
 
     </Card>
   );

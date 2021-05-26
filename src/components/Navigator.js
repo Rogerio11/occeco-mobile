@@ -29,8 +29,8 @@ const ProfileStackNavigator = () => {
       <Stack.Screen name="Inscription" component={SignUpScreen} />
       <Stack.Screen name="Profil" component={ProfileScreen} />
       
-      <Stack.Screen name="UpdateAccount" component={UpdateAccountScreen} />
-      <Stack.Screen name="EnableNotifications" component={EnableNotificationsScreen} />
+      <Stack.Screen name="Modifier mon compte" component={UpdateAccountScreen} />
+      <Stack.Screen name="Notifications" component={EnableNotificationsScreen} />
 
     </Stack.Navigator>
   );

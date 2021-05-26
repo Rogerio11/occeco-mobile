@@ -189,7 +189,6 @@ export const updateAccountMail = (newAccountMail) => async dispatch => {
 
 
 export const updateAccountPassword = (oldAccountPassword, newAccountPassword) => async dispatch => {
-    //console.log("UserActions - updateAccountPassword = ", user);
     try {
         const res = await axios.patch(`${servURL}/account/updatePassword`, { oldAccountPassword, newAccountPassword }, { headers: await authHeader() });
         console.log(res.data)
