@@ -114,6 +114,18 @@ const UserReducer = (state = DefaultState, action) => {
                 ...state,
                 errorNotifications: action.payload
             };
+                    case "GET_USER_SUCCESS":
+            return {
+                ...state,
+                isLoggedIn: true,
+                user: { ...state.user, user: action.payload }
+            };
+        case "GET_USER_SUCCESS":
+            return {
+                ...state,
+                isLoggedIn: true,
+                user: { ...state.user, user: action.payload }
+            };
         default:
             return state;
     }

@@ -38,6 +38,22 @@ export const updateUser = (user) => async dispatch => {
     }
 };
 
+export const getUser = (_id) => async dispatch => {
+    console.log("reload user = ", _id);
+    try {
+        const res = await axios.post(`${servURL}/user/getUser`, {_id}, { headers: await authHeader() });
+        console.log(res.data)
+
+        dispatch({
+            type: "GET_USER_SUCCESS",
+            payload: res.data
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const logout = () => async dispatch => {
     try {
         await deleteData("user");

@@ -4,6 +4,7 @@ import { View, FlatList, TouchableHighlight, StyleSheet } from 'react-native';
 import { useDispatch, useSelector, connect } from "react-redux";
 import { getAllArticles, setCurrentArticle } from "../../actions/ArticleActions";
 import { getAllTypes } from "../../actions/TypeArticleActions";
+import { getUser} from "../../actions/UserActions";
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 moment.updateLocale('fr');
@@ -27,12 +28,15 @@ function ListArticleScreen({ navigation }) {
   const { theme } = useTheme();
 
   React.useEffect(() => {
-    if ((user.user.accountType === "admin" || user.user.accountType === "partner")
-      && (!Array.isArray(listArticle) || listArticle.length === 0)) {
-      dispatch(getAllArticles());
+    if (user.user.accountType === "admin" || user.user.accountType === "partner"){
+      if(!Array.isArray(list) || list.length === 0) {
+        dispatch(getAllArticles());
+      }
+    }else{
+      if(!Array.isArray(user.user.user.userArticlesLinked) || user.user.user.userArticlesLinked.length === 0) {
+        dispatch(getUser(user.user.user._id));
+      }
     }
-    setListArticle((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked)
-
   }, [])
 
 
@@ -41,6 +45,14 @@ function ListArticleScreen({ navigation }) {
     dispatch(getAllTypes());
     setListTypeUser(useSelector(state => state.TypeArticle))
     setListAllType(useSelector(state => state.TypeArticle))
+  }
+
+  const reload = () => {
+    if (user.user.accountType === "admin" || user.user.accountType === "partner"){
+        dispatch(getAllArticles());
+    }else{
+        dispatch(getUser(user.user.user._id));
+    }
   }
 
   const commonType = (listT, articleType) => {
@@ -81,7 +93,7 @@ function ListArticleScreen({ navigation }) {
         <View style={{ width: '100%', minHeight: '93%' }}>
           <Card.Title> Articles :</Card.Title>
           {
-            list.articles.length === 0
+            ((user.user.accountType === "admin" || user.user.accountType === "partner") ? list.articles : user.user.user.userArticlesLinked).length === 0
               ? <View style={{ width: '100%', minHeight: '97%' }}>
                 <Text>Pas d'articles à afficher</Text>
               </View>
@@ -175,14 +187,23 @@ function ListArticleScreen({ navigation }) {
                       <Button title="Nouvel article" onPress={() => navigation.push('Add Article')} />
                       <Text> </Text>
                       <Button title="Voir catégories" onPress={() => navigation.push('Catégories')} />
+                      <Text> </Text>
+                      <Button title="Actualisé" onPress={() => reload()} />
                     </View>
                   }
+                  {
+                    user && user.user && !(user.user.accountType === "admin" || user.user.accountType === "partner") &&
+                    <View style={{ flexDirection: 'row'}}>
+                      <Button title="Actualisé" onPress={() => reload()} />
+                    </View>
+                  }
+
                   <Divider />
                 </View>
 
                 <View style={{ minHeight: '50%' }}>
                   <FlatList
-                    data={(list.articles || []).filter(function (article) {
+                    data={((user.user.accountType === "admin" || user.user.accountType === "partner") ? list.articles : user.user.user.userArticlesLinked).filter(function (article) {
                       return filterListe(article)
                     }).sort((a, b) => moment(a.articleStartDate).toDate() - moment(b.articleStartDate).toDate())}
                     keyExtractor={(item) => item._id}
