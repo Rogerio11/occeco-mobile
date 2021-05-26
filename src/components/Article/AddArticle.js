@@ -134,6 +134,8 @@ const AddArticleScreen = ({ navigation }) => {
                 multiple={true}
                 dropDownStyle={{ backgroundColor: '#fafafa' }}
                 onChangeItem={(t) => handleChange({ name: 'articleCategories', value: t })}
+                min={1}
+                max={3}
             />
 
             <Text>Date de début</Text>
