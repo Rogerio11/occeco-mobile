@@ -111,7 +111,7 @@ function ListArticleScreen({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Card containerStyle={{ width: '100%', height: '100%' }}>
           <View style={{ width: '100%', minHeight: '93%' }}>
-            <Card.Title> Articles :</Card.Title>
+            
             {
               list.articles.length === 0
                 ? <View style={{ width: '100%', minHeight: '97%' }}>
@@ -214,7 +214,7 @@ function ListArticleScreen({ navigation }) {
                   <View style={{ minHeight: '50%' }}>
 
                     <FlatList
-                      data={(list.articles || []).filter(function (article) {
+                      data={(listArticle || []).filter(function (article) {
                         return filterListe(article)
                       }).sort((a, b) => moment(a.articleStartDate).toDate() - moment(b.articleStartDate).toDate())}
                       keyExtractor={(item) => item._id}
@@ -232,6 +232,7 @@ function ListArticleScreen({ navigation }) {
 
                                 <Icon key={cat._id} name={cat.iconType} type="material-community" color={cat.colorType} />
                               )}
+                              <Icon name='stop-circle' type="material-community" color={item.isOpen ? 'green' : 'red'}/>
                             </View>
                             <Icon name="chevron-right" type="material-community" onPress={() => handleFlatlistOnPress(item)} />
 
@@ -243,10 +244,21 @@ function ListArticleScreen({ navigation }) {
                   {
                     user && user.user && (user.user.accountType === "admin" || user.user.accountType === "partner") &&
                     <View style={{ minHeight: '3%', alignItems: 'center', flexDirection: 'row' }}>
-                      <Button title="Nouvel article" onPress={() => navigation.push('Add Article')} />
-                      <Text> </Text>
+                      <View>
+                        <Button title="Nouvel article" onPress={() => navigation.push('Add Article')} />
+                      
+                    </View>
+                    {user && user.user && user.user.accountType === "admin" 
+                    ?
+                    <View style = {{flexDirection: 'row'}}>
+                      <Text>  </Text>
                       <Button title="Voir catégories" onPress={() => navigation.push('Catégories')} />
                     </View>
+                    : <></>
+                  }
+                      
+                    </View>
+                    
                   }
                 </View>
             }

@@ -7,30 +7,25 @@ import { updateUser } from "../../actions/UserActions";
 import moment from 'moment';
 import MapViewScreen from '../User/MapView';
 import MaterialChip from "react-native-material-chip";
-
-
-const supportedURL = "https://google.com";
-
 moment.updateLocale('fr');
+
 const ArticleScreen = ({ navigation}) => {
     
     const dispatch = useDispatch();
 
     const currentArticle = useSelector(state => state.Article.currentArticle);
-    console.log("£££££££££££££££££££££££")
-    console.log(currentArticle)
-    console.log("£££££££££££££££££££££££")
     const user = useSelector(state => state.User)
     
-    if (user.user.user.userArticlesLinked.some(a => a._id === currentArticle._id && !a.isOpen)){
-        const userUpdated = {...user.user.user, userArticlesLinked: userArticlesLinked.map(a => {
-            if (a._id === currentArticle._id){
+    if (user.user.user.userArticlesLinked.some(a => a.articleId === currentArticle._id && !a.isOpen)){
+        const userUpdated = {...user.user.user, userArticlesLinked: user.user.user.userArticlesLinked.map(a => {
+            if (a.articleId === currentArticle._id){
                 a.isOpen = true
             }
             return a
         })}
+        console.log("dans articleLink")
         console.log(userUpdated)
-        //dispatch(updateUser(userUpdated))
+        dispatch(updateUser(userUpdated))
     }
     
     const [visible, setVisible] = useState(false);
