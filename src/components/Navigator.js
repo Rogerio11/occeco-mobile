@@ -59,6 +59,14 @@ const PreferenceStackNavigator = () => {
   );
 }
 
+const PartnerStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Partenaires" component={ModifyAccountTypeScreen} />
+    </Stack.Navigator>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
@@ -100,7 +108,7 @@ const Navigator = () => {
         : <></>
       }
       { user && user.user && user.user.accountType == "admin"
-        ? <Tab.Screen name="Partenaires" component={ModifyAccountTypeScreen} />
+        ? <Tab.Screen name="Partenaires" component={PartnerStackNavigator} />
         : <></>
       }
       { user && user.user 
