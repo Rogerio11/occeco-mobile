@@ -34,7 +34,7 @@ console.log(pos)
         coordinate={{ latitude : pos.lat , longitude : pos.lng }}
       />
       {
-        !changeLocalisation && 
+        !changeLocalisation && !localisation &&
         <Circle 
           center={{ latitude : pos.lat , longitude : pos.lng }} 
           radius={distance} 

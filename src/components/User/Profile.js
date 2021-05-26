@@ -45,20 +45,13 @@ function ProfileScreen({ navigation }) {
 
       <Divider />
 
-      {user.user.accountType === "partner" &&
-        <Text> Vous êtes Partenaire</Text>}
-      {user.user.accountType === "admin" &&
-        <View>
-          <Text> Vous êtes Administrateur</Text>
-          <Text> Renvoyer les notifications du jour ? </Text>
-          <Button title="Renvoyer" onPress={trySendNotifications} />
-        </View>}
+      
 
       <Divider />
 
       <Text>Catégories choisies : </Text>
 
-      {/* {user.user && user.user.user && user.user.user.userCategories && user.user.user.userCategories.map(cat =>
+      {user.user && user.user.user && user.user.user.userCategories && user.user.user.userCategories.map(cat =>
         <MaterialChip
           key={cat._id}
           text={cat.nameType}
@@ -76,7 +69,7 @@ function ProfileScreen({ navigation }) {
             borderRightWidth: '3px',
           }}
         />)
-      } */}
+      } 
 
       <Divider />
       <View style={{ flexDirection: "row" }}>
@@ -87,7 +80,8 @@ function ProfileScreen({ navigation }) {
       </View>
 
       <Divider />
-
+      {user.user.accountType === "partner" &&
+        <Text> Vous êtes Partenaire</Text>}
       <Divider /><Divider />
 
       <View style={{width:'100%', height:'30%'}}>
@@ -105,6 +99,14 @@ function ProfileScreen({ navigation }) {
 
       <Text>Vous ne recevez pas les notifications ?</Text>
       <Button title="Notifications" onPress={() => navigation.push('EnableNotifications')} />
+
+      
+      {user.user.accountType === "admin" &&
+        <View>
+          <Text> Vous êtes Administrateur</Text>
+          <Text> Renvoyer les notifications du jour ? </Text>
+          <Button title="Renvoyer" onPress={trySendNotifications} />
+        </View>}
 
     </Card>
 
