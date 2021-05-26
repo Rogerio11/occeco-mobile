@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Card, Text, FAB, Divider, Overlay, Button, Icon} from 'react-native-elements';
 import {useDispatch, useSelector} from "react-redux";
-import { View} from 'react-native';
+import { Alert, Linking,View} from 'react-native';
 import {deleteArticle} from "../../actions/ArticleActions";
+import { updateUser } from "../../actions/UserActions";
 import moment from 'moment';
 import MapViewScreen from '../User/MapView';
 import MaterialChip from "react-native-material-chip";
+
+
+const supportedURL = "https://google.com";
 
 moment.updateLocale('fr');
 const ArticleScreen = ({ navigation}) => {
@@ -17,7 +21,17 @@ const ArticleScreen = ({ navigation}) => {
     console.log(currentArticle)
     console.log("£££££££££££££££££££££££")
     const user = useSelector(state => state.User)
-
+    
+    if (user.user.user.userArticlesLinked.some(a => a._id === currentArticle._id && !a.isOpen)){
+        const userUpdated = {...user.user.user, userArticlesLinked: userArticlesLinked.map(a => {
+            if (a._id === currentArticle._id){
+                a.isOpen = true
+            }
+            return a
+        })}
+        console.log(userUpdated)
+        //dispatch(updateUser(userUpdated))
+    }
     
     const [visible, setVisible] = useState(false);
       
@@ -32,6 +46,20 @@ const ArticleScreen = ({ navigation}) => {
         toggleOverlay()
         navigation.navigate("Liste Article")
     }
+    const url = currentArticle.articleLink
+    const handlePress = useCallback(async () => {
+        
+        // Checking if the link is supported for links with custom URL scheme.
+        const supported = await Linking.canOpenURL(url.toString());
+        console.log(supported)
+        if (supported) {
+          // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+          // by some browser in the mobile
+          await Linking.openURL(url.toString());
+        } else {
+          Alert.alert(`Don't know how to open this URL: ${url}`);
+        }
+      }, [url]);
 
     return (
         <View style={{ alignItems:'center' }}>
@@ -59,12 +87,20 @@ const ArticleScreen = ({ navigation}) => {
         />)
       }
             <Divider />
-            <Text>{moment(currentArticle.articleStartDate).format('DD-MM-YYYY')} - {moment(currentArticle.articleEndDate).format('DD-MM-YYYY')}</Text>
+            {
+                currentArticle.isEvent 
+                ? <Text>Date de l'évènement : {moment(currentArticle.articleDateEvent).format('DD-MM-YYYY')}</Text>
+                : <></>
+            }
             <Text>Description : {currentArticle.articleDescription}</Text>
-            <Text>Lien : {currentArticle.articleLink}</Text>
+            
+            <Button onPress={handlePress} title="Voir le post"></Button>
+            <View style={{width:'100%', height:'30%'}}>
             {
                 currentArticle.articleLocalisation && <MapViewScreen localisation={currentArticle.articleLocalisation}/>
             }
+            </View>
+            
   
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
       <Text h4>Voulez-vous vraiment supprimer cet article ?</Text>

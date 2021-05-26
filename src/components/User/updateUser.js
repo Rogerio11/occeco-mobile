@@ -64,16 +64,21 @@ function UpdateUserScreen({ navigation }) {
       />
 
       <Text>Adresse : </Text>
-      {/* <View style={{ width: '100%', height: '50%' }}>
+      <View style={{ width: '100%', height: '50%' }}>
         <MapView
           style={{ flex: 1 }}
           region={{
-            latitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lat) || 43.6,
-            longitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lng) || 3.8,
-            latitudeDelta: delta.lat,
-            longitudeDelta: delta.lng,
-            onRegionChange={ changePosition }
-            >
+
+              latitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lat) || 43.6,
+              longitude: (userUpdated.userLocalisation && userUpdated.userLocalisation.lng) || 3.8,
+              latitudeDelta: delta.lat,
+              longitudeDelta: delta.lng
+            }}
+
+          onRegionChange={changePosition}
+          
+        >
+
           <Marker
             coordinate={{
               latitude: userUpdated.userLocalisation && userUpdated.userLocalisation.lat,
@@ -89,8 +94,9 @@ function UpdateUserScreen({ navigation }) {
               radius={userUpdated.userDistance*1000} 
               fillColor={"rgba(137,209,254,.4)"}
             />
-          
-      </View> */}
+
+          </MapView>
+      </View>
       <Text>Catégories : </Text>
         <DropDownPicker
           items={listType.map(type => ({

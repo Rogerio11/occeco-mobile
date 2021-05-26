@@ -35,7 +35,6 @@ function ListArticleScreen({ navigation }) {
       && (!Array.isArray(listArticle) || listArticle.length === 0)) {
       dispatch(getAllArticles());
     }
-
     setListArticle((user.user.accountType === "admin" || user.user.accountType === "partner") ? (Array.isArray(list.articles) ? list.articles : []) : user.user.user.userArticlesLinked)
 
   }, [])

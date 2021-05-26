@@ -8,7 +8,6 @@ import DatePicker from 'react-native-datepicker';
 import MapViewScreen from '../User/MapView';
 import moment from 'moment';
 import formatMoments from '../formatMoments';
-//import 'DD-MM-YYYY HH:mm' from '../'DD-MM-YYYY HH:mm'';
 moment.updateLocale('fr');
 import DropDownPicker from 'react-native-dropdown-picker';
 
