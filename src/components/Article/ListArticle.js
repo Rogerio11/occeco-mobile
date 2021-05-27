@@ -85,7 +85,7 @@ function ListArticleScreen({ navigation }) {
                 <Text>Pas d'articles à afficher</Text>
               </View>
               :
-              <View style={{ flex: 1 }}>
+              <View style={{ maxHeight: '20%' }}>
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={{ width: '40%' }}>Filtrer par catégories </Text>
                   <DropDownPicker
@@ -102,7 +102,7 @@ function ListArticleScreen({ navigation }) {
                     containerStyle={{ height: 40, width: '60%' }}
                   />
                 </View>
-                <View >
+                
                   <Divider />
                   <CheckBox
                     title="Voir les évènements"
@@ -165,7 +165,7 @@ function ListArticleScreen({ navigation }) {
                     checked={isNotEvent}
                     onPress={() => toggleIsNotEvent()}
                   />
-                </View>
+                
                 <View>
                   <Divider />
                   {
@@ -175,11 +175,6 @@ function ListArticleScreen({ navigation }) {
                       <Text> </Text>
                       <Button title="Voir catégories" onPress={() => navigation.push('Catégories')} />
                     </View>
-                    : <></>
-                  }
-                      
-                    </View>
-                    
                   }
                   <Divider />
                 </View>
