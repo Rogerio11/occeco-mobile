@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomepageScreen from './User/Homepage';
 import LoginScreen from './User/Login';
 import SignUpScreen from './User/SignUp';
-import UpdateUserScreen from './User/UpdateUser'
+import UpdateUserScreen from './User/updateUser'
 import UpdateAccountScreen from './User/UpdateAccount'
 import ProfileScreen from './User/Profile';
 import ModifyAccountTypeScreen from './User/ModifyAccountType';
