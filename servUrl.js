@@ -1,0 +1,1 @@
+export const servURL = "https://occeco-back.herokuapp.com/api"
