@@ -49,7 +49,7 @@ function ProfileScreen({ navigation }) {
 
       <Divider />
 
-      <Text>Catégories choisies : </Text>
+      {/* <Text>Catégories choisies : </Text>
 
       {user.user && user.user.user && user.user.user.userCategories && user.user.user.userCategories.map(cat =>
         <MaterialChip
@@ -69,7 +69,7 @@ function ProfileScreen({ navigation }) {
             borderRightWidth: '3px',
           }}
         />)
-      } 
+      }  */}
 
       <Divider />
       <View style={{ flexDirection: "row" }}>

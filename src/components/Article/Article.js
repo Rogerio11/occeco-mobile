@@ -64,7 +64,7 @@ const ArticleScreen = ({ navigation }) => {
 
         <Text h3>{currentArticle.articleTitle}</Text>
         <Divider />
-        {currentArticle.articleCategories.map(cat =>
+        {/* {currentArticle.articleCategories.map(cat =>
         <MaterialChip
           key={cat._id}
           text={cat.nameType}
@@ -82,7 +82,7 @@ const ArticleScreen = ({ navigation }) => {
             borderRightWidth: '3px',
           }}
         />)
-      }
+      } */}
         <Divider />
         {
           currentArticle.isEvent
