@@ -8,6 +8,7 @@ import ResetPasswordScreen from './ResetPassword';
 function HomepageScreen({ navigation }) {
 
     const user = useSelector(state => state.User);
+    const errorLogin = useSelector(state => state.User.errorLogin);
     const { theme } = useTheme();
     // var urlParams = new URLSearchParams(window.location.search); // To be redirected if forgoten password
 
@@ -26,6 +27,12 @@ function HomepageScreen({ navigation }) {
                                     title="Connexion"
                                     onPress={() => navigation.push('Connexion')}
                                 />
+                                {errorLogin && <Text style={{
+                                    fontWeight: 'bold',
+                                    color: 'red',
+                                    fontSize: 20,
+                                    backgroundColor: 'lightgray'
+                                }}> {errorLogin} </Text>}
                             </Card>
                             <Card containerStyle={{ width: '99%', backgroundColor: theme.colors.secondary }}>
                                 <Card.Title>Vous êtes nouveau ?</Card.Title>

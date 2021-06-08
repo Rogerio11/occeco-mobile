@@ -11,14 +11,23 @@ export const login = (account) => async dispatch => {
         if (res.data.token) {
             await storeData("user", JSON.stringify({ token: res.data.token, ...res.data.account }));
         }
-
         dispatch({
             type: "LOGIN_SUCCESS",
             payload: res.data
         });
 
     } catch (err) {
-        console.log(err);
+        if (err && err.response && err.response.data && err.response.data.error && err.response.data.error.status == 404) {
+            dispatch({
+                type: "LOGIN_FAILURE",
+                payload: "Erreur : serveur introuvable"
+            });
+        } else {
+            dispatch({
+                type: "LOGIN_FAILURE",
+                payload: err.response.data.error
+            });
+        }
     }
 };
 
@@ -41,7 +50,7 @@ export const updateUser = (user) => async dispatch => {
 export const getUser = (_id) => async dispatch => {
     console.log("reload user = ", _id);
     try {
-        const res = await axios.post(`${servURL}/user/getUser`, {_id}, { headers: await authHeader() });
+        const res = await axios.post(`${servURL}/user/getUser`, { _id }, { headers: await authHeader() });
         console.log(res.data)
 
         dispatch({

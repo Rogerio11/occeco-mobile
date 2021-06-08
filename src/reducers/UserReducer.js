@@ -19,8 +19,15 @@ const UserReducer = (state = DefaultState, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
+                errorLogin: null,
                 userToken: action.payload.token,
                 user: action.payload.account
+            };
+        case "LOGIN_FAILURE":
+            return {
+                ...state,
+                isLoggedIn: false,
+                errorLogin: action.payload
             };
         case "LOGOUT_SUCCESS":
             return {
